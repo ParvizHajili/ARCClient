@@ -1,0 +1,74 @@
+.technical-specs {
+  width: 100%;
+  max-width: $selected-max-width;
+  margin-inline: auto;
+  padding: 64px $container-padding-mobile 80px;
+  border-top: 1px solid $color-border;
+
+  @include respond-to(md) {
+    padding-inline: $container-padding-tablet;
+  }
+
+  @include respond-to(xl) {
+    padding-inline: $container-padding-desktop;
+    padding-bottom: 96px;
+  }
+}
+
+.technical-specs__title {
+  margin: 0 0 $spacing-xl;
+  font-family: $font-family-base;
+  font-size: 28px;
+  font-weight: $font-weight-regular;
+  line-height: 1.2;
+  color: $color-black;
+
+  @include respond-to(md) {
+    margin-bottom: 40px;
+    font-size: 32px;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 2px;
+    margin-top: $spacing-md;
+    background-color: $color-black;
+  }
+}
+
+.technical-specs__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: $spacing-lg;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-xl 64px;
+  }
+}
+
+.technical-specs__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.technical-specs__label {
+  font-family: $font-family-base;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.technical-specs__value {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-regular;
+  line-height: 1.5;
+  color: $color-black;
+}

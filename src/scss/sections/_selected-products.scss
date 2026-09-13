@@ -1,0 +1,159 @@
+.selected-products {
+  background-color: $color-white;
+  padding-block: $selected-padding-top $selected-padding-bottom;
+}
+
+.selected-products__container {
+  width: 100%;
+  max-width: $selected-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding-mobile;
+
+  @include respond-to(md) {
+    padding-inline: $container-padding-tablet;
+  }
+
+  @include respond-to(xl) {
+    padding-inline: $container-padding-desktop;
+  }
+}
+
+.selected-products__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $spacing-lg;
+  margin-bottom: $selected-header-gap;
+}
+
+.selected-products__intro {
+  min-width: 0;
+}
+
+.selected-products__eyebrow {
+  display: block;
+  margin-bottom: $spacing-sm;
+  font-family: $font-family-base;
+  font-size: $selected-eyebrow-size;
+  font-weight: $font-weight-medium;
+  letter-spacing: $selected-eyebrow-spacing;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.selected-products__title {
+  font-family: $font-family-base;
+  font-size: $selected-title-size-mobile;
+  font-weight: $font-weight-regular;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: $color-black;
+
+  @include respond-to(md) {
+    font-size: $selected-title-size-tablet;
+  }
+
+  @include respond-to(xl) {
+    font-size: $selected-title-size;
+  }
+}
+
+.selected-products__controls {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  flex-shrink: 0;
+}
+
+.selected-products__control {
+  @include icon-button-reset;
+  width: $selected-control-size;
+  height: $selected-control-size;
+  border: 1px solid $color-border;
+  background-color: $color-white;
+  color: $color-black;
+  font-size: 22px;
+  line-height: 1;
+  transition: border-color $transition-base, background-color $transition-base,
+    opacity $transition-base;
+
+  &:hover:not(:disabled) {
+    border-color: $color-black;
+    background-color: rgba($color-black, 0.03);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.selected-products__viewport {
+  overflow: hidden;
+}
+
+.selected-products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: $spacing-md;
+  row-gap: $spacing-xl;
+  transition: transform $transition-base;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: $selected-grid-gap-x;
+    row-gap: $selected-grid-gap-y;
+  }
+
+  @include respond-to(xl) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@include respond-below(xl) {
+  .selected-products__viewport {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .selected-products__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(280px, calc(100vw - 48px));
+    grid-template-columns: none;
+    row-gap: 0;
+    column-gap: $spacing-md;
+    width: max-content;
+    padding-bottom: 4px;
+
+    .product-card {
+      scroll-snap-align: start;
+    }
+  }
+
+  @include respond-to(sm) {
+    .selected-products__grid {
+      grid-auto-columns: calc(50% - 8px);
+    }
+  }
+
+  @include respond-to(md) {
+    .selected-products__grid {
+      grid-auto-columns: calc(33.333% - 16px);
+      column-gap: $selected-grid-gap-x;
+    }
+  }
+}
+
+@include respond-to(xl) {
+  .selected-products__controls {
+    display: none;
+  }
+}

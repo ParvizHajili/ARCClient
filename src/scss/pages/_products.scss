@@ -1,0 +1,132 @@
+.products-page {
+  padding-top: calc(#{$header-height-mobile} + 32px);
+  padding-bottom: 64px;
+  background-color: $color-white;
+
+  @include respond-to(lg) {
+    padding-top: calc(#{$header-height-desktop} + 48px);
+    padding-bottom: 80px;
+  }
+}
+
+.products-page__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  width: 100%;
+  max-width: $selected-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding-mobile;
+
+  @include respond-to(md) {
+    padding-inline: $container-padding-tablet;
+    gap: 48px;
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  @include respond-to(xl) {
+    padding-inline: $container-padding-desktop;
+    gap: 64px;
+  }
+}
+
+.products-page__sidebar {
+  min-width: 0;
+  padding: $spacing-lg;
+  background-color: #f8f8f8;
+
+  @include respond-to(md) {
+    padding: $spacing-xl $spacing-lg;
+  }
+
+  @include respond-to(lg) {
+    width: 260px;
+    max-width: 260px;
+  }
+}
+
+.products-page__content {
+  min-width: 0;
+}
+
+.products-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+
+  @include respond-to(md) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    margin-bottom: 40px;
+  }
+}
+
+.products-page__title {
+  margin: 0;
+  font-family: $font-family-base;
+  font-size: 32px;
+  font-weight: $font-weight-regular;
+  line-height: 1.2;
+  color: $color-black;
+
+  @include respond-to(md) {
+    font-size: 36px;
+  }
+}
+
+.products-page__count {
+  margin: 0;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-light;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  white-space: nowrap;
+}
+
+.products-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: $spacing-xl $spacing-lg;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px $spacing-lg;
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.products-page__empty {
+  margin: 0;
+  padding: 48px 0;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-light;
+  line-height: 1.6;
+  color: $color-text-muted;
+  text-align: center;
+
+  @include respond-to(md) {
+    text-align: left;
+  }
+}
+
+.products-page__empty[hidden] {
+  display: none;
+}
+
+.products-page__grid[hidden] {
+  display: none;
+}

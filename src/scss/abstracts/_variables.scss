@@ -1,0 +1,112 @@
+// Colors
+$color-white: #ffffff;
+$color-black: #000000;
+$color-text: #1a1a1a;
+$color-text-muted: #666666;
+$color-border: #e5e5e5;
+$color-overlay: rgba(0, 0, 0, 0.4);
+$color-badge-bg: #e8d4a8;
+$color-badge-text: #1a1a1a;
+$color-hero-overlay: linear-gradient(
+  90deg,
+  rgba(0, 0, 0, 0.25) 0%,
+  rgba(0, 0, 0, 0.08) 45%,
+  rgba(0, 0, 0, 0) 70%
+);
+
+// Typography
+$font-family-base: "Manrope", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 16px;
+$font-size-sm: 14px;
+$font-size-nav: 13px;
+$font-size-logo: 20px;
+$font-size-logo-mobile: 18px;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$letter-spacing-logo: 4px;
+$letter-spacing-nav: 2px;
+$line-height-base: 1.5;
+
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Layout
+$container-max-width: 1440px;
+$container-padding-desktop: 48px;
+$container-padding-tablet: 24px;
+$container-padding-mobile: 16px;
+
+// Header
+$header-height-desktop: 72px;
+$header-height-mobile: 64px;
+
+// Navbar
+$nav-link-underline-height: 1px;
+$nav-link-underline-offset: 4px;
+$nav-link-gap: 40px;
+$nav-link-gap-tablet: 32px;
+
+// Transitions
+$transition-base: 0.3s ease;
+$transition-menu: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Z-index
+$z-index-header: 100;
+$z-index-menu: 200;
+$z-index-overlay: 150;
+$z-index-dropdown: 250;
+
+// Hero
+$hero-max-width: 1280px;
+$hero-min-height-desktop: 952px;
+$hero-min-height-tablet: 640px;
+$hero-min-height-mobile: 520px;
+$hero-padding-x-desktop: 80px;
+$hero-padding-x-tablet: 40px;
+$hero-padding-x-mobile: 24px;
+$hero-content-max-width: 520px;
+$hero-badge-font-size: 11px;
+$hero-badge-letter-spacing: 1.5px;
+$hero-title-size-desktop: 56px;
+$hero-title-size-tablet: 44px;
+$hero-title-size-mobile: 32px;
+$hero-subtitle-size: 16px;
+$hero-subtitle-size-mobile: 15px;
+$hero-btn-font-size: 12px;
+$hero-btn-letter-spacing: 1.5px;
+$hero-btn-padding-y: 16px;
+$hero-btn-padding-x: 28px;
+$hero-gap-badge-title: 28px;
+$hero-gap-title-subtitle: 20px;
+$hero-gap-subtitle-actions: 36px;
+$hero-gap-buttons: 16px;
+
+// Selected products
+$selected-max-width: 1280px;
+$selected-padding-top: 72px;
+$selected-padding-bottom: 80px;
+$selected-header-gap: 48px;
+$selected-grid-gap-x: 24px;
+$selected-grid-gap-y: 48px;
+$selected-eyebrow-size: 11px;
+$selected-eyebrow-spacing: 2px;
+$selected-title-size: 40px;
+$selected-title-size-tablet: 34px;
+$selected-title-size-mobile: 28px;
+$selected-control-size: 40px;
+
+// Breakpoints
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);

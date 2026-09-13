@@ -1,0 +1,50 @@
+.scroll-top {
+  @include icon-button-reset;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: $z-index-header;
+  width: 48px;
+  height: 48px;
+  border: 1px solid $color-border;
+  border-radius: 50%;
+  background-color: $color-white;
+  color: $color-black;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity $transition-base, transform $transition-base,
+    visibility $transition-base, background-color $transition-base,
+    border-color $transition-base;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &:hover {
+    border-color: $color-black;
+    background-color: rgba($color-black, 0.03);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-black;
+    outline-offset: 2px;
+  }
+
+  @include respond-below(md) {
+    right: 16px;
+    bottom: 16px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.scroll-top__icon {
+  width: 20px;
+  height: 20px;
+}

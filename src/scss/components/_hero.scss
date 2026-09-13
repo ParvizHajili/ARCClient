@@ -1,0 +1,125 @@
+.hero-arc {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: $hero-min-height-mobile;
+  overflow: hidden;
+  isolation: isolate;
+  scroll-margin-top: 80px;
+
+  @include respond-to(md) {
+    min-height: $hero-min-height-tablet;
+  }
+
+  @include respond-to(lg) {
+    min-height: $hero-min-height-desktop;
+  }
+}
+
+.hero-arc__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-arc__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-arc__overlay {
+  position: absolute;
+  inset: 0;
+  background: $color-hero-overlay;
+  pointer-events: none;
+}
+
+.hero-arc__container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: $hero-max-width;
+  margin-inline: auto;
+  padding-inline: $hero-padding-x-mobile;
+  padding-block: $spacing-xl;
+
+  @include respond-to(md) {
+    padding-inline: $hero-padding-x-tablet;
+    padding-block: $spacing-xl * 2;
+  }
+
+  @include respond-to(lg) {
+    padding-inline: $hero-padding-x-desktop;
+    padding-block: 80px;
+  }
+}
+
+.hero-arc__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: $hero-content-max-width;
+}
+
+.hero-arc__badge {
+  display: inline-block;
+  padding: 8px 14px;
+  background-color: $color-badge-bg;
+  color: $color-badge-text;
+  font-family: $font-family-base;
+  font-size: $hero-badge-font-size;
+  font-weight: $font-weight-medium;
+  letter-spacing: $hero-badge-letter-spacing;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.hero-arc__title {
+  margin-top: $hero-gap-badge-title;
+  font-family: $font-family-base;
+  font-size: $hero-title-size-mobile;
+  font-weight: $font-weight-light;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: $color-white;
+
+  @include respond-to(md) {
+    font-size: $hero-title-size-tablet;
+  }
+
+  @include respond-to(lg) {
+    font-size: $hero-title-size-desktop;
+  }
+}
+
+.hero-arc__subtitle {
+  margin-top: $hero-gap-title-subtitle;
+  font-family: $font-family-base;
+  font-size: $hero-subtitle-size-mobile;
+  font-weight: $font-weight-light;
+  line-height: 1.6;
+  color: $color-white;
+
+  @include respond-to(md) {
+    font-size: $hero-subtitle-size;
+  }
+}
+
+.hero-arc__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $hero-gap-buttons;
+  margin-top: $hero-gap-subtitle-actions;
+  width: 100%;
+
+  @include respond-below(sm) {
+    flex-direction: column;
+
+    .btn-arc {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

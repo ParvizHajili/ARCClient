@@ -1,0 +1,75 @@
+import { Link } from 'react-router-dom'
+import { categoryGroups } from '../../data/categories'
+import { useI18n } from '../../i18n/I18nContext'
+
+/** Homepage catalog cards — architectural group (Raduga-style leaf grid). */
+const catalogItems = categoryGroups[0].items
+
+export function Categories() {
+  const { t } = useI18n()
+
+  return (
+    <section className="categories-section" id="categories" aria-labelledby="categories-title">
+      <div className="categories-section__container container-fluid">
+        <div className="categories-section__header">
+          <div className="categories-section__intro">
+            <span className="categories-section__eyebrow">
+              {t('categories.eyebrow')}
+            </span>
+            <h2 className="categories-section__title" id="categories-title">
+              {t('categories.title')}
+            </h2>
+          </div>
+
+          <Link className="categories-section__catalog-link" to="/products">
+            {t('categories.fullCatalog')}
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+
+        <div className="categories-section__grid">
+          {catalogItems.map((item, index) => {
+            const title = t(`categories.items.${item.id}`)
+            const hasChildren = Boolean(item.children?.length)
+            const isAccent = (index + 1) % 3 === 0
+
+            return (
+              <Link
+                key={item.id}
+                to={`/products?category=${item.id}`}
+                className={[
+                  'category-card',
+                  hasChildren ? 'category-card--has-subs' : '',
+                  isAccent ? 'category-card--accent' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <span className="category-card__title">{title}</span>
+
+                <div className="category-card__media" aria-hidden="true">
+                  <img
+                    className="category-card__image"
+                    src={item.image}
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+
+                {hasChildren ? (
+                  <div className="category-card__subs">
+                    <ul className="category-card__subs-list">
+                      {item.children!.map((childId) => (
+                        <li key={childId}>{t(`categories.subs.${childId}`)}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,123 @@
+.contact-form {
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.contact-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-xl;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-xl $spacing-lg;
+  }
+}
+
+.contact-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.contact-form__group--full {
+  margin-top: $spacing-xl;
+}
+
+.contact-form__label {
+  font-family: $font-family-base;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.contact-form__input,
+.contact-form__textarea {
+  width: 100%;
+  padding: $spacing-sm 0;
+  border: none;
+  border-bottom: 1px solid $color-border;
+  border-radius: 0;
+  background-color: transparent;
+  font-family: $font-family-base;
+  font-size: 16px;
+  font-weight: $font-weight-regular;
+  color: $color-black;
+  transition: border-color $transition-base;
+
+  &::placeholder {
+    color: rgba($color-text-muted, 0.65);
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom-color: $color-black;
+  }
+
+  &.is-invalid {
+    border-bottom-color: #c0392b;
+  }
+}
+
+.contact-form__textarea {
+  min-height: 48px;
+  max-height: 240px;
+  line-height: 1.5;
+  field-sizing: content;
+  resize: vertical;
+}
+
+.contact-form__error {
+  min-height: 18px;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-regular;
+  line-height: 1.4;
+  color: #c0392b;
+}
+
+.contact-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  min-width: 180px;
+  margin-top: $spacing-xl;
+  margin-inline: auto;
+  padding: $hero-btn-padding-y $hero-btn-padding-x;
+  border: 1px solid $color-black;
+  background-color: $color-black;
+  color: $color-white;
+  font-family: $font-family-base;
+  font-size: $hero-btn-font-size;
+  font-weight: $font-weight-medium;
+  letter-spacing: $hero-btn-letter-spacing;
+  text-transform: uppercase;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color $transition-base, color $transition-base,
+    opacity $transition-base;
+
+  &:hover {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-black;
+    outline-offset: 2px;
+  }
+}
+
+.contact-form__submit-arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.contact-form__actions {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,87 @@
+.product-detail-page {
+  padding-top: calc(#{$header-height-mobile} + 32px);
+  background-color: $color-white;
+
+  @include respond-to(lg) {
+    padding-top: calc(#{$header-height-desktop} + 48px);
+  }
+}
+
+.product-detail-page__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  width: 100%;
+  max-width: $selected-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding-mobile;
+  padding-bottom: 64px;
+
+  @include respond-to(md) {
+    padding-inline: $container-padding-tablet;
+    gap: 48px;
+  }
+
+  @include respond-to(lg) {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  @include respond-to(xl) {
+    padding-inline: $container-padding-desktop;
+    padding-bottom: 80px;
+  }
+}
+
+.product-detail-page__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.product-detail-page__collection {
+  margin: 0 0 $spacing-sm;
+  font-family: $font-family-base;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.product-detail-page__title {
+  margin: 0 0 $spacing-sm;
+  font-family: $font-family-base;
+  font-size: 36px;
+  font-weight: $font-weight-regular;
+  line-height: 1.15;
+  color: $color-black;
+
+  @include respond-to(md) {
+    font-size: 44px;
+  }
+}
+
+.product-detail-page__code {
+  margin: 0 0 $spacing-lg;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-regular;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.product-detail-page__description {
+  margin: 0 0 $spacing-xl;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-light;
+  line-height: 1.7;
+  color: $color-text-muted;
+}
+
+.product-detail-page__options {
+  padding-top: $spacing-xs;
+}

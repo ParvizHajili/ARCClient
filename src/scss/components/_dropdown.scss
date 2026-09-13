@@ -1,0 +1,109 @@
+.dropdown-arc {
+  position: relative;
+  display: inline-flex;
+}
+
+.dropdown-arc__toggle {
+  @include icon-button-reset;
+  gap: 6px;
+  min-width: 56px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $color-text;
+  border: 1px solid $color-border;
+  transition: border-color $transition-base, background-color $transition-base,
+    color $transition-base;
+
+  @include respond-below(md) {
+    min-width: 48px;
+    height: 34px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  &:hover {
+    border-color: $color-black;
+    background-color: rgba($color-black, 0.03);
+  }
+
+  &[aria-expanded="true"] {
+    border-color: $color-black;
+
+    .dropdown-arc__icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.dropdown-arc__current {
+  line-height: 1;
+}
+
+.dropdown-arc__icon {
+  width: 12px;
+  height: 12px;
+  transition: transform $transition-base;
+}
+
+.dropdown-arc__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 160px;
+  padding: 6px;
+  background-color: $color-white;
+  border: 1px solid $color-border;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity $transition-base, transform $transition-base,
+    visibility $transition-base;
+  z-index: $z-index-dropdown;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-arc--align-right {
+  .dropdown-arc__menu {
+    left: auto;
+    right: 0;
+  }
+
+  @include respond-below(sm) {
+    .dropdown-arc__menu {
+      min-width: min(160px, calc(100vw - 32px));
+    }
+  }
+}
+
+.dropdown-arc__option {
+  @include icon-button-reset;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  font-family: $font-family-base;
+  font-size: 13px;
+  font-weight: $font-weight-regular;
+  color: $color-text;
+  text-align: left;
+  transition: background-color $transition-base, color $transition-base;
+
+  &:hover {
+    background-color: rgba($color-black, 0.04);
+  }
+
+  &.is-active {
+    font-weight: $font-weight-semibold;
+    color: $color-black;
+  }
+}

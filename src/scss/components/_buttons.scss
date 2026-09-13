@@ -1,0 +1,66 @@
+.btn-icon {
+  @include icon-button-reset;
+  width: 40px;
+  height: 40px;
+  transition: opacity $transition-base;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.btn-arc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $hero-btn-padding-y $hero-btn-padding-x;
+  font-family: $font-family-base;
+  font-size: $hero-btn-font-size;
+  font-weight: $font-weight-medium;
+  letter-spacing: $hero-btn-letter-spacing;
+  text-transform: uppercase;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color $transition-base, color $transition-base,
+    border-color $transition-base, opacity $transition-base;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-white;
+    outline-offset: 2px;
+  }
+}
+
+.btn-arc--primary {
+  background-color: $color-black;
+  color: $color-white;
+  border-color: $color-black;
+
+  &:hover {
+    background-color: #1a1a1a;
+    border-color: #1a1a1a;
+    opacity: 1;
+  }
+}
+
+.btn-arc--outline {
+  background-color: transparent;
+  color: $color-white;
+  border-color: $color-white;
+
+  &:hover {
+    background-color: rgba($color-white, 0.12);
+    opacity: 1;
+  }
+}

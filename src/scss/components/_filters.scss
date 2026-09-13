@@ -1,0 +1,36 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters__controls {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.filters__group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filters__label {
+  font-family: $font-family-base;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+}
+
+.filters__select-wrap {
+  position: relative;
+}
+
+.filters__clear {
+  @extend .btn-arc;
+  @extend .btn-arc--primary;
+  width: 100%;
+  margin-top: $spacing-sm;
+}
