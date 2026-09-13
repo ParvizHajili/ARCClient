@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { categoryGroups } from '../../data/categories'
 import { useI18n } from '../../i18n/I18nContext'
+import { Reveal } from '../Reveal'
 
 /** Homepage catalog cards — architectural group (Raduga-style leaf grid). */
 const catalogItems = categoryGroups[0].items
@@ -11,7 +12,7 @@ export function Categories() {
   return (
     <section className="categories-section" id="categories" aria-labelledby="categories-title">
       <div className="categories-section__container container-fluid">
-        <div className="categories-section__header">
+        <Reveal as="header" className="categories-section__header">
           <div className="categories-section__intro">
             <span className="categories-section__eyebrow">
               {t('categories.eyebrow')}
@@ -20,12 +21,7 @@ export function Categories() {
               {t('categories.title')}
             </h2>
           </div>
-
-          <Link className="categories-section__catalog-link" to="/products">
-            {t('categories.fullCatalog')}
-            <span aria-hidden="true">→</span>
-          </Link>
-        </div>
+        </Reveal>
 
         <div className="categories-section__grid">
           {catalogItems.map((item, index) => {
@@ -34,38 +30,39 @@ export function Categories() {
             const isAccent = (index + 1) % 3 === 0
 
             return (
-              <Link
-                key={item.id}
-                to={`/products?category=${item.id}`}
-                className={[
-                  'category-card',
-                  hasChildren ? 'category-card--has-subs' : '',
-                  isAccent ? 'category-card--accent' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-              >
-                <span className="category-card__title">{title}</span>
+              <Reveal key={item.id} delay={index * 28}>
+                <Link
+                  to={`/products?category=${item.id}`}
+                  className={[
+                    'category-card',
+                    hasChildren ? 'category-card--has-subs' : '',
+                    isAccent ? 'category-card--accent' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                >
+                  <span className="category-card__title">{title}</span>
 
-                <div className="category-card__media" aria-hidden="true">
-                  <img
-                    className="category-card__image"
-                    src={item.image}
-                    alt=""
-                    loading="lazy"
-                  />
-                </div>
-
-                {hasChildren ? (
-                  <div className="category-card__subs">
-                    <ul className="category-card__subs-list">
-                      {item.children!.map((childId) => (
-                        <li key={childId}>{t(`categories.subs.${childId}`)}</li>
-                      ))}
-                    </ul>
+                  <div className="category-card__media" aria-hidden="true">
+                    <img
+                      className="category-card__image"
+                      src={item.image}
+                      alt=""
+                      loading="lazy"
+                    />
                   </div>
-                ) : null}
-              </Link>
+
+                  {hasChildren ? (
+                    <div className="category-card__subs">
+                      <ul className="category-card__subs-list">
+                        {item.children!.map((childId) => (
+                          <li key={childId}>{t(`categories.subs.${childId}`)}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </Link>
+              </Reveal>
             )
           })}
         </div>

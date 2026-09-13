@@ -28,6 +28,7 @@
 @import "components/option-group";
 @import "components/technical-specs";
 @import "components/lightbox";
+@import "components/reveal";
 
 // Sections
 @import "sections/categories";
@@ -39,6 +40,9 @@
 @import "pages/home";
 @import "pages/products";
 @import "pages/product-detail";
+
+// Dashboard
+@import "dashboard/dashboard";
 
 // Themes
 @import "themes/default";

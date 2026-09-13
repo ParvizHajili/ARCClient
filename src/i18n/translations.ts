@@ -166,8 +166,7 @@ export const translations = {
       },
     },
     selected: {
-      eyebrow: "Seçilmişlər",
-      title: "Yeni Kolleksiya",
+      title: "Seçilmiş Məhsullar",
     },
     about: {
       eyebrow: "Vizyonumuz",
@@ -360,8 +359,7 @@ export const translations = {
       },
     },
     selected: {
-      eyebrow: "Selected",
-      title: "New Collection",
+      title: "Selected Products",
     },
     about: {
       eyebrow: "Our Vision",
@@ -554,8 +552,7 @@ export const translations = {
       },
     },
     selected: {
-      eyebrow: "Избранное",
-      title: "Новая коллекция",
+      title: "Избранные товары",
     },
     about: {
       eyebrow: "Наше видение",

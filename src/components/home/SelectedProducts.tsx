@@ -1,114 +1,67 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { selectedProducts } from '../../data/selectedProducts'
 import { useI18n } from '../../i18n/I18nContext'
+import { Reveal } from '../Reveal'
 
 export function SelectedProducts() {
   const { t } = useI18n()
-  const viewportRef = useRef<HTMLDivElement>(null)
-  const [canPrev, setCanPrev] = useState(false)
-  const [canNext, setCanNext] = useState(true)
-
-  const updateControls = useCallback(() => {
-    const viewport = viewportRef.current
-    if (!viewport) return
-
-    const maxScroll = viewport.scrollWidth - viewport.clientWidth
-    setCanPrev(viewport.scrollLeft > 0)
-    setCanNext(viewport.scrollLeft < maxScroll - 1)
-  }, [])
-
-  useEffect(() => {
-    const viewport = viewportRef.current
-    if (!viewport) return
-
-    updateControls()
-    viewport.addEventListener('scroll', updateControls, { passive: true })
-    window.addEventListener('resize', updateControls)
-    return () => {
-      viewport.removeEventListener('scroll', updateControls)
-      window.removeEventListener('resize', updateControls)
-    }
-  }, [updateControls])
-
-  const getScrollStep = () => {
-    const viewport = viewportRef.current
-    if (!viewport) return 0
-
-    const firstCard = viewport.querySelector('.product-card') as HTMLElement | null
-    if (!firstCard) return viewport.clientWidth
-
-    const grid = viewport.querySelector('.selected-products__grid') as HTMLElement | null
-    const styles = grid ? window.getComputedStyle(grid) : null
-    const gap = parseFloat(styles?.columnGap || styles?.gap || '16')
-    return firstCard.offsetWidth + gap
-  }
 
   return (
     <section className="selected-products" id="products">
+      <div className="selected-products__ambient" aria-hidden="true" />
+
       <div className="selected-products__container container-fluid">
-        <div className="selected-products__header">
-          <div className="selected-products__intro">
-            <span className="selected-products__eyebrow">{t('selected.eyebrow')}</span>
-            <h2 className="selected-products__title">{t('selected.title')}</h2>
-          </div>
+        <Reveal as="header" className="selected-products__header">
+          <h2 className="selected-products__title">{t('selected.title')}</h2>
+          <span className="selected-products__rule" aria-hidden="true" />
+        </Reveal>
 
-          <div className="selected-products__controls" aria-label="Product slider controls">
-            <button
-              className="selected-products__control selected-products__control--prev"
-              type="button"
-              aria-label="Previous products"
-              disabled={!canPrev}
-              onClick={() =>
-                viewportRef.current?.scrollBy({ left: -getScrollStep(), behavior: 'smooth' })
-              }
-            >
-              ‹
-            </button>
-            <button
-              className="selected-products__control selected-products__control--next"
-              type="button"
-              aria-label="Next products"
-              disabled={!canNext}
-              onClick={() =>
-                viewportRef.current?.scrollBy({ left: getScrollStep(), behavior: 'smooth' })
-              }
-            >
-              ›
-            </button>
-          </div>
-        </div>
+        <div className="selected-products__grid">
+          {selectedProducts.map((product, index) => {
+            const title = t(`products.${product.id}.title`)
 
-        <div className="selected-products__viewport" ref={viewportRef}>
-          <div className="selected-products__grid">
-            {selectedProducts.map((product) => {
-              const title = t(`products.${product.id}.title`)
-              const description = t(`products.${product.id}.description`)
+            return (
+              <Reveal
+                key={product.id}
+                as="article"
+                className={`product-card${index % 2 === 1 ? ' product-card--offset' : ''}`}
+                delay={index * 24}
+              >
+                <Link className="product-card__media" to="/product-detail">
+                  <span className="product-card__glow" aria-hidden="true" />
+                  <span className="product-card__shine" aria-hidden="true" />
+                  <img
+                    className="product-card__image"
+                    src={product.image}
+                    alt={title}
+                    loading="lazy"
+                    width={320}
+                    height={320}
+                  />
+                  <span className="product-card__peek" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </Link>
 
-              return (
-                <article
-                  key={product.id}
-                  className="product-card"
-                  data-product-id={product.id}
-                >
-                  <a className="product-card__image-link" href="#products">
-                    <img
-                      className="product-card__image"
-                      src={product.image}
-                      alt={title}
-                      loading="lazy"
-                      width={240}
-                      height={240}
-                    />
-                  </a>
-                  <div className="product-card__body">
-                    <span className="product-card__code">{product.code}</span>
-                    <h3 className="product-card__title">{title}</h3>
-                    <p className="product-card__description">{description}</p>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
+                <div className="product-card__body">
+                  <span className="product-card__code">{product.code}</span>
+                  <h3 className="product-card__title">
+                    <Link to="/product-detail">{title}</Link>
+                  </h3>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>
