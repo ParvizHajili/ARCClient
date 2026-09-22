@@ -2,9 +2,9 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface CategoryActionsMenuProps {
-  onView: () => void
-  onEdit: () => void
-  onDelete: () => void
+  onView?: () => void
+  onEdit?: () => void
+  onDelete?: () => void
 }
 
 function IconView() {
@@ -122,6 +122,10 @@ export function CategoryActionsMenu({
     setOpen((prev) => !prev)
   }
 
+  if (!onView && !onEdit && !onDelete) {
+    return null
+  }
+
   return (
     <div className="dash-actions">
       <button
@@ -148,45 +152,51 @@ export function CategoryActionsMenu({
             role="menu"
             style={{ top: coords.top, right: coords.right }}
           >
-            <button
-              type="button"
-              role="menuitem"
-              className="dash-actions__item"
-              aria-label="Bax"
-              title="Bax"
-              onClick={() => {
-                setOpen(false)
-                onView()
-              }}
-            >
-              <IconView />
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="dash-actions__item"
-              aria-label="Düzəliş et"
-              title="Düzəliş et"
-              onClick={() => {
-                setOpen(false)
-                onEdit()
-              }}
-            >
-              <IconEdit />
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="dash-actions__item dash-actions__item--danger"
-              aria-label="Sil"
-              title="Sil"
-              onClick={() => {
-                setOpen(false)
-                onDelete()
-              }}
-            >
-              <IconDelete />
-            </button>
+            {onView && (
+              <button
+                type="button"
+                role="menuitem"
+                className="dash-actions__item"
+                aria-label="Bax"
+                title="Bax"
+                onClick={() => {
+                  setOpen(false)
+                  onView()
+                }}
+              >
+                <IconView />
+              </button>
+            )}
+            {onEdit && (
+              <button
+                type="button"
+                role="menuitem"
+                className="dash-actions__item"
+                aria-label="Düzəliş et"
+                title="Düzəliş et"
+                onClick={() => {
+                  setOpen(false)
+                  onEdit()
+                }}
+              >
+                <IconEdit />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                role="menuitem"
+                className="dash-actions__item dash-actions__item--danger"
+                aria-label="Sil"
+                title="Sil"
+                onClick={() => {
+                  setOpen(false)
+                  onDelete()
+                }}
+              >
+                <IconDelete />
+              </button>
+            )}
           </div>,
           document.body,
         )}

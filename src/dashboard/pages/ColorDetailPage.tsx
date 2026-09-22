@@ -6,6 +6,7 @@ import {
   type ColorDetail,
 } from '../../api/colors'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
 function nameOf(item: ColorDetail, code: string) {
@@ -17,6 +18,7 @@ function nameOf(item: ColorDetail, code: string) {
 export function ColorDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { can } = useAuth()
   const colorId = Number(id)
   const [item, setItem] = useState<ColorDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -87,19 +89,23 @@ export function ColorDetailPage() {
           </Link>
           {item && (
             <>
-              <Link
-                to={`/dashboard/colors/${item.id}/edit`}
-                className="dash-btn dash-btn--ghost"
-              >
-                Düzəliş et
-              </Link>
-              <button
-                type="button"
-                className="dash-btn dash-btn--danger"
-                onClick={() => setDeleteOpen(true)}
-              >
-                Sil
-              </button>
+              {can('Colors.Update') && (
+                <Link
+                  to={`/dashboard/colors/${item.id}/edit`}
+                  className="dash-btn dash-btn--ghost"
+                >
+                  Düzəliş et
+                </Link>
+              )}
+              {can('Colors.Delete') && (
+                <button
+                  type="button"
+                  className="dash-btn dash-btn--danger"
+                  onClick={() => setDeleteOpen(true)}
+                >
+                  Sil
+                </button>
+              )}
             </>
           )}
         </div>

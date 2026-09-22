@@ -6,6 +6,7 @@ import {
   type ProductListItem,
 } from '../../api/products'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
@@ -16,6 +17,11 @@ type SortDirection = 'asc' | 'desc'
 export function ProductListPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { can } = useAuth()
+  const canCreate = can('Products.Create')
+  const canView = can('Products.View')
+  const canUpdate = can('Products.Update')
+  const canDelete = can('Products.Delete')
   const [items, setItems] = useState<ProductListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -126,12 +132,14 @@ export function ProductListPage() {
         <div>
           <h1 className="dash-page__title">Məhsullar</h1>
         </div>
-        <Link
-          to="/dashboard/products/create"
-          className="dash-btn dash-btn--primary"
-        >
-          Yeni məhsul
-        </Link>
+        {canCreate && (
+          <Link
+            to="/dashboard/products/create"
+            className="dash-btn dash-btn--primary"
+          >
+            Yeni məhsul
+          </Link>
+        )}
       </header>
 
       {error && (
@@ -180,7 +188,7 @@ export function ProductListPage() {
                 ? 'Axtarışa uyğun məhsul tapılmadı.'
                 : 'Hələ məhsul yoxdur.'}
             </p>
-            {!search && (
+            {!search && canCreate && (
               <Link
                 to="/dashboard/products/create"
                 className="dash-btn dash-btn--ghost"
@@ -235,13 +243,20 @@ export function ProductListPage() {
                     <td>{item.powerAmperes}</td>
                     <td className="dash-table__actions-col">
                       <CategoryActionsMenu
-                        onView={() =>
-                          navigate(`/dashboard/products/${item.id}`)
+                        onView={
+                          canView
+                            ? () => navigate(`/dashboard/products/${item.id}`)
+                            : undefined
                         }
-                        onEdit={() =>
-                          navigate(`/dashboard/products/${item.id}/edit`)
+                        onEdit={
+                          canUpdate
+                            ? () =>
+                                navigate(`/dashboard/products/${item.id}/edit`)
+                            : undefined
                         }
-                        onDelete={() => setPendingDelete(item)}
+                        onDelete={
+                          canDelete ? () => setPendingDelete(item) : undefined
+                        }
                       />
                     </td>
                   </tr>

@@ -6,6 +6,7 @@ import {
   type BrandDetail,
 } from '../../api/brands'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
 function nameOf(item: BrandDetail, code: string) {
@@ -17,6 +18,7 @@ function nameOf(item: BrandDetail, code: string) {
 export function BrandDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { can } = useAuth()
   const brandId = Number(id)
   const [item, setItem] = useState<BrandDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -87,19 +89,23 @@ export function BrandDetailPage() {
           </Link>
           {item && (
             <>
-              <Link
-                to={`/dashboard/brands/${item.id}/edit`}
-                className="dash-btn dash-btn--ghost"
-              >
-                Düzəliş et
-              </Link>
-              <button
-                type="button"
-                className="dash-btn dash-btn--danger"
-                onClick={() => setDeleteOpen(true)}
-              >
-                Sil
-              </button>
+              {can('Brands.Update') && (
+                <Link
+                  to={`/dashboard/brands/${item.id}/edit`}
+                  className="dash-btn dash-btn--ghost"
+                >
+                  Düzəliş et
+                </Link>
+              )}
+              {can('Brands.Delete') && (
+                <button
+                  type="button"
+                  className="dash-btn dash-btn--danger"
+                  onClick={() => setDeleteOpen(true)}
+                >
+                  Sil
+                </button>
+              )}
             </>
           )}
         </div>

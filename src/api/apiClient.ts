@@ -1,4 +1,5 @@
 import { API_BASE_URL } from './config'
+import { clearAuth, getStoredToken } from '../auth/authStorage'
 import { ApiError, type ApiValidationError, type PaginationRequest } from './types'
 
 type QueryValue = string | number | boolean | null | undefined
@@ -9,6 +10,8 @@ export type ApiRequestOptions = Omit<RequestInit, 'body' | 'method'> & {
   body?: BodyInit | object | null
   /** When true, do not JSON-parse an empty/204 response. */
   emptyResponse?: boolean
+  /** Skip Authorization header (e.g. login). */
+  skipAuth?: boolean
 }
 
 async function parseError(response: Response): Promise<ApiError> {
@@ -72,18 +75,34 @@ function resolveBody(body: ApiRequestOptions['body'], headers: Headers): BodyIni
   return JSON.stringify(body)
 }
 
+function handleUnauthorized() {
+  clearAuth()
+  const path = window.location.pathname
+  if (!path.startsWith('/login')) {
+    const redirect = encodeURIComponent(path + window.location.search)
+    window.location.assign(`/login?from=${redirect}`)
+  }
+}
+
 async function request<T>(
   method: string,
   path: string,
   options: ApiRequestOptions = {},
 ): Promise<T> {
-  const { query, body, emptyResponse, headers: initHeaders, ...rest } = options
+  const { query, body, emptyResponse, skipAuth, headers: initHeaders, ...rest } =
+    options
   const headers = new Headers(initHeaders)
   const resolvedBody = resolveBody(body, headers)
 
-  // FormData must not have Content-Type set manually (browser sets boundary)
   if (resolvedBody instanceof FormData) {
     headers.delete('Content-Type')
+  }
+
+  if (!skipAuth) {
+    const token = getStoredToken()
+    if (token && !headers.has('Authorization')) {
+      headers.set('Authorization', `Bearer ${token}`)
+    }
   }
 
   const response = await fetch(buildUrl(path, query), {
@@ -92,6 +111,11 @@ async function request<T>(
     body: resolvedBody,
     ...rest,
   })
+
+  if (response.status === 401 && !skipAuth) {
+    handleUnauthorized()
+    throw await parseError(response)
+  }
 
   if (!response.ok) {
     throw await parseError(response)

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useAuth } from '../../auth/AuthContext'
 
 interface NavChild {
   to: string
   label: string
+  permission?: string
 }
 
 interface NavGroup {
@@ -13,7 +15,8 @@ interface NavGroup {
 }
 
 const topLinks: NavChild[] = [
-  { to: '/dashboard/products', label: 'Məhsullar' },
+  { to: '/dashboard/products', label: 'Məhsullar', permission: 'Products.List' },
+  { to: '/dashboard/users', label: 'İstifadəçilər', permission: 'Users.List' },
 ]
 
 const navGroups: NavGroup[] = [
@@ -21,13 +24,18 @@ const navGroups: NavGroup[] = [
     id: 'directories',
     label: 'Soraqçalar',
     children: [
-      { to: '/dashboard/categories', label: 'Kateqoriyalar' },
+      {
+        to: '/dashboard/categories',
+        label: 'Kateqoriyalar',
+        permission: 'Categories.List',
+      },
       {
         to: '/dashboard/manufacturer-countries',
         label: 'İstehsalçı ölkə',
+        permission: 'ManufacturerCountries.List',
       },
-      { to: '/dashboard/brands', label: 'Marka' },
-      { to: '/dashboard/colors', label: 'Rəng' },
+      { to: '/dashboard/brands', label: 'Marka', permission: 'Brands.List' },
+      { to: '/dashboard/colors', label: 'Rəng', permission: 'Colors.List' },
     ],
   },
 ]
@@ -41,6 +49,7 @@ function groupHasActiveChild(group: NavGroup, pathname: string) {
 
 export function DashboardSidebar() {
   const { pathname } = useLocation()
+  const { can } = useAuth()
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
     for (const group of navGroups) {
@@ -65,10 +74,14 @@ export function DashboardSidebar() {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
+  const visibleTopLinks = topLinks.filter(
+    (item) => !item.permission || can(item.permission),
+  )
+
   return (
     <nav className="dash-nav" aria-label="Dashboard menyu">
       <ul className="dash-nav__list dash-nav__list--top">
-        {topLinks.map((item) => (
+        {visibleTopLinks.map((item) => (
           <li key={item.to}>
             <NavLink
               to={item.to}
@@ -84,6 +97,11 @@ export function DashboardSidebar() {
       </ul>
 
       {navGroups.map((group) => {
+        const visibleChildren = group.children.filter(
+          (item) => !item.permission || can(item.permission),
+        )
+        if (visibleChildren.length === 0) return null
+
         const isOpen = Boolean(openGroups[group.id])
         const panelId = `dash-nav-panel-${group.id}`
 
@@ -106,7 +124,7 @@ export function DashboardSidebar() {
               hidden={!isOpen}
             >
               <ul className="dash-nav__list">
-                {group.children.map((item) => (
+                {visibleChildren.map((item) => (
                   <li key={item.to}>
                     <NavLink
                       to={item.to}

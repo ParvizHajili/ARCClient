@@ -6,11 +6,13 @@ import {
   type ProductDetail,
 } from '../../api/products'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
 export function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { can } = useAuth()
   const productId = Number(id)
   const [item, setItem] = useState<ProductDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -83,19 +85,23 @@ export function ProductDetailPage() {
           </Link>
           {item && (
             <>
-              <Link
-                to={`/dashboard/products/${item.id}/edit`}
-                className="dash-btn dash-btn--ghost"
-              >
-                Düzəliş et
-              </Link>
-              <button
-                type="button"
-                className="dash-btn dash-btn--danger"
-                onClick={() => setDeleteOpen(true)}
-              >
-                Sil
-              </button>
+              {can('Products.Update') && (
+                <Link
+                  to={`/dashboard/products/${item.id}/edit`}
+                  className="dash-btn dash-btn--ghost"
+                >
+                  Düzəliş et
+                </Link>
+              )}
+              {can('Products.Delete') && (
+                <button
+                  type="button"
+                  className="dash-btn dash-btn--danger"
+                  onClick={() => setDeleteOpen(true)}
+                >
+                  Sil
+                </button>
+              )}
             </>
           )}
         </div>

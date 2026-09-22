@@ -6,6 +6,7 @@ import {
   type ManufacturerCountryDetail,
 } from '../../api/manufacturerCountries'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
 function nameOf(item: ManufacturerCountryDetail, code: string) {
@@ -17,6 +18,7 @@ function nameOf(item: ManufacturerCountryDetail, code: string) {
 export function ManufacturerCountryDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { can } = useAuth()
   const countryId = Number(id)
   const [item, setItem] = useState<ManufacturerCountryDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -90,19 +92,23 @@ export function ManufacturerCountryDetailPage() {
           </Link>
           {item && (
             <>
-              <Link
-                to={`/dashboard/manufacturer-countries/${item.id}/edit`}
-                className="dash-btn dash-btn--ghost"
-              >
-                Düzəliş et
-              </Link>
-              <button
-                type="button"
-                className="dash-btn dash-btn--danger"
-                onClick={() => setDeleteOpen(true)}
-              >
-                Sil
-              </button>
+              {can('ManufacturerCountries.Update') && (
+                <Link
+                  to={`/dashboard/manufacturer-countries/${item.id}/edit`}
+                  className="dash-btn dash-btn--ghost"
+                >
+                  Düzəliş et
+                </Link>
+              )}
+              {can('ManufacturerCountries.Delete') && (
+                <button
+                  type="button"
+                  className="dash-btn dash-btn--danger"
+                  onClick={() => setDeleteOpen(true)}
+                >
+                  Sil
+                </button>
+              )}
             </>
           )}
         </div>

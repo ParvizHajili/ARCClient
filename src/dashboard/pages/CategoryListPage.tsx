@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { deleteCategory, getCategories } from '../../api/categories'
 import { ApiError, type CategoryDetail } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
@@ -20,6 +21,11 @@ function nameOf(category: CategoryDetail, code: string) {
 export function CategoryListPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { can } = useAuth()
+  const canCreate = can('Categories.Create')
+  const canView = can('Categories.View')
+  const canUpdate = can('Categories.Update')
+  const canDelete = can('Categories.Delete')
   const [items, setItems] = useState<CategoryDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -132,9 +138,11 @@ export function CategoryListPage() {
         <div>
           <h1 className="dash-page__title">Kateqoriyalar</h1>
         </div>
-        <Link to="/dashboard/categories/create" className="dash-btn dash-btn--primary">
-          Yeni kateqoriya
-        </Link>
+        {canCreate && (
+          <Link to="/dashboard/categories/create" className="dash-btn dash-btn--primary">
+            Yeni kateqoriya
+          </Link>
+        )}
       </header>
 
       {error && (
@@ -183,7 +191,7 @@ export function CategoryListPage() {
                 ? 'Axtarışa uyğun kateqoriya tapılmadı.'
                 : 'Hələ kateqoriya yoxdur.'}
             </p>
-            {!search && (
+            {!search && canCreate && (
               <Link
                 to="/dashboard/categories/create"
                 className="dash-btn dash-btn--ghost"
@@ -269,15 +277,25 @@ export function CategoryListPage() {
                     <td>{category.subCategories.length}</td>
                     <td className="dash-table__actions-col">
                       <CategoryActionsMenu
-                        onView={() =>
-                          navigate(`/dashboard/categories/${category.id}`)
+                        onView={
+                          canView
+                            ? () =>
+                                navigate(`/dashboard/categories/${category.id}`)
+                            : undefined
                         }
-                        onEdit={() =>
-                          navigate(
-                            `/dashboard/categories/${category.id}/edit`,
-                          )
+                        onEdit={
+                          canUpdate
+                            ? () =>
+                                navigate(
+                                  `/dashboard/categories/${category.id}/edit`,
+                                )
+                            : undefined
                         }
-                        onDelete={() => setPendingDelete(category)}
+                        onDelete={
+                          canDelete
+                            ? () => setPendingDelete(category)
+                            : undefined
+                        }
                       />
                     </td>
                   </tr>

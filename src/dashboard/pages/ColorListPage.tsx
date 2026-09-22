@@ -6,6 +6,7 @@ import {
   type ColorDetail,
 } from '../../api/colors'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
@@ -24,6 +25,11 @@ function nameOf(item: ColorDetail, code: string) {
 export function ColorListPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { can } = useAuth()
+  const canCreate = can('Colors.Create')
+  const canView = can('Colors.View')
+  const canUpdate = can('Colors.Update')
+  const canDelete = can('Colors.Delete')
   const [items, setItems] = useState<ColorDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -133,12 +139,14 @@ export function ColorListPage() {
         <div>
           <h1 className="dash-page__title">Rəng</h1>
         </div>
-        <Link
-          to="/dashboard/colors/create"
-          className="dash-btn dash-btn--primary"
-        >
-          Yeni rəng
-        </Link>
+        {canCreate && (
+          <Link
+            to="/dashboard/colors/create"
+            className="dash-btn dash-btn--primary"
+          >
+            Yeni rəng
+          </Link>
+        )}
       </header>
 
       {error && (
@@ -187,7 +195,7 @@ export function ColorListPage() {
                 ? 'Axtarışa uyğun rəng tapılmadı.'
                 : 'Hələ rəng yoxdur.'}
             </p>
-            {!search && (
+            {!search && canCreate && (
               <Link
                 to="/dashboard/colors/create"
                 className="dash-btn dash-btn--ghost"
@@ -270,13 +278,20 @@ export function ColorListPage() {
                     <td>{nameOf(item, 'ru')}</td>
                     <td className="dash-table__actions-col">
                       <CategoryActionsMenu
-                        onView={() =>
-                          navigate(`/dashboard/colors/${item.id}`)
+                        onView={
+                          canView
+                            ? () => navigate(`/dashboard/colors/${item.id}`)
+                            : undefined
                         }
-                        onEdit={() =>
-                          navigate(`/dashboard/colors/${item.id}/edit`)
+                        onEdit={
+                          canUpdate
+                            ? () =>
+                                navigate(`/dashboard/colors/${item.id}/edit`)
+                            : undefined
                         }
-                        onDelete={() => setPendingDelete(item)}
+                        onDelete={
+                          canDelete ? () => setPendingDelete(item) : undefined
+                        }
                       />
                     </td>
                   </tr>

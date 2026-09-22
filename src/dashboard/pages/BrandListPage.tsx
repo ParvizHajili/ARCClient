@@ -6,6 +6,7 @@ import {
   type BrandDetail,
 } from '../../api/brands'
 import { ApiError } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
@@ -24,6 +25,11 @@ function nameOf(item: BrandDetail, code: string) {
 export function BrandListPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { can } = useAuth()
+  const canCreate = can('Brands.Create')
+  const canView = can('Brands.View')
+  const canUpdate = can('Brands.Update')
+  const canDelete = can('Brands.Delete')
   const [items, setItems] = useState<BrandDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -133,12 +139,14 @@ export function BrandListPage() {
         <div>
           <h1 className="dash-page__title">Marka</h1>
         </div>
-        <Link
-          to="/dashboard/brands/create"
-          className="dash-btn dash-btn--primary"
-        >
-          Yeni marka
-        </Link>
+        {canCreate && (
+          <Link
+            to="/dashboard/brands/create"
+            className="dash-btn dash-btn--primary"
+          >
+            Yeni marka
+          </Link>
+        )}
       </header>
 
       {error && (
@@ -187,7 +195,7 @@ export function BrandListPage() {
                 ? 'Axtarışa uyğun marka tapılmadı.'
                 : 'Hələ marka yoxdur.'}
             </p>
-            {!search && (
+            {!search && canCreate && (
               <Link
                 to="/dashboard/brands/create"
                 className="dash-btn dash-btn--ghost"
@@ -250,13 +258,20 @@ export function BrandListPage() {
                     <td>{nameOf(item, 'ru')}</td>
                     <td className="dash-table__actions-col">
                       <CategoryActionsMenu
-                        onView={() =>
-                          navigate(`/dashboard/brands/${item.id}`)
+                        onView={
+                          canView
+                            ? () => navigate(`/dashboard/brands/${item.id}`)
+                            : undefined
                         }
-                        onEdit={() =>
-                          navigate(`/dashboard/brands/${item.id}/edit`)
+                        onEdit={
+                          canUpdate
+                            ? () =>
+                                navigate(`/dashboard/brands/${item.id}/edit`)
+                            : undefined
                         }
-                        onDelete={() => setPendingDelete(item)}
+                        onDelete={
+                          canDelete ? () => setPendingDelete(item) : undefined
+                        }
                       />
                     </td>
                   </tr>

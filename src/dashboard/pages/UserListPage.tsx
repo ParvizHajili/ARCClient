@@ -1,51 +1,39 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import {
-  deleteManufacturerCountry,
-  getManufacturerCountries,
-  type ManufacturerCountryDetail,
-} from '../../api/manufacturerCountries'
 import { ApiError } from '../../api/types'
+import { deleteUser, getUsers, type UserListItem } from '../../api/users'
 import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
 
-type SortBy = 'az' | 'en' | 'ru' | 'id'
+type SortBy = 'firstName' | 'lastName' | 'userName' | 'email' | 'active' | 'created'
 type SortDirection = 'asc' | 'desc'
 
-function nameOf(item: ManufacturerCountryDetail, code: string) {
-  return (
-    item.translations.find((t) => t.languageCode === code)?.name ??
-    item.translations[0]?.name ??
-    '—'
-  )
-}
-
-export function ManufacturerCountryListPage() {
+export function UserListPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { can } = useAuth()
-  const canCreate = can('ManufacturerCountries.Create')
-  const canView = can('ManufacturerCountries.View')
-  const canUpdate = can('ManufacturerCountries.Update')
-  const canDelete = can('ManufacturerCountries.Delete')
-  const [items, setItems] = useState<ManufacturerCountryDetail[]>([])
+  const { can, user: currentUser } = useAuth()
+  const [items, setItems] = useState<UserListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [pendingDelete, setPendingDelete] =
-    useState<ManufacturerCountryDetail | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<UserListItem | null>(null)
   const [deleting, setDeleting] = useState(false)
 
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [sortBy, setSortBy] = useState<SortBy>('az')
+  const [sortBy, setSortBy] = useState<SortBy>('firstName')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
+
+  const canCreate = can('Users.Create')
+  const canView = can('Users.View')
+  const canUpdate = can('Users.Update')
+  const canDelete = can('Users.Delete')
 
   useEffect(() => {
     const state = location.state as { success?: string } | null
@@ -67,7 +55,7 @@ export function ManufacturerCountryListPage() {
     setLoading(true)
     setError(null)
     try {
-      const result = await getManufacturerCountries({
+      const result = await getUsers({
         page,
         pageSize,
         search: search || undefined,
@@ -84,7 +72,7 @@ export function ManufacturerCountryListPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : 'Ölkələr yüklənərkən xəta baş verdi.',
+          : 'İstifadəçilər yüklənərkən xəta baş verdi.',
       )
     } finally {
       setLoading(false)
@@ -115,14 +103,14 @@ export function ManufacturerCountryListPage() {
     setDeleting(true)
     setError(null)
     try {
-      await deleteManufacturerCountry(pendingDelete.id)
+      await deleteUser(pendingDelete.id)
       setPendingDelete(null)
       await load()
     } catch (err) {
       setError(
         err instanceof ApiError
           ? err.message
-          : 'Ölkə silinərkən xəta baş verdi.',
+          : 'İstifadəçi silinərkən xəta baş verdi.',
       )
       setPendingDelete(null)
     } finally {
@@ -130,7 +118,6 @@ export function ManufacturerCountryListPage() {
     }
   }
 
-  const deleteTitle = pendingDelete ? nameOf(pendingDelete, 'az') : ''
   const from = totalCount === 0 ? 0 : (page - 1) * pageSize + 1
   const to = Math.min(page * pageSize, totalCount)
 
@@ -138,14 +125,14 @@ export function ManufacturerCountryListPage() {
     <div className="dash-page dash-page--wide">
       <header className="dash-page__header dash-page__header--row">
         <div>
-          <h1 className="dash-page__title">İstehsalçı ölkə</h1>
+          <h1 className="dash-page__title">İstifadəçilər</h1>
         </div>
         {canCreate && (
           <Link
-            to="/dashboard/manufacturer-countries/create"
+            to="/dashboard/users/create"
             className="dash-btn dash-btn--primary"
           >
-            Yeni ölkə
+            Yeni istifadəçi
           </Link>
         )}
       </header>
@@ -162,7 +149,7 @@ export function ManufacturerCountryListPage() {
           <input
             className="dash-input"
             type="search"
-            placeholder="Axtarış (ad…)"
+            placeholder="Axtarış (ad, email…)"
             value={searchInput}
             onChange={(ev) => setSearchInput(ev.target.value)}
           />
@@ -193,17 +180,9 @@ export function ManufacturerCountryListPage() {
           <div className="dash-empty dash-empty--stack">
             <p>
               {search
-                ? 'Axtarışa uyğun ölkə tapılmadı.'
-                : 'Hələ ölkə yoxdur.'}
+                ? 'Axtarışa uyğun istifadəçi tapılmadı.'
+                : 'Hələ istifadəçi yoxdur.'}
             </p>
-            {!search && canCreate && (
-              <Link
-                to="/dashboard/manufacturer-countries/create"
-                className="dash-btn dash-btn--ghost"
-              >
-                İlk ölkəni yarat
-              </Link>
-            )}
           </div>
         ) : (
           <div className="dash-table-wrap">
@@ -214,74 +193,109 @@ export function ManufacturerCountryListPage() {
                     <button
                       type="button"
                       className="dash-table__sort"
-                      onClick={() => toggleSort('az')}
+                      onClick={() => toggleSort('firstName')}
                     >
-                      AZ{sortLabel('az')}
+                      Ad{sortLabel('firstName')}
                     </button>
                   </th>
                   <th>
                     <button
                       type="button"
                       className="dash-table__sort"
-                      onClick={() => toggleSort('en')}
+                      onClick={() => toggleSort('lastName')}
                     >
-                      EN{sortLabel('en')}
+                      Soyad{sortLabel('lastName')}
                     </button>
                   </th>
                   <th>
                     <button
                       type="button"
                       className="dash-table__sort"
-                      onClick={() => toggleSort('ru')}
+                      onClick={() => toggleSort('userName')}
                     >
-                      RU{sortLabel('ru')}
+                      İstifadəçi{sortLabel('userName')}
                     </button>
                   </th>
+                  <th>
+                    <button
+                      type="button"
+                      className="dash-table__sort"
+                      onClick={() => toggleSort('email')}
+                    >
+                      E-poçt{sortLabel('email')}
+                    </button>
+                  </th>
+                  <th>Rollar</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="dash-table__sort"
+                      onClick={() => toggleSort('active')}
+                    >
+                      Status{sortLabel('active')}
+                    </button>
+                  </th>
+                  <th>İcazə</th>
                   <th className="dash-table__actions-col">Əməliyyatlar</th>
                 </tr>
               </thead>
               <tbody>
-                {items.map((item) => (
-                  <tr
-                    key={item.id}
-                    className={
-                      deleting && pendingDelete?.id === item.id
-                        ? 'is-deleting'
-                        : undefined
-                    }
-                  >
-                    <td>
-                      <span className="dash-table__name">
-                        {nameOf(item, 'az')}
-                      </span>
-                    </td>
-                    <td>{nameOf(item, 'en')}</td>
-                    <td>{nameOf(item, 'ru')}</td>
-                    <td className="dash-table__actions-col">
-                      <CategoryActionsMenu
-                        onView={
-                          canView
-                            ? () =>
-                                navigate(
-                                  `/dashboard/manufacturer-countries/${item.id}`,
-                                )
-                            : undefined
-                        }
-                        onEdit={
-                          canUpdate
-                            ? () =>
-                                navigate(
-                                  `/dashboard/manufacturer-countries/${item.id}/edit`,
-                                )
-                            : undefined
-                        }
-                        onDelete={
-                          canDelete ? () => setPendingDelete(item) : undefined
-                        }
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {items.map((item) => {
+                  const isSelf = currentUser?.id === item.id
+                  const isSuper = item.roles.some(
+                    (r) => r.toUpperCase() === 'SUPERADMIN',
+                  )
+                  return (
+                    <tr
+                      key={item.id}
+                      className={
+                        deleting && pendingDelete?.id === item.id
+                          ? 'is-deleting'
+                          : undefined
+                      }
+                    >
+                      <td>
+                        <span className="dash-table__name">{item.firstName}</span>
+                      </td>
+                      <td>{item.lastName}</td>
+                      <td>{item.userName}</td>
+                      <td>{item.email}</td>
+                      <td>
+                        {item.roles.length > 0
+                          ? item.roles.join(', ')
+                          : '—'}
+                      </td>
+                      <td>
+                        <span
+                          className={`dash-badge${item.isActive ? ' dash-badge--success' : ' dash-badge--muted'}`}
+                        >
+                          {item.isActive ? 'Aktiv' : 'Deaktiv'}
+                        </span>
+                      </td>
+                      <td>{item.permissionCount}</td>
+                      <td className="dash-table__actions-col">
+                        <CategoryActionsMenu
+                          onView={
+                            canView
+                              ? () => navigate(`/dashboard/users/${item.id}`)
+                              : undefined
+                          }
+                          onEdit={
+                            canUpdate
+                              ? () =>
+                                  navigate(`/dashboard/users/${item.id}/edit`)
+                              : undefined
+                          }
+                          onDelete={
+                            canDelete && !isSelf && !isSuper
+                              ? () => setPendingDelete(item)
+                              : undefined
+                          }
+                        />
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
@@ -321,7 +335,9 @@ export function ManufacturerCountryListPage() {
         open={pendingDelete !== null}
         title="Silmək istədiyinizə əminsiniz?"
         message={
-          pendingDelete ? `“${deleteTitle}” ölkəsi silinəcək.` : ''
+          pendingDelete
+            ? `“${pendingDelete.displayName}” istifadəçisi silinəcək.`
+            : ''
         }
         confirmLabel="Sil"
         cancelLabel="Ləğv et"
@@ -332,10 +348,7 @@ export function ManufacturerCountryListPage() {
         }}
       />
 
-      <SuccessToast
-        message={success}
-        onDismiss={() => setSuccess(null)}
-      />
+      <SuccessToast message={success} onDismiss={() => setSuccess(null)} />
     </div>
   )
 }

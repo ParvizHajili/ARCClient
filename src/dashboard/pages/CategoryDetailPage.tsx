@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { deleteCategory, getCategoryById } from '../../api/categories'
 import { ApiError, type CategoryDetail } from '../../api/types'
+import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
 function nameOf(category: CategoryDetail, code: string) {
@@ -13,6 +14,7 @@ function nameOf(category: CategoryDetail, code: string) {
 export function CategoryDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { can } = useAuth()
   const categoryId = Number(id)
 
   const [category, setCategory] = useState<CategoryDetail | null>(null)
@@ -89,19 +91,23 @@ export function CategoryDetailPage() {
           </Link>
           {category && (
             <>
-              <Link
-                to={`/dashboard/categories/${category.id}/edit`}
-                className="dash-btn dash-btn--ghost"
-              >
-                Düzəliş et
-              </Link>
-              <button
-                type="button"
-                className="dash-btn dash-btn--danger"
-                onClick={() => setDeleteOpen(true)}
-              >
-                Sil
-              </button>
+              {can('Categories.Update') && (
+                <Link
+                  to={`/dashboard/categories/${category.id}/edit`}
+                  className="dash-btn dash-btn--ghost"
+                >
+                  Düzəliş et
+                </Link>
+              )}
+              {can('Categories.Delete') && (
+                <button
+                  type="button"
+                  className="dash-btn dash-btn--danger"
+                  onClick={() => setDeleteOpen(true)}
+                >
+                  Sil
+                </button>
+              )}
             </>
           )}
         </div>
