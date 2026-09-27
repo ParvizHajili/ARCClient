@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getBrands, type BrandDetail } from '../../api/brands'
+import { getSizes, type SizeDetail } from '../../api/sizes'
+import { getDiameters, type DiameterDetail } from '../../api/diameters'
+import { getPowers, type PowerDetail } from '../../api/powers'
 import { getCategories } from '../../api/categories'
 import { getColors, type ColorDetail } from '../../api/colors'
 import { getManufacturerCountries } from '../../api/manufacturerCountries'
@@ -58,18 +61,21 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
 
   const [categories, setCategories] = useState<CategoryDetail[]>([])
   const [brands, setBrands] = useState<BrandDetail[]>([])
+  const [sizes, setSizes] = useState<SizeDetail[]>([])
+  const [diameters, setDiameters] = useState<DiameterDetail[]>([])
+  const [powers, setPowers] = useState<PowerDetail[]>([])
   const [countries, setCountries] = useState<ManufacturerCountryDetail[]>([])
   const [colors, setColors] = useState<ColorDetail[]>([])
 
   const [code, setCode] = useState('')
-  const [size, setSize] = useState('')
-  const [diameter, setDiameter] = useState('')
-  const [powerAmperes, setPowerAmperes] = useState('')
   const [hasWarranty, setHasWarranty] = useState(false)
   const [isMadeToOrder, setIsMadeToOrder] = useState(false)
   const [categoryId, setCategoryId] = useState<number | ''>('')
   const [subCategoryId, setSubCategoryId] = useState<number | ''>('')
   const [brandIds, setBrandIds] = useState<number[]>([])
+  const [sizeIds, setSizeIds] = useState<number[]>([])
+  const [diameterIds, setDiameterIds] = useState<number[]>([])
+  const [powerIds, setPowerIds] = useState<number[]>([])
   const [countryIds, setCountryIds] = useState<number[]>([])
   const [colorIds, setColorIds] = useState<number[]>([])
   const [langs, setLangs] = useState<LangFields>(emptyLangs)
@@ -79,6 +85,10 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
   const [existingByColor, setExistingByColor] = useState<
     Record<number, ExistingImage[]>
   >({})
+  const [existingProductImages, setExistingProductImages] = useState<
+    ExistingImage[]
+  >([])
+  const [newProductFiles, setNewProductFiles] = useState<File[]>([])
 
   const selectedCategory = useMemo(
     () => categories.find((c) => c.id === categoryId),
@@ -91,15 +101,22 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
       setBootLoading(true)
       setError(null)
       try {
-        const [catRes, brandRes, countryRes, colorRes] = await Promise.all([
+        const [catRes, brandRes, sizeRes, diameterRes, powerRes, countryRes, colorRes] =
+          await Promise.all([
           getCategories({ page: 1, pageSize: 100, sortBy: 'az' }),
           getBrands({ page: 1, pageSize: 100, sortBy: 'az' }),
+          getSizes({ page: 1, pageSize: 100, sortBy: 'value' }),
+          getDiameters({ page: 1, pageSize: 100, sortBy: 'value' }),
+          getPowers({ page: 1, pageSize: 100, sortBy: 'value' }),
           getManufacturerCountries({ page: 1, pageSize: 100, sortBy: 'az' }),
           getColors({ page: 1, pageSize: 100, sortBy: 'az' }),
         ])
         if (!active) return
         setCategories(catRes.items)
         setBrands(brandRes.items)
+        setSizes(sizeRes.items)
+        setDiameters(diameterRes.items)
+        setPowers(powerRes.items)
         setCountries(countryRes.items)
         setColors(colorRes.items)
 
@@ -127,14 +144,14 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
 
   function applyProduct(product: ProductDetail) {
     setCode(product.code)
-    setSize(product.size)
-    setDiameter(product.diameter)
-    setPowerAmperes(String(product.powerAmperes))
     setHasWarranty(product.hasWarranty)
     setIsMadeToOrder(product.isMadeToOrder)
     setCategoryId(product.categoryId)
     setSubCategoryId(product.subCategoryId ?? '')
     setBrandIds(product.brands.map((b) => b.id))
+    setSizeIds(product.sizes.map((s) => s.id))
+    setDiameterIds(product.diameters.map((d) => d.id))
+    setPowerIds(product.powers.map((p) => p.id))
     setCountryIds(product.manufacturerCountries.map((c) => c.id))
     setColorIds(product.colors.map((c) => c.colorId))
 
@@ -156,6 +173,13 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
     }
     setExistingByColor(existing)
     setNewFilesByColor({})
+    setExistingProductImages(
+      product.images.map((img) => ({
+        id: img.id,
+        imageUrl: img.imageUrl,
+      })),
+    )
+    setNewProductFiles([])
   }
 
   function toggleId(
@@ -224,6 +248,18 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
       setError('Ən azı bir marka seçilməlidir.')
       return
     }
+    if (sizeIds.length === 0) {
+      setError('Ən azı bir ölçü seçilməlidir.')
+      return
+    }
+    if (diameterIds.length === 0) {
+      setError('Ən azı bir diametr seçilməlidir.')
+      return
+    }
+    if (powerIds.length === 0) {
+      setError('Ən azı bir güc seçilməlidir.')
+      return
+    }
     if (countryIds.length === 0) {
       setError('Ən azı bir istehsalçı ölkə seçilməlidir.')
       return
@@ -232,10 +268,8 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
       setError('Ən azı bir rəng seçilməlidir.')
       return
     }
-
-    const power = Number(powerAmperes.replace(',', '.'))
-    if (!Number.isFinite(power) || power <= 0) {
-      setError('Güc (amper) müsbət rəqəm olmalıdır.')
+    if (existingProductImages.length + newProductFiles.length < 1) {
+      setError('Ən azı bir məhsul şəkli lazımdır.')
       return
     }
 
@@ -271,20 +305,22 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
     try {
       const payload = {
         code: code.trim(),
-        size: size.trim(),
-        diameter: diameter.trim(),
         hasWarranty,
         isMadeToOrder,
-        powerAmperes: power,
         categoryId: Number(categoryId),
         subCategoryId: subCategoryId === '' ? null : Number(subCategoryId),
         translations,
         brandIds,
+        sizeIds,
+        diameterIds,
+        powerIds,
         manufacturerCountryIds: countryIds,
         colorIds,
         images,
         imageColorIds,
         keepImageIds,
+        productImages: newProductFiles,
+        keepProductImageIds: existingProductImages.map((img) => img.id),
       }
 
       if (mode === 'create') {
@@ -409,7 +445,7 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
           <div className="dash-panel__head">
             <h2 className="dash-panel__title">Əsas məlumat</h2>
           </div>
-          <div className="dash-form__grid dash-form__grid--4">
+          <div className="dash-form__grid">
             <div className="dash-field">
               <label className="dash-field__label" htmlFor="product-code">
                 Kod *
@@ -421,47 +457,6 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
                 onChange={(ev) => setCode(ev.target.value)}
                 required
                 maxLength={100}
-              />
-            </div>
-            <div className="dash-field">
-              <label className="dash-field__label" htmlFor="product-size">
-                Ölçü *
-              </label>
-              <input
-                id="product-size"
-                className="dash-input"
-                value={size}
-                onChange={(ev) => setSize(ev.target.value)}
-                required
-                maxLength={200}
-              />
-            </div>
-            <div className="dash-field">
-              <label className="dash-field__label" htmlFor="product-diameter">
-                Diametr *
-              </label>
-              <input
-                id="product-diameter"
-                className="dash-input"
-                value={diameter}
-                onChange={(ev) => setDiameter(ev.target.value)}
-                required
-                maxLength={200}
-              />
-            </div>
-            <div className="dash-field">
-              <label className="dash-field__label" htmlFor="product-power">
-                Güc (amper) *
-              </label>
-              <input
-                id="product-power"
-                className="dash-input"
-                type="number"
-                min="0.001"
-                step="any"
-                value={powerAmperes}
-                onChange={(ev) => setPowerAmperes(ev.target.value)}
-                required
               />
             </div>
           </div>
@@ -506,6 +501,60 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
 
         <section className="dash-panel">
           <div className="dash-panel__head">
+            <h2 className="dash-panel__title">Ölçülər *</h2>
+          </div>
+          <div className="dash-check-grid">
+            {sizes.map((s) => (
+              <label key={s.id} className="dash-check">
+                <input
+                  type="checkbox"
+                  checked={sizeIds.includes(s.id)}
+                  onChange={() => toggleId(sizeIds, s.id, setSizeIds)}
+                />
+                <span>{s.value}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="dash-panel">
+          <div className="dash-panel__head">
+            <h2 className="dash-panel__title">Diametrlər *</h2>
+          </div>
+          <div className="dash-check-grid">
+            {diameters.map((d) => (
+              <label key={d.id} className="dash-check">
+                <input
+                  type="checkbox"
+                  checked={diameterIds.includes(d.id)}
+                  onChange={() => toggleId(diameterIds, d.id, setDiameterIds)}
+                />
+                <span>{d.value}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="dash-panel">
+          <div className="dash-panel__head">
+            <h2 className="dash-panel__title">Güc (amper) *</h2>
+          </div>
+          <div className="dash-check-grid">
+            {powers.map((p) => (
+              <label key={p.id} className="dash-check">
+                <input
+                  type="checkbox"
+                  checked={powerIds.includes(p.id)}
+                  onChange={() => toggleId(powerIds, p.id, setPowerIds)}
+                />
+                <span>{p.value}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="dash-panel">
+          <div className="dash-panel__head">
             <h2 className="dash-panel__title">İstehsalçı ölkələr *</h2>
             <p className="dash-panel__hint">Yalnız Azərbaycan adları göstərilir.</p>
           </div>
@@ -520,6 +569,67 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
                 <span>{azName(c.translations)}</span>
               </label>
             ))}
+          </div>
+        </section>
+
+        <section className="dash-panel">
+          <div className="dash-panel__head">
+            <h2 className="dash-panel__title">Şəkillər *</h2>
+            <p className="dash-panel__hint">
+              Rəngdən asılı olmayan şəkillər. Bir neçə şəkil yükləyə bilərsiniz.
+            </p>
+          </div>
+          <div className="dash-color-option__images">
+            <div className="dash-image-thumbs">
+              {existingProductImages.map((img) => (
+                <div key={img.id} className="dash-image-thumb">
+                  <img src={img.imageUrl} alt="" />
+                  <button
+                    type="button"
+                    className="dash-image-thumb__remove"
+                    onClick={() =>
+                      setExistingProductImages((prev) =>
+                        prev.filter((item) => item.id !== img.id),
+                      )
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              {newProductFiles.map((file, index) => (
+                <div key={`${file.name}-${index}`} className="dash-image-thumb">
+                  <img src={URL.createObjectURL(file)} alt="" />
+                  <button
+                    type="button"
+                    className="dash-image-thumb__remove"
+                    onClick={() =>
+                      setNewProductFiles((prev) =>
+                        prev.filter((_, i) => i !== index),
+                      )
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+            <label className="dash-btn dash-btn--ghost dash-file-btn">
+              Şəkil əlavə et
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                onChange={(ev) => {
+                  const files = Array.from(ev.target.files ?? [])
+                  if (files.length > 0) {
+                    setNewProductFiles((prev) => [...prev, ...files])
+                  }
+                  ev.target.value = ''
+                }}
+              />
+            </label>
           </div>
         </section>
 

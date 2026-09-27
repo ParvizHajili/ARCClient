@@ -40,6 +40,7 @@ export interface PaginationRequest {
   page?: number
   pageSize?: number
   search?: string
+  searchNameOnly?: boolean
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }

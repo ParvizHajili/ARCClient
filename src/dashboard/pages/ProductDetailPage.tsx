@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   deleteProduct,
@@ -19,6 +20,7 @@ export function ProductDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   useEffect(() => {
     if (!Number.isInteger(productId) || productId < 1) {
@@ -50,6 +52,23 @@ export function ProductDetailPage() {
       active = false
     }
   }, [productId])
+
+  useEffect(() => {
+    if (!previewUrl) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setPreviewUrl(null)
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [previewUrl])
 
   async function confirmDelete() {
     if (!item) return
@@ -130,18 +149,6 @@ export function ProductDetailPage() {
                 </dd>
               </div>
               <div>
-                <dt>Ölçü</dt>
-                <dd>{item.size}</dd>
-              </div>
-              <div>
-                <dt>Diametr</dt>
-                <dd>{item.diameter}</dd>
-              </div>
-              <div>
-                <dt>Güc</dt>
-                <dd>{item.powerAmperes} A</dd>
-              </div>
-              <div>
                 <dt>Qarantiya</dt>
                 <dd>{item.hasWarranty ? 'Bəli' : 'Xeyr'}</dd>
               </div>
@@ -161,11 +168,54 @@ export function ProductDetailPage() {
 
           <section className="dash-panel">
             <div className="dash-panel__head">
+              <h2 className="dash-panel__title">Ölçülər</h2>
+            </div>
+            <p>{item.sizes.map((s) => s.name).join(', ') || '—'}</p>
+          </section>
+
+          <section className="dash-panel">
+            <div className="dash-panel__head">
+              <h2 className="dash-panel__title">Diametrlər</h2>
+            </div>
+            <p>{item.diameters.map((d) => d.name).join(', ') || '—'}</p>
+          </section>
+
+          <section className="dash-panel">
+            <div className="dash-panel__head">
+              <h2 className="dash-panel__title">Güc (amper)</h2>
+            </div>
+            <p>{item.powers.map((p) => p.name).join(', ') || '—'}</p>
+          </section>
+
+          <section className="dash-panel">
+            <div className="dash-panel__head">
               <h2 className="dash-panel__title">İstehsalçı ölkələr</h2>
             </div>
             <p>
               {item.manufacturerCountries.map((c) => c.name).join(', ') || '—'}
             </p>
+          </section>
+
+          <section className="dash-panel">
+            <div className="dash-panel__head">
+              <h2 className="dash-panel__title">Şəkillər</h2>
+            </div>
+            {item.images.length === 0 ? (
+              <p>—</p>
+            ) : (
+              <div className="dash-image-thumbs">
+                {item.images.map((img) => (
+                  <button
+                    key={img.id}
+                    type="button"
+                    className="dash-image-thumb dash-image-thumb--zoom"
+                    onClick={() => setPreviewUrl(img.imageUrl)}
+                  >
+                    <img src={img.imageUrl} alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
 
           <section className="dash-panel">
@@ -185,9 +235,14 @@ export function ProductDetailPage() {
                   </div>
                   <div className="dash-image-thumbs">
                     {color.images.map((img) => (
-                      <div key={img.id} className="dash-image-thumb">
+                      <button
+                        key={img.id}
+                        type="button"
+                        className="dash-image-thumb dash-image-thumb--zoom"
+                        onClick={() => setPreviewUrl(img.imageUrl)}
+                      >
                         <img src={img.imageUrl} alt="" />
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -211,6 +266,32 @@ export function ProductDetailPage() {
           </section>
         </div>
       ) : null}
+
+      {previewUrl &&
+        createPortal(
+          <div className="dash-image-preview" role="presentation">
+            <button
+              type="button"
+              className="dash-image-preview__backdrop"
+              aria-label="Bağla"
+              onClick={() => setPreviewUrl(null)}
+            />
+            <button
+              type="button"
+              className="dash-image-preview__close"
+              aria-label="Bağla"
+              onClick={() => setPreviewUrl(null)}
+            >
+              ×
+            </button>
+            <img
+              className="dash-image-preview__image"
+              src={previewUrl}
+              alt=""
+            />
+          </div>,
+          document.body,
+        )}
 
       <ConfirmModal
         open={deleteOpen}

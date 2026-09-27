@@ -6,6 +6,7 @@ interface NavChild {
   to: string
   label: string
   permission?: string
+  end?: boolean
 }
 
 interface NavGroup {
@@ -15,11 +16,29 @@ interface NavGroup {
 }
 
 const topLinks: NavChild[] = [
-  { to: '/dashboard/products', label: 'Məhsullar', permission: 'Products.List' },
+  { to: '/dashboard', label: 'Dashboard', end: true },
   { to: '/dashboard/users', label: 'İstifadəçilər', permission: 'Users.List' },
 ]
 
 const navGroups: NavGroup[] = [
+  {
+    id: 'products',
+    label: 'Məhsullar',
+    children: [
+      {
+        to: '/dashboard/products',
+        label: 'Siyahı',
+        permission: 'Products.List',
+        end: true,
+      },
+      {
+        to: '/dashboard/products/spin',
+        label: '360 şəkil',
+        permission: 'Products.View',
+        end: true,
+      },
+    ],
+  },
   {
     id: 'directories',
     label: 'Soraqçalar',
@@ -35,6 +54,9 @@ const navGroups: NavGroup[] = [
         permission: 'ManufacturerCountries.List',
       },
       { to: '/dashboard/brands', label: 'Marka', permission: 'Brands.List' },
+      { to: '/dashboard/sizes', label: 'Ölçü', permission: 'Sizes.List' },
+      { to: '/dashboard/diameters', label: 'Diametr', permission: 'Diameters.List' },
+      { to: '/dashboard/powers', label: 'Güc (amper)', permission: 'Powers.List' },
       { to: '/dashboard/colors', label: 'Rəng', permission: 'Colors.List' },
     ],
   },
@@ -85,7 +107,7 @@ export function DashboardSidebar() {
           <li key={item.to}>
             <NavLink
               to={item.to}
-              end={false}
+              end={item.end ?? false}
               className={({ isActive }) =>
                 `dash-nav__link${isActive ? ' is-active' : ''}`
               }
@@ -128,7 +150,7 @@ export function DashboardSidebar() {
                   <li key={item.to}>
                     <NavLink
                       to={item.to}
-                      end={false}
+                      end={item.end ?? false}
                       className={({ isActive }) =>
                         `dash-nav__link${isActive ? ' is-active' : ''}`
                       }

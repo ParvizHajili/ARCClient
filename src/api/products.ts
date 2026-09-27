@@ -28,18 +28,19 @@ export interface ProductColorDetail {
 export interface ProductDetail {
   id: number
   code: string
-  size: string
-  diameter: string
   hasWarranty: boolean
   isMadeToOrder: boolean
-  powerAmperes: number
   categoryId: number
   categoryName: string
   subCategoryId: number | null
   subCategoryName: string | null
   translations: ProductTranslation[]
   brands: ProductNamedRef[]
+  sizes: ProductNamedRef[]
+  diameters: ProductNamedRef[]
+  powers: ProductNamedRef[]
   manufacturerCountries: ProductNamedRef[]
+  images: ProductImageDetail[]
   colors: ProductColorDetail[]
 }
 
@@ -49,28 +50,31 @@ export interface ProductListItem {
   name: string
   categoryName: string
   subCategoryName: string | null
-  powerAmperes: number
+  powers: string
   hasWarranty: boolean
   isMadeToOrder: boolean
 }
 
 export interface ProductFormPayload {
   code: string
-  size: string
-  diameter: string
   hasWarranty: boolean
   isMadeToOrder: boolean
-  powerAmperes: number
   categoryId: number
   subCategoryId?: number | null
   translations: ProductTranslation[]
   brandIds: number[]
+  sizeIds: number[]
+  diameterIds: number[]
+  powerIds: number[]
   manufacturerCountryIds: number[]
   colorIds: number[]
   /** New files + matching color ids (parallel) */
   images: File[]
   imageColorIds: number[]
   keepImageIds?: number[]
+  /** Gallery files, not tied to a color */
+  productImages: File[]
+  keepProductImageIds?: number[]
 }
 
 const basePath = '/api/dashboard/products'
@@ -78,17 +82,17 @@ const basePath = '/api/dashboard/products'
 function toFormData(payload: ProductFormPayload): FormData {
   const form = new FormData()
   form.append('Code', payload.code)
-  form.append('Size', payload.size)
-  form.append('Diameter', payload.diameter)
   form.append('HasWarranty', String(payload.hasWarranty))
   form.append('IsMadeToOrder', String(payload.isMadeToOrder))
-  form.append('PowerAmperes', String(payload.powerAmperes))
   form.append('CategoryId', String(payload.categoryId))
   if (payload.subCategoryId != null && payload.subCategoryId > 0) {
     form.append('SubCategoryId', String(payload.subCategoryId))
   }
   form.append('Translations', JSON.stringify(payload.translations))
   form.append('BrandIds', JSON.stringify(payload.brandIds))
+  form.append('SizeIds', JSON.stringify(payload.sizeIds))
+  form.append('DiameterIds', JSON.stringify(payload.diameterIds))
+  form.append('PowerIds', JSON.stringify(payload.powerIds))
   form.append(
     'ManufacturerCountryIds',
     JSON.stringify(payload.manufacturerCountryIds),
@@ -96,9 +100,17 @@ function toFormData(payload: ProductFormPayload): FormData {
   form.append('ColorIds', JSON.stringify(payload.colorIds))
   form.append('ImageColorIds', JSON.stringify(payload.imageColorIds))
   form.append('KeepImageIds', JSON.stringify(payload.keepImageIds ?? []))
+  form.append(
+    'KeepProductImageIds',
+    JSON.stringify(payload.keepProductImageIds ?? []),
+  )
 
   for (const file of payload.images) {
     form.append('Images', file)
+  }
+
+  for (const file of payload.productImages) {
+    form.append('ProductImages', file)
   }
 
   return form

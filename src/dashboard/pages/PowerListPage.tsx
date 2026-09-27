@@ -1,41 +1,43 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
-  deleteProduct,
-  getProducts,
-  type ProductListItem,
-} from '../../api/products'
+  deletePower,
+  getPowers,
+  type PowerDetail,
+} from '../../api/powers'
 import { ApiError } from '../../api/types'
 import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
 
-type SortBy = 'az' | 'code' | 'id'
+type SortBy = 'value' | 'id'
 type SortDirection = 'asc' | 'desc'
 
-export function ProductListPage() {
+function formatValue(value: number) {
+  return String(value)
+}
+
+export function PowerListPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { can } = useAuth()
-  const canCreate = can('Products.Create')
-  const canView = can('Products.View')
-  const canUpdate = can('Products.Update')
-  const canDelete = can('Products.Delete')
-  const [items, setItems] = useState<ProductListItem[]>([])
+  const canCreate = can('Powers.Create')
+  const canView = can('Powers.View')
+  const canUpdate = can('Powers.Update')
+  const canDelete = can('Powers.Delete')
+  const [items, setItems] = useState<PowerDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [pendingDelete, setPendingDelete] = useState<ProductListItem | null>(
-    null,
-  )
+  const [pendingDelete, setPendingDelete] = useState<PowerDetail | null>(null)
   const [deleting, setDeleting] = useState(false)
 
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [sortBy, setSortBy] = useState<SortBy>('az')
+  const [sortBy, setSortBy] = useState<SortBy>('value')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
@@ -60,7 +62,7 @@ export function ProductListPage() {
     setLoading(true)
     setError(null)
     try {
-      const result = await getProducts({
+      const result = await getPowers({
         page,
         pageSize,
         search: search || undefined,
@@ -77,7 +79,7 @@ export function ProductListPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : 'Məhsullar yüklənərkən xəta baş verdi.',
+          : 'Güclər yüklənərkən xəta baş verdi.',
       )
     } finally {
       setLoading(false)
@@ -108,14 +110,14 @@ export function ProductListPage() {
     setDeleting(true)
     setError(null)
     try {
-      await deleteProduct(pendingDelete.id)
+      await deletePower(pendingDelete.id)
       setPendingDelete(null)
       await load()
     } catch (err) {
       setError(
         err instanceof ApiError
           ? err.message
-          : 'Məhsul silinərkən xəta baş verdi.',
+          : 'Güc silinərkən xəta baş verdi.',
       )
       setPendingDelete(null)
     } finally {
@@ -123,6 +125,7 @@ export function ProductListPage() {
     }
   }
 
+  const deleteTitle = pendingDelete ? formatValue(pendingDelete.value) : ''
   const from = totalCount === 0 ? 0 : (page - 1) * pageSize + 1
   const to = Math.min(page * pageSize, totalCount)
 
@@ -130,14 +133,14 @@ export function ProductListPage() {
     <div className="dash-page dash-page--wide">
       <header className="dash-page__header dash-page__header--row">
         <div>
-          <h1 className="dash-page__title">Məhsullar</h1>
+          <h1 className="dash-page__title">Güc (amper)</h1>
         </div>
         {canCreate && (
           <Link
-            to="/dashboard/products/create"
+            to="/dashboard/powers/create"
             className="dash-btn dash-btn--primary"
           >
-            Yeni məhsul
+            Yeni güc
           </Link>
         )}
       </header>
@@ -154,7 +157,7 @@ export function ProductListPage() {
           <input
             className="dash-input"
             type="search"
-            placeholder="Axtarış (ad, kod…)"
+            placeholder="Axtarış (dəyər…)"
             value={searchInput}
             onChange={(ev) => setSearchInput(ev.target.value)}
           />
@@ -185,15 +188,15 @@ export function ProductListPage() {
           <div className="dash-empty dash-empty--stack">
             <p>
               {search
-                ? 'Axtarışa uyğun məhsul tapılmadı.'
-                : 'Hələ məhsul yoxdur.'}
+                ? 'Axtarışa uyğun güc tapılmadı.'
+                : 'Hələ güc yoxdur.'}
             </p>
             {!search && canCreate && (
               <Link
-                to="/dashboard/products/create"
+                to="/dashboard/powers/create"
                 className="dash-btn dash-btn--ghost"
               >
-                İlk məhsulu yarat
+                İlk gücü yarat
               </Link>
             )}
           </div>
@@ -206,52 +209,40 @@ export function ProductListPage() {
                     <button
                       type="button"
                       className="dash-table__sort"
-                      onClick={() => toggleSort('az')}
+                      onClick={() => toggleSort('value')}
                     >
-                      Ad{sortLabel('az')}
+                      Dəyər{sortLabel('value')}
                     </button>
                   </th>
-                  <th>
-                    <button
-                      type="button"
-                      className="dash-table__sort"
-                      onClick={() => toggleSort('code')}
-                    >
-                      Kod{sortLabel('code')}
-                    </button>
-                  </th>
-                  <th>Kateqoriya</th>
-                  <th>Güc (amper)</th>
                   <th className="dash-table__actions-col">Əməliyyatlar</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.id}>
+                  <tr
+                    key={item.id}
+                    className={
+                      deleting && pendingDelete?.id === item.id
+                        ? 'is-deleting'
+                        : undefined
+                    }
+                  >
                     <td>
-                      <span className="dash-table__name">{item.name}</span>
+                      <span className="dash-table__name">
+                        {formatValue(item.value)}
+                      </span>
                     </td>
-                    <td>
-                      <code>{item.code}</code>
-                    </td>
-                    <td>
-                      {item.categoryName}
-                      {item.subCategoryName
-                        ? ` / ${item.subCategoryName}`
-                        : ''}
-                    </td>
-                    <td>{item.powers || '—'}</td>
                     <td className="dash-table__actions-col">
                       <CategoryActionsMenu
                         onView={
                           canView
-                            ? () => navigate(`/dashboard/products/${item.id}`)
+                            ? () => navigate(`/dashboard/powers/${item.id}`)
                             : undefined
                         }
                         onEdit={
                           canUpdate
                             ? () =>
-                                navigate(`/dashboard/products/${item.id}/edit`)
+                                navigate(`/dashboard/powers/${item.id}/edit`)
                             : undefined
                         }
                         onDelete={
@@ -300,9 +291,7 @@ export function ProductListPage() {
         open={pendingDelete !== null}
         title="Silmək istədiyinizə əminsiniz?"
         message={
-          pendingDelete
-            ? `“${pendingDelete.name}” məhsulu silinəcək.`
-            : ''
+          pendingDelete ? `“${deleteTitle}” gücü silinəcək.` : ''
         }
         confirmLabel="Sil"
         cancelLabel="Ləğv et"
@@ -313,7 +302,10 @@ export function ProductListPage() {
         }}
       />
 
-      <SuccessToast message={success} onDismiss={() => setSuccess(null)} />
+      <SuccessToast
+        message={success}
+        onDismiss={() => setSuccess(null)}
+      />
     </div>
   )
 }

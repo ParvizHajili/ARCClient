@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '../../data/products'
+import { recordProductView } from '../../api/dashboardOverview'
 import { useI18n } from '../../i18n/I18nContext'
 
 type ProductListCardProps = {
@@ -11,7 +12,11 @@ export function ProductListCard({ product }: ProductListCardProps) {
 
   return (
     <article className="product-list-card">
-      <Link to="/product-detail" className="product-list-card__image-link">
+      <Link
+        to="/product-detail"
+        className="product-list-card__image-link"
+        onClick={() => void recordProductView(product.code)}
+      >
         <img
           className="product-list-card__image"
           src={product.image}
@@ -21,7 +26,11 @@ export function ProductListCard({ product }: ProductListCardProps) {
       </Link>
       <div className="product-list-card__body">
         <h3 className="product-list-card__title">
-          <Link to="/product-detail" className="product-list-card__title-link">
+          <Link
+            to="/product-detail"
+            className="product-list-card__title-link"
+            onClick={() => void recordProductView(product.code)}
+          >
             {product.name}
           </Link>
         </h3>

@@ -3,10 +3,23 @@ import { AuthProvider } from './auth/AuthContext'
 import { RequireAuth } from './auth/RequireAuth'
 import { Layout } from './components/layout/Layout'
 import { DashboardLayout } from './dashboard/components/DashboardLayout'
+import { DashboardHomePage } from './dashboard/pages/DashboardHomePage'
 import { BrandCreatePage } from './dashboard/pages/BrandCreatePage'
 import { BrandDetailPage } from './dashboard/pages/BrandDetailPage'
 import { BrandEditPage } from './dashboard/pages/BrandEditPage'
 import { BrandListPage } from './dashboard/pages/BrandListPage'
+import { SizeCreatePage } from './dashboard/pages/SizeCreatePage'
+import { SizeDetailPage } from './dashboard/pages/SizeDetailPage'
+import { SizeEditPage } from './dashboard/pages/SizeEditPage'
+import { SizeListPage } from './dashboard/pages/SizeListPage'
+import { DiameterCreatePage } from './dashboard/pages/DiameterCreatePage'
+import { DiameterDetailPage } from './dashboard/pages/DiameterDetailPage'
+import { DiameterEditPage } from './dashboard/pages/DiameterEditPage'
+import { DiameterListPage } from './dashboard/pages/DiameterListPage'
+import { PowerCreatePage } from './dashboard/pages/PowerCreatePage'
+import { PowerDetailPage } from './dashboard/pages/PowerDetailPage'
+import { PowerEditPage } from './dashboard/pages/PowerEditPage'
+import { PowerListPage } from './dashboard/pages/PowerListPage'
 import { CategoryCreatePage } from './dashboard/pages/CategoryCreatePage'
 import { CategoryDetailPage } from './dashboard/pages/CategoryDetailPage'
 import { CategoryEditPage } from './dashboard/pages/CategoryEditPage'
@@ -21,6 +34,8 @@ import { ManufacturerCountryDetailPage } from './dashboard/pages/ManufacturerCou
 import { ManufacturerCountryEditPage } from './dashboard/pages/ManufacturerCountryEditPage'
 import { ManufacturerCountryListPage } from './dashboard/pages/ManufacturerCountryListPage'
 import { ProductCreatePage, ProductEditPage } from './dashboard/pages/ProductFormPage'
+import { ProductSpinEditPage } from './dashboard/pages/ProductSpinEditPage'
+import { ProductSpinPage } from './dashboard/pages/ProductSpinPage'
 import { ProductDetailPage as DashboardProductDetailPage } from './dashboard/pages/ProductDetailPage'
 import { ProductListPage } from './dashboard/pages/ProductListPage'
 import { UserCreatePage } from './dashboard/pages/UserCreatePage'
@@ -54,7 +69,7 @@ export default function App() {
                 </RequireAuth>
               }
             >
-              <Route index element={<Navigate to="categories" replace />} />
+              <Route index element={<DashboardHomePage />} />
               <Route path="categories" element={<CategoryListPage />} />
               <Route path="categories/create" element={<CategoryCreatePage />} />
               <Route path="categories/:id" element={<CategoryDetailPage />} />
@@ -82,12 +97,29 @@ export default function App() {
               <Route path="brands/:id" element={<BrandDetailPage />} />
               <Route path="brands/:id/edit" element={<BrandEditPage />} />
 
+              <Route path="sizes" element={<SizeListPage />} />
+              <Route path="sizes/create" element={<SizeCreatePage />} />
+              <Route path="sizes/:id" element={<SizeDetailPage />} />
+              <Route path="sizes/:id/edit" element={<SizeEditPage />} />
+
+              <Route path="diameters" element={<DiameterListPage />} />
+              <Route path="diameters/create" element={<DiameterCreatePage />} />
+              <Route path="diameters/:id" element={<DiameterDetailPage />} />
+              <Route path="diameters/:id/edit" element={<DiameterEditPage />} />
+
+              <Route path="powers" element={<PowerListPage />} />
+              <Route path="powers/create" element={<PowerCreatePage />} />
+              <Route path="powers/:id" element={<PowerDetailPage />} />
+              <Route path="powers/:id/edit" element={<PowerEditPage />} />
+
               <Route path="colors" element={<ColorListPage />} />
               <Route path="colors/create" element={<ColorCreatePage />} />
               <Route path="colors/:id" element={<ColorDetailPage />} />
               <Route path="colors/:id/edit" element={<ColorEditPage />} />
 
               <Route path="products" element={<ProductListPage />} />
+              <Route path="products/spin" element={<ProductSpinPage />} />
+              <Route path="products/:id/spin" element={<ProductSpinEditPage />} />
               <Route path="products/create" element={<ProductCreatePage />} />
               <Route
                 path="products/:id"
