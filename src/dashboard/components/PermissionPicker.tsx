@@ -7,7 +7,7 @@ const MODULE_LABELS: Record<string, string> = {
   Colors: 'Rəng',
   Products: 'Məhsullar',
   Users: 'İstifadəçilər',
-  Permissions: 'İcazələr',
+  HeroVideo: 'Ana video',
 }
 
 const ACTION_LABELS: Record<string, string> = {

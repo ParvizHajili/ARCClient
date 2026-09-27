@@ -1,72 +1,93 @@
 .contact-form {
   width: 100%;
-  max-width: 720px;
+  max-width: 760px;
   margin-inline: auto;
+  padding: 20px 16px 18px;
+  border-radius: 22px;
+  background: rgba($color-white, 0.78);
+  border: 1px solid rgba($color-black, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 18px 40px rgba(0, 0, 0, 0.05);
+
+  @include respond-to(md) {
+    padding: 28px 28px 24px;
+    border-radius: 28px;
+  }
 }
 
 .contact-form__row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-xl;
+  gap: 8px;
 
   @include respond-to(md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: $spacing-xl $spacing-lg;
+    gap: 8px 18px;
   }
 }
 
 .contact-form__group {
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
+  gap: 6px;
 }
 
 .contact-form__group--full {
-  margin-top: $spacing-xl;
+  margin-top: 8px;
 }
 
 .contact-form__label {
   font-family: $font-family-base;
   font-size: 11px;
   font-weight: $font-weight-medium;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: #8a6d3f;
 }
 
 .contact-form__input,
 .contact-form__textarea {
   width: 100%;
-  padding: $spacing-sm 0;
-  border: none;
-  border-bottom: 1px solid $color-border;
-  border-radius: 0;
-  background-color: transparent;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba($color-black, 0.08);
+  border-radius: 14px;
+  background: #fafaf8;
   font-family: $font-family-base;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: $font-weight-regular;
   color: $color-black;
-  transition: border-color $transition-base;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  @include respond-to(md) {
+    font-size: 16px;
+    border-radius: 16px;
+  }
 
   &::placeholder {
-    color: rgba($color-text-muted, 0.65);
+    color: rgba($color-text-muted, 0.7);
   }
 
   &:focus {
     outline: none;
-    border-bottom-color: $color-black;
+    border-color: rgba($color-badge-bg, 0.95);
+    background: $color-white;
+    box-shadow: 0 0 0 4px rgba($color-badge-bg, 0.28);
   }
 
   &.is-invalid {
-    border-bottom-color: #c0392b;
+    border-color: #c0392b;
+    box-shadow: none;
   }
 }
 
 .contact-form__textarea {
-  min-height: 48px;
-  max-height: 240px;
-  line-height: 1.5;
-  field-sizing: content;
+  min-height: 120px;
+  line-height: 1.55;
   resize: vertical;
 }
 
@@ -83,32 +104,35 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-sm;
+  gap: 10px;
   min-width: 180px;
-  margin-top: $spacing-xl;
-  margin-inline: auto;
-  padding: $hero-btn-padding-y $hero-btn-padding-x;
-  border: 1px solid $color-black;
-  background-color: $color-black;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: $color-black;
   color: $color-white;
   font-family: $font-family-base;
-  font-size: $hero-btn-font-size;
+  font-size: 13px;
   font-weight: $font-weight-medium;
-  letter-spacing: $hero-btn-letter-spacing;
-  text-transform: uppercase;
-  line-height: 1;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: background-color $transition-base, color $transition-base,
-    opacity $transition-base;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease;
+
+  @include respond-below(sm) {
+    width: 100%;
+  }
 
   &:hover {
-    background-color: #1a1a1a;
-    border-color: #1a1a1a;
+    background: #2a2a2a;
+    transform: translateY(-2px);
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
-    outline-offset: 2px;
+    outline: 2px solid $color-badge-bg;
+    outline-offset: 3px;
   }
 }
 
@@ -120,4 +144,10 @@
 .contact-form__actions {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
+
+  @include respond-to(md) {
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
 }

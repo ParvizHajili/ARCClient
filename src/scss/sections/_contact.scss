@@ -1,18 +1,27 @@
 .contact-section {
+  position: relative;
   background-color: $color-white;
-  padding-block: 96px;
-  scroll-margin-top: 80px;
+  padding-block: 72px 80px;
+  overflow: hidden;
+  scroll-margin-top: 72px;
 
   @include respond-to(md) {
-    padding-block: 108px;
-  }
-
-  @include respond-to(xl) {
-    padding-block: 120px;
+    padding-block: 96px 104px;
   }
 }
 
+.contact-section__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 0%, rgba($color-badge-bg, 0.2), transparent 62%),
+    radial-gradient(ellipse 30% 30% at 100% 100%, rgba($color-badge-bg, 0.08), transparent 70%);
+}
+
 .contact-section__container {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: $selected-max-width;
   margin-inline: auto;
@@ -28,35 +37,56 @@
 }
 
 .contact-section__header {
-  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 640px;
   margin-inline: auto;
-  margin-bottom: $spacing-xl * 2;
+  margin-bottom: 28px;
   text-align: center;
+  gap: 16px;
+
+  @include respond-to(md) {
+    margin-bottom: 36px;
+    gap: 18px;
+  }
 }
 
 .contact-section__title {
-  margin-bottom: $spacing-md;
+  margin: 0;
   font-family: $font-family-base;
-  font-size: 28px;
-  font-weight: $font-weight-regular;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(30px, 7vw, 36px);
+  font-weight: $font-weight-semibold;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   color: $color-black;
 
   @include respond-to(md) {
-    font-size: 34px;
-  }
-
-  @include respond-to(xl) {
-    font-size: 40px;
+    font-size: clamp(36px, 4.5vw, 44px);
   }
 }
 
+.contact-section__rule {
+  display: block;
+  width: 48px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $color-badge-bg 20%,
+    $color-badge-bg 80%,
+    transparent
+  );
+}
+
 .contact-section__subtitle {
+  margin: 0;
+  max-width: 34rem;
   font-family: $font-family-base;
   font-size: 15px;
-  font-weight: $font-weight-light;
-  line-height: 1.6;
+  font-weight: $font-weight-regular;
+  line-height: 1.65;
   color: $color-text-muted;
 
   @include respond-to(md) {

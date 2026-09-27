@@ -4,6 +4,7 @@ import { RequireAuth } from './auth/RequireAuth'
 import { Layout } from './components/layout/Layout'
 import { DashboardLayout } from './dashboard/components/DashboardLayout'
 import { DashboardHomePage } from './dashboard/pages/DashboardHomePage'
+import { HeroVideoPage } from './dashboard/pages/HeroVideoPage'
 import { BrandCreatePage } from './dashboard/pages/BrandCreatePage'
 import { BrandDetailPage } from './dashboard/pages/BrandDetailPage'
 import { BrandEditPage } from './dashboard/pages/BrandEditPage'
@@ -116,6 +117,8 @@ export default function App() {
               <Route path="colors/create" element={<ColorCreatePage />} />
               <Route path="colors/:id" element={<ColorDetailPage />} />
               <Route path="colors/:id/edit" element={<ColorEditPage />} />
+
+              <Route path="hero-video" element={<HeroVideoPage />} />
 
               <Route path="products" element={<ProductListPage />} />
               <Route path="products/spin" element={<ProductSpinPage />} />

@@ -53,6 +53,10 @@ export function getCategories(
   })
 }
 
+export function getPublicCategories(): Promise<CategoryDetail[]> {
+  return apiClient.get<CategoryDetail[]>('/api/categories', { skipAuth: true })
+}
+
 export function getCategoryById(id: number): Promise<CategoryDetail> {
   return apiClient.get<CategoryDetail>(`${basePath}/${id}`)
 }

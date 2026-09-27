@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useI18n } from '../../i18n/I18nContext'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { NavLamp } from './NavLamp'
 
 export function Navbar() {
   const { t } = useI18n()
@@ -35,7 +36,7 @@ export function Navbar() {
   return (
     <header className="site-header">
       <nav className="navbar-arc" aria-label="Main navigation" ref={navRef}>
-        <div className="navbar-arc__container container-fluid">
+        <div className="navbar-arc__container">
           <Link className="navbar-arc__brand" to="/" aria-label="Arc home">
             ARC
           </Link>
@@ -76,6 +77,7 @@ export function Navbar() {
           </div>
 
           <div className="navbar-arc__actions">
+            <NavLamp />
             <LanguageSwitcher />
 
             <button

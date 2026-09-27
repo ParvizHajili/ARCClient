@@ -1,22 +1,45 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { categoryGroups } from '../../data/categories'
+import { getPublicCategories } from '../../api/categories'
+import type { CategoryDetail, LanguageCode } from '../../api/types'
 import { useI18n } from '../../i18n/I18nContext'
 import { Reveal } from '../Reveal'
 
-/** Homepage catalog cards — architectural group (Raduga-style leaf grid). */
-const catalogItems = categoryGroups[0].items
+function translatedName(
+  translations: Array<{ languageCode: string; name: string }>,
+  lang: LanguageCode,
+) {
+  return (
+    translations.find((item) => item.languageCode === lang)?.name ??
+    translations.find((item) => item.languageCode === 'az')?.name ??
+    translations[0]?.name ??
+    ''
+  )
+}
 
 export function Categories() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const [items, setItems] = useState<CategoryDetail[]>([])
+
+  useEffect(() => {
+    let active = true
+    void getPublicCategories()
+      .then((data) => {
+        if (active) setItems(data)
+      })
+      .catch(() => {
+        if (active) setItems([])
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   return (
     <section className="categories-section" id="categories" aria-labelledby="categories-title">
       <div className="categories-section__container container-fluid">
         <Reveal as="header" className="categories-section__header">
           <div className="categories-section__intro">
-            <span className="categories-section__eyebrow">
-              {t('categories.eyebrow')}
-            </span>
             <h2 className="categories-section__title" id="categories-title">
               {t('categories.title')}
             </h2>
@@ -24,9 +47,9 @@ export function Categories() {
         </Reveal>
 
         <div className="categories-section__grid">
-          {catalogItems.map((item, index) => {
-            const title = t(`categories.items.${item.id}`)
-            const hasChildren = Boolean(item.children?.length)
+          {items.map((item, index) => {
+            const title = translatedName(item.translations, lang)
+            const hasChildren = item.subCategories.length > 0
             const isAccent = (index + 1) % 3 === 0
 
             return (
@@ -55,8 +78,10 @@ export function Categories() {
                   {hasChildren ? (
                     <div className="category-card__subs">
                       <ul className="category-card__subs-list">
-                        {item.children!.map((childId) => (
-                          <li key={childId}>{t(`categories.subs.${childId}`)}</li>
+                        {item.subCategories.map((child) => (
+                          <li key={child.id}>
+                            {translatedName(child.translations, lang)}
+                          </li>
                         ))}
                       </ul>
                     </div>

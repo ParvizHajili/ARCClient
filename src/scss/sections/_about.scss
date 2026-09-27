@@ -1,21 +1,30 @@
 .about-section {
-  background-color: #f6f6f4;
-  padding-block: 96px;
-  scroll-margin-top: 80px;
+  position: relative;
+  background-color: #fafaf8;
+  padding-block: 72px 80px;
+  overflow: hidden;
+  scroll-margin-top: 72px;
 
   @include respond-to(md) {
-    padding-block: 108px;
-  }
-
-  @include respond-to(xl) {
-    padding-block: 120px;
+    padding-block: 96px 104px;
   }
 }
 
+.about-section__ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 40% at 0% 20%, rgba($color-badge-bg, 0.2), transparent 62%),
+    radial-gradient(ellipse 40% 35% at 100% 90%, rgba($color-badge-bg, 0.1), transparent 70%);
+}
+
 .about-section__container {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-xl;
+  gap: 28px;
   width: 100%;
   max-width: $selected-max-width;
   margin-inline: auto;
@@ -24,7 +33,7 @@
 
   @include respond-to(md) {
     padding-inline: $container-padding-tablet;
-    gap: $spacing-xl * 2;
+    gap: 36px;
   }
 
   @include respond-to(lg) {
@@ -34,17 +43,40 @@
 
   @include respond-to(xl) {
     padding-inline: $container-padding-desktop;
-    gap: 64px;
+    gap: 72px;
   }
 }
 
 .about-section__media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background-color: #ececea;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  background:
+    linear-gradient(160deg, #ffffff 0%, #f3f1ec 45%, #e9e6df 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 18px 40px rgba(0, 0, 0, 0.06);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgba($color-black, 0.06);
+    pointer-events: none;
+  }
+
+  @include respond-to(md) {
+    aspect-ratio: 16 / 11;
+    border-radius: 24px;
+  }
+
+  @include respond-to(lg) {
+    aspect-ratio: 5 / 4;
+    border-radius: 28px;
+  }
 }
 
 .about-section__image {
@@ -52,6 +84,11 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .about-section__media:hover & {
+    transform: scale(1.04);
+  }
 }
 
 .about-section__content {
@@ -60,30 +97,30 @@
 
 .about-section__eyebrow {
   display: block;
-  margin-bottom: $spacing-md;
+  margin-bottom: 14px;
   font-family: $font-family-base;
-  font-size: $selected-eyebrow-size;
+  font-size: 11px;
   font-weight: $font-weight-medium;
-  letter-spacing: $selected-eyebrow-spacing;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: #8a6d3f;
 }
 
 .about-section__title {
-  margin-bottom: $spacing-lg;
+  margin: 0;
   font-family: $font-family-base;
-  font-size: 28px;
-  font-weight: $font-weight-regular;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-size: clamp(30px, 7vw, 36px);
+  font-weight: $font-weight-semibold;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   color: $color-black;
 
   @include respond-to(md) {
-    font-size: 34px;
+    font-size: clamp(36px, 4.5vw, 44px);
   }
 
-  @include respond-to(xl) {
-    font-size: 40px;
+  @include respond-to(lg) {
+    font-size: clamp(40px, 3.4vw, 52px);
   }
 }
 
@@ -91,56 +128,84 @@
   display: block;
 }
 
+.about-section__rule {
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin-top: 18px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    $color-badge-bg 0%,
+    rgba($color-badge-bg, 0.15) 100%
+  );
+}
+
 .about-section__description {
-  max-width: 520px;
-  margin-bottom: $spacing-xl;
+  max-width: 38rem;
+  margin: 20px 0 0;
   font-family: $font-family-base;
   font-size: 15px;
-  font-weight: $font-weight-light;
-  line-height: 1.75;
+  font-weight: $font-weight-regular;
+  line-height: 1.7;
   color: $color-text-muted;
 
   @include respond-to(md) {
+    margin-top: 24px;
     font-size: 16px;
   }
 }
 
 .about-section__stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: $spacing-lg $spacing-xl;
-  max-width: 420px;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 28px;
 
-  @include respond-below(sm) {
-    grid-template-columns: 1fr;
-    gap: $spacing-lg;
+  @include respond-to(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  @include respond-to(md) {
+    margin-top: 36px;
+    max-width: 460px;
   }
 }
 
 .about-section__stat {
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
+  gap: 6px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: rgba($color-white, 0.72);
+  border: 1px solid rgba($color-black, 0.06);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+
+  @include respond-to(md) {
+    padding: 20px 18px;
+    border-radius: 20px;
+  }
 }
 
 .about-section__stat-value {
   font-family: $font-family-base;
-  font-size: 40px;
+  font-size: 32px;
   font-weight: $font-weight-semibold;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
   color: $color-black;
 
   @include respond-to(md) {
-    font-size: 48px;
+    font-size: 40px;
   }
 }
 
 .about-section__stat-label {
   font-family: $font-family-base;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: $font-weight-medium;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: $color-text-muted;
 }

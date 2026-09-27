@@ -11,6 +11,10 @@ export const translations = {
       about: "Haqqımızda",
       contact: "Əlaqə",
     },
+    theme: {
+      turnOff: "İşığı söndür",
+      turnOn: "İşığı yandır",
+    },
     lang: {
       az: "Azərbaycan",
       en: "English",
@@ -204,6 +208,10 @@ export const translations = {
       about: "About",
       contact: "Contact",
     },
+    theme: {
+      turnOff: "Turn the lights off",
+      turnOn: "Turn the lights on",
+    },
     lang: {
       az: "Azərbaycan",
       en: "English",
@@ -396,6 +404,10 @@ export const translations = {
       products: "Продукты",
       about: "О нас",
       contact: "Контакты",
+    },
+    theme: {
+      turnOff: "Выключить свет",
+      turnOn: "Включить свет",
     },
     lang: {
       az: "Azərbaycan",

@@ -58,6 +58,11 @@ const navGroups: NavGroup[] = [
       { to: '/dashboard/diameters', label: 'Diametr', permission: 'Diameters.List' },
       { to: '/dashboard/powers', label: 'Güc (amper)', permission: 'Powers.List' },
       { to: '/dashboard/colors', label: 'Rəng', permission: 'Colors.List' },
+      {
+        to: '/dashboard/hero-video',
+        label: 'Ana video',
+        permission: 'HeroVideo.List',
+      },
     ],
   },
 ]

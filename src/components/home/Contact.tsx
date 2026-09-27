@@ -79,9 +79,11 @@ export function Contact() {
 
   return (
     <section className="contact-section" id="contact">
+      <div className="contact-section__ambient" aria-hidden="true" />
       <div className="contact-section__container container-fluid">
         <div className="contact-section__header">
           <h2 className="contact-section__title">{t('contact.title')}</h2>
+          <span className="contact-section__rule" aria-hidden="true" />
           <p className="contact-section__subtitle">{t('contact.subtitle')}</p>
         </div>
 
