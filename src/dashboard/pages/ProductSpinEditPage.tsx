@@ -183,8 +183,10 @@ export function ProductSpinEditPage() {
           <div className="dash-image-thumbs dash-spin-frames">
             {frames.map((frame, index) => (
               <div key={frame.key} className="dash-spin-frame">
-                <img src={frame.url} alt="" />
-                <span className="dash-spin-frame__index">{index + 1}</span>
+                <div className="dash-spin-frame__image">
+                  <img src={frame.url} alt="" />
+                  <span className="dash-spin-frame__index">{index + 1}</span>
+                </div>
                 {canUpdate && (
                   <div className="dash-spin-frame__actions">
                     <button
@@ -205,16 +207,21 @@ export function ProductSpinEditPage() {
                     </button>
                     <button
                       type="button"
+                      className="dash-spin-frame__remove"
                       onClick={() => removeFrame(frame.key)}
-                      aria-label="Sil"
                     >
-                      ×
+                      Sil
                     </button>
                   </div>
                 )}
               </div>
             ))}
           </div>
+          {canUpdate && frames.length > 0 && (
+            <p className="dash-panel__hint">
+              Şəkli sildikdən sonra Saxla düyməsinə basın.
+            </p>
+          )}
 
           {canUpdate && (
             <div className="dash-spin-actions">

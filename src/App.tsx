@@ -38,12 +38,14 @@ import { ProductCreatePage, ProductEditPage } from './dashboard/pages/ProductFor
 import { ProductSpinEditPage } from './dashboard/pages/ProductSpinEditPage'
 import { ProductSpinPage } from './dashboard/pages/ProductSpinPage'
 import { ProductDetailPage as DashboardProductDetailPage } from './dashboard/pages/ProductDetailPage'
+import { HomeProductsPage } from './dashboard/pages/HomeProductsPage'
 import { ProductListPage } from './dashboard/pages/ProductListPage'
 import { UserCreatePage } from './dashboard/pages/UserCreatePage'
 import { UserDetailPage } from './dashboard/pages/UserDetailPage'
 import { UserEditPage } from './dashboard/pages/UserEditPage'
 import { UserListPage } from './dashboard/pages/UserListPage'
 import { I18nProvider } from './i18n/I18nContext'
+import { CategoryPage } from './pages/CategoryPage'
 import { HomePage } from './pages/HomePage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
 import { ProductsPage } from './pages/ProductsPage'
@@ -56,8 +58,13 @@ export default function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route index element={<HomePage />} />
+              <Route path="categories/:id" element={<CategoryPage />} />
               <Route path="products" element={<ProductsPage />} />
-              <Route path="product-detail" element={<ProductDetailPage />} />
+              <Route path="products/:id" element={<ProductDetailPage />} />
+              <Route
+                path="product-detail"
+                element={<Navigate to="/products" replace />}
+              />
             </Route>
 
             <Route path="login" element={<LoginPage />} />
@@ -121,6 +128,7 @@ export default function App() {
               <Route path="hero-video" element={<HeroVideoPage />} />
 
               <Route path="products" element={<ProductListPage />} />
+              <Route path="products/home" element={<HomeProductsPage />} />
               <Route path="products/spin" element={<ProductSpinPage />} />
               <Route path="products/:id/spin" element={<ProductSpinEditPage />} />
               <Route path="products/create" element={<ProductCreatePage />} />

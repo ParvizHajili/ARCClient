@@ -1,40 +1,57 @@
-import { Link } from 'react-router-dom'
-import type { Product } from '../../data/products'
-import { recordProductView } from '../../api/dashboardOverview'
+import type { PublicProductCard } from '../../api/publicCatalog'
 import { useI18n } from '../../i18n/I18nContext'
 
 type ProductListCardProps = {
-  product: Product
+  product: PublicProductCard
+}
+
+function prefetchDetail(id: number, lang: string) {
+  const href = `/api/products/${id}?lang=${encodeURIComponent(lang)}`
+  if (document.head.querySelector(`link[data-product-prefetch="${href}"]`)) return
+
+  const link = document.createElement('link')
+  link.rel = 'prefetch'
+  link.as = 'fetch'
+  link.href = href
+  link.dataset.productPrefetch = href
+  document.head.appendChild(link)
 }
 
 export function ProductListCard({ product }: ProductListCardProps) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const image = product.imageUrl || '/assets/images/products/image1.png'
+  const detailTo = `/products/${product.id}`
+  const warm = () => prefetchDetail(product.id, lang)
 
   return (
-    <article className="product-list-card">
-      <Link
-        to="/product-detail"
+    <article className="product-list-card" onMouseEnter={warm} onFocus={warm}>
+      <a
+        href={detailTo}
         className="product-list-card__image-link"
-        onClick={() => void recordProductView(product.code)}
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <img
           className="product-list-card__image"
-          src={product.image}
+          src={image}
           alt={product.name}
           loading="lazy"
         />
-      </Link>
+      </a>
       <div className="product-list-card__body">
         <h3 className="product-list-card__title">
-          <Link
-            to="/product-detail"
+          <a
+            href={detailTo}
             className="product-list-card__title-link"
-            onClick={() => void recordProductView(product.code)}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {product.name}
-          </Link>
+          </a>
         </h3>
-        <p className="product-list-card__description">{product.description}</p>
+        {product.description ? (
+          <p className="product-list-card__description">{product.description}</p>
+        ) : null}
         <span className="product-list-card__code">
           {t('products.codeLabel')} {product.code}
         </span>

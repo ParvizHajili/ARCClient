@@ -1,95 +1,136 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ProductLightbox } from './ProductLightbox'
 
-const FADE_MS = 400
+export type GalleryImage = {
+  src: string
+  alt: string
+  label: string
+}
 
-const GALLERY_IMAGES = [
-  {
-    src: '/assets/images/products/image1.png',
-    alt: 'Ring Grand Style — görünüş 1',
-    label: 'Şəkil 1',
-  },
-  {
-    src: '/assets/images/products/image2.png',
-    alt: 'Ring Grand Style — görünüş 2',
-    label: 'Şəkil 2',
-  },
-  {
-    src: '/assets/images/products/image3.png',
-    alt: 'Ring Grand Style — görünüş 3',
-    label: 'Şəkil 3',
-  },
-  {
-    src: '/assets/images/products/image4.png',
-    alt: 'Ring Grand Style — görünüş 4',
-    label: 'Şəkil 4',
-  },
-]
+type ProductGalleryProps = {
+  images: GalleryImage[]
+  moreImages?: GalleryImage[]
+  productName: string
+  onOpenSpin?: () => void
+  spinLabel?: string
+}
 
-export function ProductGallery() {
+export function ProductGallery({
+  images,
+  moreImages = [],
+  productName,
+  onOpenSpin,
+  spinLabel = '360',
+}: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [displayIndex, setDisplayIndex] = useState(0)
-  const [fading, setFading] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
+  const colorImages = images
+  const extraImages = moreImages
+
+  const safeImages = useMemo(() => {
+    const combined = [...colorImages, ...extraImages]
+    if (combined.length > 0) return combined
+    return [
+      {
+        src: '/assets/images/products/image1.png',
+        alt: productName,
+        label: '1',
+      },
+    ]
+  }, [colorImages, extraImages, productName])
+
   useEffect(() => {
-    if (activeIndex === displayIndex) return
+    setActiveIndex(0)
+  }, [safeImages])
 
-    setFading(true)
-    const timeout = window.setTimeout(() => {
-      setDisplayIndex(activeIndex)
-      setFading(false)
-    }, FADE_MS)
+  const current = safeImages[activeIndex] ?? safeImages[0]
 
-    return () => window.clearTimeout(timeout)
-  }, [activeIndex, displayIndex])
-
-  const current = GALLERY_IMAGES[displayIndex]
+  function openAt(index: number) {
+    setActiveIndex(index)
+    setLightboxOpen(true)
+  }
 
   return (
     <>
       <div className="product-gallery" data-product-gallery>
-        <div
-          className="product-gallery__main"
-          role="button"
-          tabIndex={0}
-          aria-label="Şəkli böyüt"
-          onClick={() => setLightboxOpen(true)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault()
-              setLightboxOpen(true)
-            }
-          }}
-        >
-          <img
-            className={`product-gallery__main-image${fading ? ' is-fading' : ''}`}
-            src={current.src}
-            alt="Ring Grand Style"
-            width={640}
-            height={640}
-          />
-        </div>
-        <div className="product-gallery__thumbs">
-          {GALLERY_IMAGES.map((image, index) => (
+        <div className="product-gallery__stage">
+          <div
+            className="product-gallery__main"
+            role="button"
+            tabIndex={0}
+            aria-label="Şəkli böyüt"
+            onClick={() => openAt(activeIndex)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                openAt(activeIndex)
+              }
+            }}
+          >
+            <img
+              className="product-gallery__main-image"
+              src={current.src}
+              alt={current.alt || productName}
+              width={640}
+              height={640}
+            />
+          </div>
+          {onOpenSpin ? (
             <button
-              key={image.src}
               type="button"
-              className={`product-gallery__thumb${index === activeIndex ? ' is-active' : ''}`}
-              aria-label={image.label}
-              onMouseEnter={() => setActiveIndex(index)}
-              onFocus={() => setActiveIndex(index)}
-              onClick={() => setActiveIndex(index)}
+              className="product-gallery__spin"
+              aria-label={spinLabel}
+              onClick={onOpenSpin}
             >
-              <img src={image.src} alt="" loading="lazy" />
+              <span aria-hidden="true">360°</span>
             </button>
-          ))}
+          ) : null}
         </div>
+
+        {safeImages.length > 1 ? (
+          <div className="product-gallery__thumbs" role="list">
+            {colorImages.map((image, index) => (
+              <button
+                key={`color-${image.src}-${index}`}
+                type="button"
+                role="listitem"
+                className={`product-gallery__thumb${index === activeIndex ? ' is-active' : ''}`}
+                aria-label={image.label}
+                onMouseEnter={() => setActiveIndex(index)}
+                onFocus={() => setActiveIndex(index)}
+                onClick={() => openAt(index)}
+              >
+                <img src={image.src} alt="" />
+              </button>
+            ))}
+            {colorImages.length > 0 && extraImages.length > 0 ? (
+              <span className="product-gallery__split" aria-hidden="true" />
+            ) : null}
+            {extraImages.map((image, index) => {
+              const imageIndex = colorImages.length + index
+              return (
+                <button
+                  key={`more-${image.src}-${index}`}
+                  type="button"
+                  role="listitem"
+                  className={`product-gallery__thumb${imageIndex === activeIndex ? ' is-active' : ''}`}
+                  aria-label={image.label}
+                  onMouseEnter={() => setActiveIndex(imageIndex)}
+                  onFocus={() => setActiveIndex(imageIndex)}
+                  onClick={() => openAt(imageIndex)}
+                >
+                  <img src={image.src} alt="" />
+                </button>
+              )
+            })}
+          </div>
+        ) : null}
       </div>
 
       <ProductLightbox
         open={lightboxOpen}
-        images={GALLERY_IMAGES}
+        images={safeImages}
         initialIndex={activeIndex}
         onClose={() => setLightboxOpen(false)}
       />

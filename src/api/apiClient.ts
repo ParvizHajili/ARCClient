@@ -77,8 +77,11 @@ function resolveBody(body: ApiRequestOptions['body'], headers: Headers): BodyIni
 
 function handleUnauthorized() {
   clearAuth()
+  window.dispatchEvent(new Event('arc:unauthorized'))
+
+  // Only the dashboard requires login — public site stays open.
   const path = window.location.pathname
-  if (!path.startsWith('/login')) {
+  if (path.startsWith('/dashboard')) {
     const redirect = encodeURIComponent(path + window.location.search)
     window.location.assign(`/login?from=${redirect}`)
   }

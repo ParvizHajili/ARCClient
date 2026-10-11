@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5164',
+        // 127.0.0.1 — Windows-da localhost/IPv6 gözləməsinin qarşısını alır
+        target: 'http://127.0.0.1:5164',
         changeOrigin: true,
       },
     },

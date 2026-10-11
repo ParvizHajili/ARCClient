@@ -144,3 +144,31 @@ export function updateProduct(
 export function deleteProduct(id: number): Promise<void> {
   return apiClient.delete(`${basePath}/${id}`)
 }
+
+export const MAX_HOME_PRODUCTS = 8
+
+export interface HomeProduct {
+  id: number
+  code: string
+  name: string
+}
+
+export interface HomeProductOption {
+  id: number
+  name: string
+  isHomePageProduct: boolean
+}
+
+export function getHomeProducts(): Promise<HomeProduct[]> {
+  return apiClient.get<HomeProduct[]>(`${basePath}/home`)
+}
+
+export function searchHomeProductOptions(search?: string): Promise<HomeProductOption[]> {
+  return apiClient.get<HomeProductOption[]>(`${basePath}/home/options`, {
+    query: { search: search || undefined },
+  })
+}
+
+export function setHomeProducts(productIds: number[]): Promise<HomeProduct[]> {
+  return apiClient.put<HomeProduct[]>(`${basePath}/home`, { productIds })
+}

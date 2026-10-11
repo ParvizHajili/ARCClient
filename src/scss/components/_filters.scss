@@ -1,36 +1,203 @@
-.filters {
+.product-filters {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
-.filters__controls {
+.product-filters__head {
   display: flex;
-  flex-direction: column;
-  gap: $spacing-xl;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba($color-black, 0.08);
 }
 
-.filters__group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.product-filters__title {
+  margin: 0;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: $color-black;
 }
 
-.filters__label {
+.product-filters__clear {
+  border: none;
+  background: transparent;
+  padding: 0;
   font-family: $font-family-base;
   font-size: 11px;
   font-weight: $font-weight-medium;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-black;
+    outline: none;
+  }
+}
+
+.product-filters__apply {
+  @extend .btn-arc;
+  @extend .btn-arc--primary;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.filter-block {
+  border-bottom: 1px solid rgba($color-black, 0.08);
+  padding: 10px 0 12px;
+
+  &[open] .filter-block__summary::after {
+    transform: rotate(180deg);
+  }
+}
+
+.filter-block__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  list-style: none;
+  cursor: pointer;
+  font-family: $font-family-base;
+  font-size: 12px;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: $color-black;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::after {
+    content: '▾';
+    font-size: 12px;
+    color: rgba($color-black, 0.45);
+    transition: transform $transition-base;
+  }
+}
+
+.filter-block__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  max-height: 220px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.filter-block__mini {
+  margin: 8px 0 0;
+  font-family: $font-family-base;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   color: $color-text-muted;
 }
 
-.filters__select-wrap {
-  position: relative;
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-.filters__clear {
-  @extend .btn-arc;
-  @extend .btn-arc--primary;
-  width: 100%;
-  margin-top: $spacing-sm;
+.filter-check__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.filter-check__box {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba($color-black, 0.28);
+  border-radius: 4px;
+  background: $color-white;
+  transition: background-color $transition-base, border-color $transition-base,
+    box-shadow $transition-base;
+
+  &--radio {
+    border-radius: 50%;
+  }
+}
+
+.filter-check__input:checked + .filter-check__box {
+  background: #141414;
+  border-color: #141414;
+  box-shadow: inset 0 0 0 3px $color-white;
+}
+
+.filter-check__input:checked + .filter-check__box--radio {
+  background: $color-badge-bg;
+  border-color: #141414;
+  box-shadow: inset 0 0 0 4px #141414;
+}
+
+.filter-check__input:focus-visible + .filter-check__box {
+  outline: 2px solid rgba($color-badge-bg, 0.8);
+  outline-offset: 2px;
+}
+
+.filter-check__swatch {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba($color-black, 0.15);
+}
+
+.filter-check__label {
+  flex: 1;
+  min-width: 0;
+  font-family: $font-family-base;
+  font-size: 13px;
+  font-weight: $font-weight-regular;
+  line-height: 1.35;
+  color: $color-text;
+}
+
+.filter-category {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-category__subs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 28px;
+  padding-left: 12px;
+  border-left: 1px solid rgba($color-black, 0.1);
+}
+
+.filter-category__reset {
+  align-self: flex-start;
+  margin-top: 4px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: $font-family-base;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-black;
+  }
 }

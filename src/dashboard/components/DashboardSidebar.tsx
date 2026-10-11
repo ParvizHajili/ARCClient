@@ -32,6 +32,12 @@ const navGroups: NavGroup[] = [
         end: true,
       },
       {
+        to: '/dashboard/products/home',
+        label: 'Ana səhifə məhsulları',
+        permission: 'Products.List',
+        end: true,
+      },
+      {
         to: '/dashboard/products/spin',
         label: '360 şəkil',
         permission: 'Products.View',

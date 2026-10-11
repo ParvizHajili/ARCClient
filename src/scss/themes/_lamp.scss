@@ -172,7 +172,8 @@
 .site-shell .contact-section__subtitle,
 .site-shell .site-footer,
 .site-shell .products-page,
-.site-shell .product-detail-page {
+.site-shell .product-detail-page,
+.site-shell .category-page {
   transition:
     background-color 0.55s ease,
     color 0.55s ease,
@@ -181,7 +182,8 @@
 
 .site-shell[data-theme='dark'] .categories-section,
 .site-shell[data-theme='dark'] .products-page,
-.site-shell[data-theme='dark'] .product-detail-page {
+.site-shell[data-theme='dark'] .product-detail-page,
+.site-shell[data-theme='dark'] .category-page {
   background: #0e0e0e;
   color: #f6f1e8;
 }
@@ -227,6 +229,57 @@
   box-shadow: 0 0 24px rgba(232, 212, 168, 0.06);
 }
 
+.site-shell[data-theme='dark'] .products-page__sidebar,
+.site-shell[data-theme='dark'] .products-page__drawer {
+  background: #151515;
+  border-color: rgba(232, 212, 168, 0.12);
+  color: #f6f1e8;
+}
+
+.site-shell[data-theme='dark'] .products-page__title,
+.site-shell[data-theme='dark'] .product-filters__title,
+.site-shell[data-theme='dark'] .filter-block__summary,
+.site-shell[data-theme='dark'] .filter-check__label,
+.site-shell[data-theme='dark'] .products-page__drawer-title,
+.site-shell[data-theme='dark'] .category-page__subs-title {
+  color: #f6f1e8;
+}
+
+.site-shell[data-theme='dark'] .product-filters__head,
+.site-shell[data-theme='dark'] .filter-block,
+.site-shell[data-theme='dark'] .products-page__drawer-bar {
+  border-color: rgba(232, 212, 168, 0.12);
+}
+
+.site-shell[data-theme='dark'] .filter-check__box {
+  background: #1a1a1a;
+  border-color: rgba(232, 212, 168, 0.28);
+}
+
+.site-shell[data-theme='dark'] .products-page__filter-toggle {
+  background: #e8d4a8;
+  border-color: #e8d4a8;
+  color: #141414;
+
+  &:hover,
+  &:focus-visible {
+    background: transparent;
+    color: #e8d4a8;
+  }
+}
+
+.site-shell[data-theme='dark'] .pagination__nav,
+.site-shell[data-theme='dark'] .pagination__page {
+  color: #f6f1e8;
+  border-color: rgba(232, 212, 168, 0.22);
+}
+
+.site-shell[data-theme='dark'] .pagination__page.is-active {
+  color: #141414;
+  background: #e8d4a8;
+  border-color: #e8d4a8;
+}
+
 .site-shell[data-theme='dark'] .about-section__description,
 .site-shell[data-theme='dark'] .about-section__stat-label,
 .site-shell[data-theme='dark'] .product-card__code,
@@ -263,6 +316,56 @@
 .site-shell[data-theme='dark'] .site-footer {
   background: #0e0e0e;
   border-top-color: rgba(232, 212, 168, 0.14);
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__title,
+.site-shell[data-theme='dark'] .product-detail-page__crumb span:last-child,
+.site-shell[data-theme='dark'] .product-detail-page__back-link,
+.site-shell[data-theme='dark'] .product-detail-page__chip,
+.site-shell[data-theme='dark'] .product-detail-page__badge,
+.site-shell[data-theme='dark'] .technical-specs__title,
+.site-shell[data-theme='dark'] .technical-specs__value,
+.site-shell[data-theme='dark'] .product-list-card__title-link {
+  color: #f6f1e8;
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__collection,
+.site-shell[data-theme='dark'] .product-detail-page__code,
+.site-shell[data-theme='dark'] .product-detail-page__description,
+.site-shell[data-theme='dark'] .product-detail-page__status,
+.site-shell[data-theme='dark'] .product-detail-page__crumb,
+.site-shell[data-theme='dark'] .product-detail-page__colors-label,
+.site-shell[data-theme='dark'] .product-detail-page__color-name,
+.site-shell[data-theme='dark'] .technical-specs__label {
+  color: rgba(246, 241, 232, 0.68);
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__badge {
+  background: rgba(232, 212, 168, 0.12);
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__badge--muted {
+  background: transparent;
+  border-color: rgba(232, 212, 168, 0.22);
+  color: rgba(246, 241, 232, 0.72);
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__chip,
+.site-shell[data-theme='dark'] .product-detail-page .product-gallery__main,
+.site-shell[data-theme='dark'] .product-detail-page .product-gallery__thumb {
+  background: #1a1a1a;
+}
+
+.site-shell[data-theme='dark'] .product-detail-page__swatch.is-active {
+  border-color: #e8d4a8;
+}
+
+.site-shell[data-theme='dark'] .product-detail-page .technical-specs {
+  border-top-color: rgba(232, 212, 168, 0.12);
+}
+
+.site-shell[data-theme='dark'] .technical-specs__title::after {
+  background-color: #e8d4a8;
 }
 
 .site-shell[data-theme='dark'] .site-footer__copyright,

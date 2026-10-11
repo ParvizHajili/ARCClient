@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
@@ -20,6 +20,8 @@ export function ProductDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [selectedColorId, setSelectedColorId] = useState<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   useEffect(() => {
@@ -34,7 +36,10 @@ export function ProductDetailPage() {
       setLoading(true)
       try {
         const data = await getProductById(productId)
-        if (active) setItem(data)
+        if (!active) return
+        setItem(data)
+        setSelectedColorId(data.colors[0]?.colorId ?? null)
+        setActiveIndex(0)
       } catch (err) {
         if (active) {
           setError(
@@ -53,6 +58,33 @@ export function ProductDetailPage() {
     }
   }, [productId])
 
+  const { colorImages, moreImages } = useMemo(() => {
+    if (!item) return { colorImages: [], moreImages: [] }
+
+    const selectedColor = item.colors.find((c) => c.colorId === selectedColorId)
+    const selected = (selectedColor?.images ?? []).filter((image) => image.imageUrl)
+    const general = item.images.filter((image) => image.imageUrl)
+    const selectedIds = new Set(selected.map((image) => image.id))
+
+    if (selected.length === 0) {
+      return { colorImages: general, moreImages: [] }
+    }
+
+    return {
+      colorImages: selected,
+      moreImages: general.filter((image) => !selectedIds.has(image.id)),
+    }
+  }, [item, selectedColorId])
+
+  const galleryImages = useMemo(
+    () => [...colorImages, ...moreImages],
+    [colorImages, moreImages],
+  )
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [selectedColorId])
+
   useEffect(() => {
     if (!previewUrl) return
 
@@ -69,6 +101,8 @@ export function ProductDetailPage() {
       document.removeEventListener('keydown', onKeyDown)
     }
   }, [previewUrl])
+
+  const currentImage = galleryImages[activeIndex] ?? galleryImages[0]
 
   async function confirmDelete() {
     if (!item) return
@@ -138,6 +172,97 @@ export function ProductDetailPage() {
         <div className="dash-form">
           <section className="dash-panel">
             <div className="dash-panel__head">
+              <h2 className="dash-panel__title">Şəkillər</h2>
+            </div>
+            {galleryImages.length === 0 ? (
+              <p>—</p>
+            ) : (
+              <div className="dash-gallery">
+                {item.colors.length > 0 ? (
+                  <div className="dash-gallery__colors">
+                    {item.colors.map((color) => (
+                      <button
+                        key={color.colorId}
+                        type="button"
+                        className={`dash-gallery__swatch${
+                          selectedColorId === color.colorId ? ' is-active' : ''
+                        }`}
+                        style={{ backgroundColor: color.hexCode || '#ccc' }}
+                        title={color.name}
+                        aria-label={color.name}
+                        aria-pressed={selectedColorId === color.colorId}
+                        onClick={() => setSelectedColorId(color.colorId)}
+                      />
+                    ))}
+                    <span className="dash-gallery__color-name">
+                      {item.colors.find((c) => c.colorId === selectedColorId)?.name}
+                    </span>
+                  </div>
+                ) : null}
+
+                {currentImage ? (
+                  <button
+                    type="button"
+                    className="dash-gallery__main"
+                    aria-label="Şəkli böyüt"
+                    onClick={() => setPreviewUrl(currentImage.imageUrl)}
+                  >
+                    <img src={currentImage.imageUrl} alt={azName} />
+                  </button>
+                ) : null}
+
+                {galleryImages.length > 1 ? (
+                  <div className="dash-image-thumbs dash-gallery__thumbs">
+                    {colorImages.map((image, index) => (
+                      <button
+                        key={image.id}
+                        type="button"
+                        className={`dash-image-thumb dash-image-thumb--zoom${
+                          index === activeIndex ? ' is-active' : ''
+                        }`}
+                        aria-label={`Şəkil ${index + 1}`}
+                        onMouseEnter={() => setActiveIndex(index)}
+                        onFocus={() => setActiveIndex(index)}
+                        onClick={() => {
+                          setActiveIndex(index)
+                          setPreviewUrl(image.imageUrl)
+                        }}
+                      >
+                        <img src={image.imageUrl} alt="" />
+                      </button>
+                    ))}
+                    {colorImages.length > 0 && moreImages.length > 0 ? (
+                      <span className="dash-gallery__split" aria-hidden="true" />
+                    ) : null}
+                    {moreImages.map((image, index) => {
+                      const imageIndex = colorImages.length + index
+                      return (
+                        <button
+                          key={image.id}
+                          type="button"
+                          className={`dash-image-thumb dash-image-thumb--zoom${
+                            imageIndex === activeIndex ? ' is-active' : ''
+                          }`}
+                          aria-label={`Şəkil ${imageIndex + 1}`}
+                          onMouseEnter={() => setActiveIndex(imageIndex)}
+                          onFocus={() => setActiveIndex(imageIndex)}
+                          onClick={() => {
+                            setActiveIndex(imageIndex)
+                            setPreviewUrl(image.imageUrl)
+                          }}
+                        >
+                          <img src={image.imageUrl} alt="" />
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </section>
+
+          <section className="dash-panel">
+            <div className="dash-panel__head">
               <h2 className="dash-panel__title">Əsas</h2>
             </div>
             <dl className="dash-detail-grid">
@@ -198,60 +323,6 @@ export function ProductDetailPage() {
 
           <section className="dash-panel">
             <div className="dash-panel__head">
-              <h2 className="dash-panel__title">Şəkillər</h2>
-            </div>
-            {item.images.length === 0 ? (
-              <p>—</p>
-            ) : (
-              <div className="dash-image-thumbs">
-                {item.images.map((img) => (
-                  <button
-                    key={img.id}
-                    type="button"
-                    className="dash-image-thumb dash-image-thumb--zoom"
-                    onClick={() => setPreviewUrl(img.imageUrl)}
-                  >
-                    <img src={img.imageUrl} alt="" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <section className="dash-panel">
-            <div className="dash-panel__head">
-              <h2 className="dash-panel__title">Rənglər</h2>
-            </div>
-            <div className="dash-color-options">
-              {item.colors.map((color) => (
-                <div key={color.colorId} className="dash-color-option">
-                  <div className="dash-color-cell">
-                    <span
-                      className="dash-color-swatch"
-                      style={{ backgroundColor: color.hexCode }}
-                      aria-hidden
-                    />
-                    <strong>{color.name}</strong>
-                  </div>
-                  <div className="dash-image-thumbs">
-                    {color.images.map((img) => (
-                      <button
-                        key={img.id}
-                        type="button"
-                        className="dash-image-thumb dash-image-thumb--zoom"
-                        onClick={() => setPreviewUrl(img.imageUrl)}
-                      >
-                        <img src={img.imageUrl} alt="" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="dash-panel">
-            <div className="dash-panel__head">
               <h2 className="dash-panel__title">Tərcümələr</h2>
             </div>
             <div className="dash-detail__langs">
@@ -284,11 +355,7 @@ export function ProductDetailPage() {
             >
               ×
             </button>
-            <img
-              className="dash-image-preview__image"
-              src={previewUrl}
-              alt=""
-            />
+            <img className="dash-image-preview__image" src={previewUrl} alt="" />
           </div>,
           document.body,
         )}

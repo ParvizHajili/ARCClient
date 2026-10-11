@@ -1,21 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getPublicCategories } from '../../api/categories'
-import type { CategoryDetail, LanguageCode } from '../../api/types'
+import type { CategoryDetail } from '../../api/types'
 import { useI18n } from '../../i18n/I18nContext'
+import { resolveTranslatedName } from '../../utils/translations'
 import { Reveal } from '../Reveal'
-
-function translatedName(
-  translations: Array<{ languageCode: string; name: string }>,
-  lang: LanguageCode,
-) {
-  return (
-    translations.find((item) => item.languageCode === lang)?.name ??
-    translations.find((item) => item.languageCode === 'az')?.name ??
-    translations[0]?.name ??
-    ''
-  )
-}
 
 export function Categories() {
   const { t, lang } = useI18n()
@@ -48,14 +37,18 @@ export function Categories() {
 
         <div className="categories-section__grid">
           {items.map((item, index) => {
-            const title = translatedName(item.translations, lang)
+            const title = resolveTranslatedName(item.translations, lang)
             const hasChildren = item.subCategories.length > 0
             const isAccent = (index + 1) % 3 === 0
 
             return (
               <Reveal key={item.id} delay={index * 28}>
                 <Link
-                  to={`/products?category=${item.id}`}
+                  to={
+                    hasChildren
+                      ? `/categories/${item.id}`
+                      : `/products?category=${item.id}`
+                  }
                   className={[
                     'category-card',
                     hasChildren ? 'category-card--has-subs' : '',
@@ -80,7 +73,7 @@ export function Categories() {
                       <ul className="category-card__subs-list">
                         {item.subCategories.map((child) => (
                           <li key={child.id}>
-                            {translatedName(child.translations, lang)}
+                            {resolveTranslatedName(child.translations, lang)}
                           </li>
                         ))}
                       </ul>

@@ -29,6 +29,7 @@
 @import "components/technical-specs";
 @import "components/lightbox";
 @import "components/reveal";
+@import "components/pagination";
 
 // Sections
 @import "sections/categories";
@@ -39,6 +40,7 @@
 // Pages
 @import "pages/home";
 @import "pages/products";
+@import "pages/category";
 @import "pages/product-detail";
 
 // Dashboard

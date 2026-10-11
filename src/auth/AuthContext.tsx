@@ -67,6 +67,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [token, refreshPermissions])
 
   useEffect(() => {
+    function onUnauthorized() {
+      setToken(null)
+      setUser(null)
+    }
+
+    window.addEventListener('arc:unauthorized', onUnauthorized)
+    return () => window.removeEventListener('arc:unauthorized', onUnauthorized)
+  }, [])
+
+  useEffect(() => {
     if (!token) return
 
     function onFocus() {
