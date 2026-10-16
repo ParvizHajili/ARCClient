@@ -18,6 +18,12 @@ export interface ProductImageDetail {
   order: number
 }
 
+export interface ProductVideoDetail {
+  id: number
+  videoUrl: string
+  order: number
+}
+
 export interface ProductColorDetail {
   colorId: number
   hexCode: string
@@ -41,6 +47,7 @@ export interface ProductDetail {
   powers: ProductNamedRef[]
   manufacturerCountries: ProductNamedRef[]
   images: ProductImageDetail[]
+  videos: ProductVideoDetail[]
   colors: ProductColorDetail[]
 }
 
@@ -75,6 +82,8 @@ export interface ProductFormPayload {
   /** Gallery files, not tied to a color */
   productImages: File[]
   keepProductImageIds?: number[]
+  videos: File[]
+  keepVideoIds?: number[]
 }
 
 const basePath = '/api/dashboard/products'
@@ -104,6 +113,7 @@ function toFormData(payload: ProductFormPayload): FormData {
     'KeepProductImageIds',
     JSON.stringify(payload.keepProductImageIds ?? []),
   )
+  form.append('KeepVideoIds', JSON.stringify(payload.keepVideoIds ?? []))
 
   for (const file of payload.images) {
     form.append('Images', file)
@@ -111,6 +121,10 @@ function toFormData(payload: ProductFormPayload): FormData {
 
   for (const file of payload.productImages) {
     form.append('ProductImages', file)
+  }
+
+  for (const file of payload.videos) {
+    form.append('Videos', file)
   }
 
   return form

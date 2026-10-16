@@ -23,7 +23,6 @@ export interface DashboardOverview {
   manufacturerCountryCount: number
   warrantyCount: number
   madeToOrderCount: number
-  spinProductCount: number
   totalViews: number
   addedLast30Days: number
   productsByCategory: DashboardCategoryStat[]

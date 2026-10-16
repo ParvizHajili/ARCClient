@@ -17,6 +17,12 @@ interface NavGroup {
 
 const topLinks: NavChild[] = [
   { to: '/dashboard', label: 'Dashboard', end: true },
+  {
+    to: '/dashboard/inquiries',
+    label: 'Gələn müraciətlər',
+    permission: 'Inquiries.List',
+    end: true,
+  },
   { to: '/dashboard/users', label: 'İstifadəçilər', permission: 'Users.List' },
 ]
 
@@ -35,12 +41,6 @@ const navGroups: NavGroup[] = [
         to: '/dashboard/products/home',
         label: 'Ana səhifə məhsulları',
         permission: 'Products.List',
-        end: true,
-      },
-      {
-        to: '/dashboard/products/spin',
-        label: '360 şəkil',
-        permission: 'Products.View',
         end: true,
       },
     ],

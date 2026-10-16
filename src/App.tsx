@@ -5,6 +5,7 @@ import { Layout } from './components/layout/Layout'
 import { DashboardLayout } from './dashboard/components/DashboardLayout'
 import { DashboardHomePage } from './dashboard/pages/DashboardHomePage'
 import { HeroVideoPage } from './dashboard/pages/HeroVideoPage'
+import { InquiryListPage } from './dashboard/pages/InquiryListPage'
 import { BrandCreatePage } from './dashboard/pages/BrandCreatePage'
 import { BrandDetailPage } from './dashboard/pages/BrandDetailPage'
 import { BrandEditPage } from './dashboard/pages/BrandEditPage'
@@ -35,8 +36,6 @@ import { ManufacturerCountryDetailPage } from './dashboard/pages/ManufacturerCou
 import { ManufacturerCountryEditPage } from './dashboard/pages/ManufacturerCountryEditPage'
 import { ManufacturerCountryListPage } from './dashboard/pages/ManufacturerCountryListPage'
 import { ProductCreatePage, ProductEditPage } from './dashboard/pages/ProductFormPage'
-import { ProductSpinEditPage } from './dashboard/pages/ProductSpinEditPage'
-import { ProductSpinPage } from './dashboard/pages/ProductSpinPage'
 import { ProductDetailPage as DashboardProductDetailPage } from './dashboard/pages/ProductDetailPage'
 import { HomeProductsPage } from './dashboard/pages/HomeProductsPage'
 import { ProductListPage } from './dashboard/pages/ProductListPage'
@@ -126,11 +125,10 @@ export default function App() {
               <Route path="colors/:id/edit" element={<ColorEditPage />} />
 
               <Route path="hero-video" element={<HeroVideoPage />} />
+              <Route path="inquiries" element={<InquiryListPage />} />
 
               <Route path="products" element={<ProductListPage />} />
               <Route path="products/home" element={<HomeProductsPage />} />
-              <Route path="products/spin" element={<ProductSpinPage />} />
-              <Route path="products/:id/spin" element={<ProductSpinEditPage />} />
               <Route path="products/create" element={<ProductCreatePage />} />
               <Route
                 path="products/:id"

@@ -104,7 +104,7 @@ export function HeroVideoPage() {
             )}
 
             {canUpdate && (
-              <div className="dash-spin-actions">
+              <div className="dash-media-actions">
                 <label className="dash-btn dash-btn--ghost dash-file-btn">
                   {videoUrl ? 'Videonu dəyiş' : 'Video yüklə'}
                   <input

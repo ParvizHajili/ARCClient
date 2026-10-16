@@ -118,13 +118,13 @@ export interface PublicProductDetail {
   powers: Array<{ id: number; name: string }>
   manufacturerCountries: Array<{ id: number; name: string }>
   images: Array<{ id: number; imageUrl: string; order: number }>
+  videos: Array<{ id: number; videoUrl: string; order: number }>
   colors: Array<{
     colorId: number
     hexCode: string
     name: string
     images: Array<{ id: number; imageUrl: string; order: number }>
   }>
-  hasSpin: boolean
 }
 
 export function getPublicProduct(
@@ -136,17 +136,5 @@ export function getPublicProduct(
     skipAuth: true,
     query: { lang },
     signal,
-  })
-}
-
-export interface PublicSpinFrame {
-  id: number
-  imageUrl: string
-  order: number
-}
-
-export function getPublicProductSpin(id: number): Promise<PublicSpinFrame[]> {
-  return apiClient.get<PublicSpinFrame[]>(`/api/products/${id}/spin`, {
-    skipAuth: true,
   })
 }

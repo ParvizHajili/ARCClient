@@ -11,19 +11,22 @@ type ProductGalleryProps = {
   images: GalleryImage[]
   moreImages?: GalleryImage[]
   productName: string
-  onOpenSpin?: () => void
-  spinLabel?: string
+  videoUrl?: string | null
+  videoLabel?: string
+  videoCloseLabel?: string
 }
 
 export function ProductGallery({
   images,
   moreImages = [],
   productName,
-  onOpenSpin,
-  spinLabel = '360',
+  videoUrl = null,
+  videoLabel = '360',
+  videoCloseLabel = 'Close',
 }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [videoOpen, setVideoOpen] = useState(false)
 
   const colorImages = images
   const extraImages = moreImages
@@ -43,6 +46,27 @@ export function ProductGallery({
   useEffect(() => {
     setActiveIndex(0)
   }, [safeImages])
+
+  useEffect(() => {
+    setVideoOpen(false)
+  }, [videoUrl])
+
+  useEffect(() => {
+    if (!videoOpen) return
+
+    document.body.classList.add('product-lightbox-open')
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setVideoOpen(false)
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.classList.remove('product-lightbox-open')
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [videoOpen])
 
   const current = safeImages[activeIndex] ?? safeImages[0]
 
@@ -76,14 +100,14 @@ export function ProductGallery({
               height={640}
             />
           </div>
-          {onOpenSpin ? (
+          {videoUrl ? (
             <button
               type="button"
               className="product-gallery__spin"
-              aria-label={spinLabel}
-              onClick={onOpenSpin}
+              aria-label={videoLabel}
+              onClick={() => setVideoOpen(true)}
             >
-              <span aria-hidden="true">360°</span>
+              360°
             </button>
           ) : null}
         </div>
@@ -127,6 +151,42 @@ export function ProductGallery({
           </div>
         ) : null}
       </div>
+
+      {videoOpen && videoUrl ? (
+        <div className="product-360" role="dialog" aria-modal="true" aria-label={videoLabel}>
+          <button
+            type="button"
+            className="product-360__overlay"
+            aria-label={videoCloseLabel}
+            onClick={() => setVideoOpen(false)}
+          />
+          <div className="product-360__content">
+            <video
+              className="product-360__video"
+              src={videoUrl}
+              autoPlay
+              loop
+              playsInline
+              controls
+            />
+          </div>
+          <button
+            type="button"
+            className="product-lightbox__close"
+            aria-label={videoCloseLabel}
+            onClick={() => setVideoOpen(false)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </button>
+        </div>
+      ) : null}
 
       <ProductLightbox
         open={lightboxOpen}

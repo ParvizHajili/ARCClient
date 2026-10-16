@@ -1,16 +1,32 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { getProducts, type ProductListItem } from '../../api/products'
+import { getContactInquiries, type ContactInquiry } from '../../api/contact'
 import { ApiError } from '../../api/types'
 
-export function ProductSpinPage() {
-  const [items, setItems] = useState<ProductListItem[]>([])
+type SortBy = 'date' | 'name'
+type SortDirection = 'asc' | 'desc'
+
+function formatDate(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return date.toLocaleString('az-AZ', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+export function InquiryListPage() {
+  const [items, setItems] = useState<ContactInquiry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [sortBy, setSortBy] = useState<SortBy>('date')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [totalCount, setTotalCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
 
@@ -26,12 +42,12 @@ export function ProductSpinPage() {
     setLoading(true)
     setError(null)
     try {
-      const result = await getProducts({
+      const result = await getContactInquiries({
         page,
         pageSize,
         search: search || undefined,
-        searchNameOnly: true,
-        sortBy: 'az',
+        sortBy,
+        sortDirection,
       })
       setItems(result.items)
       setTotalCount(result.totalCount)
@@ -43,16 +59,31 @@ export function ProductSpinPage() {
       setError(
         err instanceof ApiError
           ? err.message
-          : 'Məhsullar yüklənərkən xəta baş verdi.',
+          : 'Müraciətlər yüklənərkən xəta baş verdi.',
       )
     } finally {
       setLoading(false)
     }
-  }, [page, pageSize, search])
+  }, [page, pageSize, search, sortBy, sortDirection])
 
   useEffect(() => {
     void load()
   }, [load])
+
+  function toggleSort(column: SortBy) {
+    if (sortBy === column) {
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setSortBy(column)
+      setSortDirection(column === 'date' ? 'desc' : 'asc')
+    }
+    setPage(1)
+  }
+
+  function sortLabel(column: SortBy) {
+    if (sortBy !== column) return ''
+    return sortDirection === 'asc' ? ' ↑' : ' ↓'
+  }
 
   const from = totalCount === 0 ? 0 : (page - 1) * pageSize + 1
   const to = Math.min(page * pageSize, totalCount)
@@ -60,7 +91,10 @@ export function ProductSpinPage() {
   return (
     <div className="dash-page dash-page--wide">
       <header className="dash-page__header">
-        <h1 className="dash-page__title">360 şəkil</h1>
+        <h1 className="dash-page__title">Gələn müraciətlər</h1>
+        <p className="dash-page__lead">
+          Ana səhifədəki əlaqə formasından göndərilən müraciətlər.
+        </p>
       </header>
 
       {error && (
@@ -75,9 +109,9 @@ export function ProductSpinPage() {
           <input
             className="dash-input"
             type="search"
-            placeholder="Məhsulun adı…"
+            placeholder="Axtarış (ad, telefon, email, mesaj…)"
             value={searchInput}
-            onChange={(ev) => setSearchInput(ev.target.value)}
+            onChange={(event) => setSearchInput(event.target.value)}
           />
         </label>
         <label className="dash-toolbar__size">
@@ -85,12 +119,12 @@ export function ProductSpinPage() {
           <select
             className="dash-input dash-input--select"
             value={pageSize}
-            onChange={(ev) => {
-              setPageSize(Number(ev.target.value))
+            onChange={(event) => {
+              setPageSize(Number(event.target.value))
               setPage(1)
             }}
           >
-            {[10, 20, 50].map((size) => (
+            {[5, 10, 20, 50].map((size) => (
               <option key={size} value={size}>
                 {size}
               </option>
@@ -104,31 +138,44 @@ export function ProductSpinPage() {
           <p className="dash-empty">Yüklənir…</p>
         ) : items.length === 0 ? (
           <p className="dash-empty">
-            {search ? 'Axtarışa uyğun məhsul tapılmadı.' : 'Hələ məhsul yoxdur.'}
+            {search ? 'Axtarışa uyğun müraciət tapılmadı.' : 'Hələ müraciət yoxdur.'}
           </p>
         ) : (
           <div className="dash-table-wrap">
             <table className="dash-table">
               <thead>
                 <tr>
-                  <th>Ad</th>
-                  <th className="dash-table__spin-col">360</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="dash-table__sort"
+                      onClick={() => toggleSort('date')}
+                    >
+                      Tarix{sortLabel('date')}
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      type="button"
+                      className="dash-table__sort"
+                      onClick={() => toggleSort('name')}
+                    >
+                      Ad{sortLabel('name')}
+                    </button>
+                  </th>
+                  <th>Telefon</th>
+                  <th>Email</th>
+                  <th>Mesaj</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id}>
-                    <td>
-                      <span className="dash-table__name">{item.name}</span>
-                    </td>
-                    <td className="dash-table__spin-col">
-                      <Link
-                        to={`/dashboard/products/${item.id}/spin`}
-                        className="dash-btn dash-btn--ghost"
-                      >
-                        360 əlavə et
-                      </Link>
-                    </td>
+                    <td>{formatDate(item.createDate)}</td>
+                    <td>{item.name}</td>
+                    <td>{item.phone || '—'}</td>
+                    <td>{item.email || '—'}</td>
+                    <td className="dash-table__message">{item.message}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,6 +1,6 @@
 .contact-form {
   width: 100%;
-  max-width: 760px;
+  max-width: 960px;
   margin-inline: auto;
   padding: 20px 16px 18px;
   border-radius: 22px;
@@ -25,6 +25,28 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px 18px;
   }
+}
+
+.contact-form__row--3 {
+  @include respond-to(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.contact-form__hint {
+  margin: 2px 0 0;
+  font-family: $font-family-base;
+  font-size: 13px;
+  line-height: 1.4;
+  color: $color-text-muted;
+}
+
+.contact-form__success {
+  margin: 0 0 12px;
+  font-family: $font-family-base;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1e7a46;
 }
 
 .contact-form__group {

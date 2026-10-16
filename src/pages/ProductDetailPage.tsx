@@ -10,7 +10,6 @@ import {
   type GalleryImage,
 } from '../components/product-detail/ProductGallery'
 import { TechnicalSpecs } from '../components/product-detail/TechnicalSpecs'
-import { ProductSpinView } from '../components/product-detail/ProductSpinView'
 import { useI18n } from '../i18n/I18nContext'
 import { resolveTranslation } from '../utils/translations'
 
@@ -24,11 +23,11 @@ function normalizeDetail(data: PublicProductDetail): PublicProductDetail {
     powers: data.powers ?? [],
     manufacturerCountries: data.manufacturerCountries ?? [],
     images: data.images ?? [],
+    videos: data.videos ?? [],
     colors: (data.colors ?? []).map((color) => ({
       ...color,
       images: color.images ?? [],
     })),
-    hasSpin: Boolean(data.hasSpin),
   }
 }
 
@@ -41,7 +40,6 @@ export function ProductDetailPage() {
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
   const [selectedColorId, setSelectedColorId] = useState<number | null>(null)
-  const [spinOpen, setSpinOpen] = useState(false)
 
   useEffect(() => {
     if (!Number.isFinite(productId) || productId <= 0) {
@@ -231,8 +229,9 @@ export function ProductDetailPage() {
             images={colorGallery}
             moreImages={moreGallery}
             productName={title}
-            spinLabel={t('productDetail.spinOpen')}
-            onOpenSpin={product.hasSpin ? () => setSpinOpen(true) : undefined}
+            videoUrl={product.videos.find((video) => video.videoUrl)?.videoUrl ?? null}
+            videoLabel={t('productDetail.spin')}
+            videoCloseLabel={t('productDetail.spinClose')}
           />
 
           <div className="product-detail-page__info">
@@ -322,11 +321,6 @@ export function ProductDetailPage() {
 
         <TechnicalSpecs title={t('productDetail.specs.title')} items={specItems} />
       </div>
-      <ProductSpinView
-        open={spinOpen}
-        productId={product.id}
-        onClose={() => setSpinOpen(false)}
-      />
     </main>
   )
 }

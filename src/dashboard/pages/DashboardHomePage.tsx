@@ -77,7 +77,6 @@ export function DashboardHomePage() {
             <Stat label="Məhsul" value={data.productCount} tone="ink" />
             <Stat label="Ümumi baxış" value={data.totalViews} tone="blue" />
             <Stat label="Son 30 gün" value={data.addedLast30Days} hint="yeni məhsul" />
-            <Stat label="360 məhsul" value={data.spinProductCount} />
             <Stat label="Qarantiyalı" value={data.warrantyCount} />
             <Stat label="Sifarişlə" value={data.madeToOrderCount} />
             <Stat label="Marka" value={data.brandCount} />
