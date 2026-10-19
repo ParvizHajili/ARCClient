@@ -56,22 +56,22 @@ export function Navbar() {
                 </Link>
               </li>
               <li>
-                <a
+                <Link
                   className="navbar-arc__link"
-                  href={aboutHref}
+                  to={aboutHref}
                   onClick={() => setMenuOpen(false)}
                 >
                   {t('nav.about')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   className="navbar-arc__link"
-                  href={contactHref}
+                  to={contactHref}
                   onClick={() => setMenuOpen(false)}
                 >
                   {t('nav.contact')}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

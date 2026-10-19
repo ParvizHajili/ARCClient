@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getContactInquiries, type ContactInquiry } from '../../api/contact'
 import { ApiError } from '../../api/types'
 
 type SortBy = 'date' | 'name'
 type SortDirection = 'asc' | 'desc'
+
+function previewMessage(message: string) {
+  const chars = Array.from(message)
+  if (chars.length <= 10) return message
+  return `${chars.slice(0, 10).join('')}…`
+}
 
 function formatDate(value: string) {
   const date = new Date(value)
@@ -166,6 +173,7 @@ export function InquiryListPage() {
                   <th>Telefon</th>
                   <th>Email</th>
                   <th>Mesaj</th>
+                  <th className="dash-table__actions-col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -175,7 +183,22 @@ export function InquiryListPage() {
                     <td>{item.name}</td>
                     <td>{item.phone || '—'}</td>
                     <td>{item.email || '—'}</td>
-                    <td className="dash-table__message">{item.message}</td>
+                    <td className="dash-table__message">
+                      <Link
+                        to={`/dashboard/inquiries/${item.id}`}
+                        className="dash-table__message-link"
+                      >
+                        {previewMessage(item.message)}
+                      </Link>
+                    </td>
+                    <td className="dash-table__actions-col">
+                      <Link
+                        to={`/dashboard/inquiries/${item.id}`}
+                        className="dash-table__view"
+                      >
+                        Bax
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

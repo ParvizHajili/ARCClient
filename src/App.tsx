@@ -5,6 +5,7 @@ import { Layout } from './components/layout/Layout'
 import { DashboardLayout } from './dashboard/components/DashboardLayout'
 import { DashboardHomePage } from './dashboard/pages/DashboardHomePage'
 import { HeroVideoPage } from './dashboard/pages/HeroVideoPage'
+import { InquiryDetailPage } from './dashboard/pages/InquiryDetailPage'
 import { InquiryListPage } from './dashboard/pages/InquiryListPage'
 import { BrandCreatePage } from './dashboard/pages/BrandCreatePage'
 import { BrandDetailPage } from './dashboard/pages/BrandDetailPage'
@@ -126,6 +127,7 @@ export default function App() {
 
               <Route path="hero-video" element={<HeroVideoPage />} />
               <Route path="inquiries" element={<InquiryListPage />} />
+              <Route path="inquiries/:id" element={<InquiryDetailPage />} />
 
               <Route path="products" element={<ProductListPage />} />
               <Route path="products/home" element={<HomeProductsPage />} />

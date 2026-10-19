@@ -1070,9 +1070,37 @@
 }
 
 .dash-table__message {
-  max-width: 420px;
-  white-space: pre-wrap;
+  max-width: 160px;
+  white-space: nowrap;
   line-height: 1.45;
+}
+
+.dash-table__message-link,
+.dash-table__view {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--dash-accent);
+    text-decoration: underline;
+  }
+}
+
+.dash-table__view {
+  font-size: 13px;
+  font-weight: $font-weight-medium;
+}
+
+.dash-inquiry__message-field {
+  grid-column: 1 / -1;
+}
+
+.dash-inquiry__message {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 15px;
+  font-weight: $font-weight-regular;
 }
 
 .dash-pagination {

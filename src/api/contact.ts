@@ -31,3 +31,7 @@ export function getContactInquiries(
     { query: params },
   )
 }
+
+export function getContactInquiry(id: number): Promise<ContactInquiry> {
+  return apiClient.get<ContactInquiry>(`/api/dashboard/inquiries/${id}`)
+}

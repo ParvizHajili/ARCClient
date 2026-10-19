@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
+import { createPortal } from 'react-dom'
 import { createContactInquiry } from '../../api/contact'
 import { ApiError } from '../../api/types'
 import { useI18n } from '../../i18n/I18nContext'
@@ -45,6 +46,12 @@ export function Contact() {
   const [errors, setErrors] = useState<FieldErrors>({})
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
+
+  useEffect(() => {
+    if (!success) return
+    const timer = window.setTimeout(() => setSuccess(false), 5000)
+    return () => window.clearTimeout(timer)
+  }, [success])
 
   const validateName = (value: string): string | undefined => {
     const trimmed = value.trim()
@@ -146,6 +153,7 @@ export function Contact() {
   }
 
   return (
+    <>
     <section className="contact-section" id="contact">
       <div className="contact-section__ambient" aria-hidden="true" />
       <div className="contact-section__container container-fluid">
@@ -156,12 +164,6 @@ export function Contact() {
         </div>
 
         <form className="contact-form" id="contactForm" noValidate onSubmit={(event) => void handleSubmit(event)}>
-          {success ? (
-            <p className="contact-form__success" role="status">
-              {t('contact.success')}
-            </p>
-          ) : null}
-
           <div className="contact-form__row contact-form__row--3">
             <div className="contact-form__group">
               <label className="contact-form__label" htmlFor="contactName">
@@ -328,5 +330,14 @@ export function Contact() {
         </form>
       </div>
     </section>
+    {success
+      ? createPortal(
+          <div className="contact-toast" role="status" aria-live="polite">
+            {t('contact.success')}
+          </div>,
+          document.body,
+        )
+      : null}
+    </>
   )
 }

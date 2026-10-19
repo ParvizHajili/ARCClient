@@ -41,12 +41,39 @@
   color: $color-text-muted;
 }
 
-.contact-form__success {
-  margin: 0 0 12px;
+.contact-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 400;
+  max-width: min(380px, calc(100vw - 32px));
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid #abefc6;
+  border-radius: 12px;
+  background: #ecfdf3;
+  color: #067647;
+  box-shadow: 0 12px 36px rgba(20, 20, 20, 0.16);
   font-family: $font-family-base;
   font-size: 14px;
-  line-height: 1.5;
-  color: #1e7a46;
+  line-height: 1.45;
+  animation: contact-toast-in 0.25s ease both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes contact-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .contact-form__group {

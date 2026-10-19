@@ -21,7 +21,6 @@ const topLinks: NavChild[] = [
     to: '/dashboard/inquiries',
     label: 'Gələn müraciətlər',
     permission: 'Inquiries.List',
-    end: true,
   },
   { to: '/dashboard/users', label: 'İstifadəçilər', permission: 'Users.List' },
 ]
