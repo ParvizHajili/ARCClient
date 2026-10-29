@@ -1,13 +1,35 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  getPublicContactInfo,
+  toTelHref,
+  type PublicContactInfo,
+} from '../../api/contactInfo'
 import { useI18n } from '../../i18n/I18nContext'
 import { useTheme } from '../../theme/ThemeContext'
+
+const FALLBACK_PHONE = '+994 50 123 45 67'
 
 export function Footer() {
   const { t } = useI18n()
   const { theme } = useTheme()
   const footerRef = useRef<HTMLElement>(null)
   const [spotsOn, setSpotsOn] = useState(false)
+  const [contact, setContact] = useState<PublicContactInfo | null>(null)
+
+  useEffect(() => {
+    let active = true
+    void getPublicContactInfo()
+      .then((data) => {
+        if (active) setContact(data)
+      })
+      .catch(() => {
+        if (active) setContact(null)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   useEffect(() => {
     const node = footerRef.current
@@ -32,6 +54,13 @@ export function Footer() {
     return () => observer.disconnect()
   }, [theme])
 
+  const phones = [contact?.phone1, contact?.phone2]
+    .map((p) => p?.trim())
+    .filter((p): p is string => Boolean(p))
+  const displayPhones = phones.length > 0 ? phones : [FALLBACK_PHONE]
+  const instagramUrl = contact?.instagramUrl?.trim() || null
+  const facebookUrl = contact?.facebookUrl?.trim() || null
+
   return (
     <footer className="site-footer" ref={footerRef}>
       {theme === 'dark' ? (
@@ -50,9 +79,15 @@ export function Footer() {
           </Link>
           <p className="site-footer__meta">
             <span>{t('footer.address')}</span>
-            <a className="site-footer__link" href="tel:+994501234567">
-              {t('footer.phone')}
-            </a>
+            {displayPhones.map((phone) => (
+              <a
+                key={phone}
+                className="site-footer__link"
+                href={toTelHref(phone)}
+              >
+                {phone}
+              </a>
+            ))}
           </p>
         </div>
 
@@ -82,36 +117,52 @@ export function Footer() {
         </nav>
 
         <div className="site-footer__social">
-          <a className="site-footer__social-link" href="#" aria-label="Instagram">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          {instagramUrl ? (
+            <a
+              className="site-footer__social-link"
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
             >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a className="site-footer__social-link" href="#" aria-label="Facebook">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          ) : null}
+          {facebookUrl ? (
+            <a
+              className="site-footer__social-link"
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
             >
-              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-            </svg>
-          </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+          ) : null}
         </div>
 
         <p className="site-footer__copyright">{t('footer.copyright')}</p>

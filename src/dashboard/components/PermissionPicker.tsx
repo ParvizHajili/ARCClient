@@ -8,6 +8,8 @@ const MODULE_LABELS: Record<string, string> = {
   Products: 'Məhsullar',
   Users: 'İstifadəçilər',
   HeroVideo: 'Ana video',
+  About: 'Haqqımızda',
+  ContactInfo: 'Əlaqə məlumatları',
 }
 
 const ACTION_LABELS: Record<string, string> = {

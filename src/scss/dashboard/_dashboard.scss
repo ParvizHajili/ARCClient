@@ -625,16 +625,18 @@
     transform 0.2s ease,
     opacity 0.2s ease;
 
-  &:disabled {
+  &:disabled,
+  &.is-disabled {
     opacity: 0.55;
     cursor: not-allowed;
+    pointer-events: none;
   }
 
   &--primary {
     background: #141414;
     color: #fff;
 
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled):not(.is-disabled) {
       background: #2a2a2a;
       transform: translateY(-1px);
     }
@@ -780,6 +782,13 @@
     background: #f3f3f4;
     font-weight: $font-weight-semibold;
     font-variant-numeric: tabular-nums;
+  }
+
+  &__truncate {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__name {
@@ -1999,6 +2008,16 @@
 .dash-badge--muted {
   background: rgba(107, 107, 107, 0.12);
   color: var(--dash-muted);
+}
+
+.dash-about-preview {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #eee;
 }
 
 .dash-dl {

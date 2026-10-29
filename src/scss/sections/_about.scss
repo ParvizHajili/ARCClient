@@ -30,6 +30,13 @@
   margin-inline: auto;
   padding-inline: $container-padding-mobile;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+
+  &.is-loaded {
+    opacity: 1;
+  }
+
 
   @include respond-to(md) {
     padding-inline: $container-padding-tablet;

@@ -4,6 +4,14 @@ import { RequireAuth } from './auth/RequireAuth'
 import { Layout } from './components/layout/Layout'
 import { DashboardLayout } from './dashboard/components/DashboardLayout'
 import { DashboardHomePage } from './dashboard/pages/DashboardHomePage'
+import { AboutCreatePage } from './dashboard/pages/AboutCreatePage'
+import { AboutDetailPage } from './dashboard/pages/AboutDetailPage'
+import { AboutEditPage } from './dashboard/pages/AboutEditPage'
+import { AboutListPage } from './dashboard/pages/AboutListPage'
+import { ContactInfoCreatePage } from './dashboard/pages/ContactInfoCreatePage'
+import { ContactInfoDetailPage } from './dashboard/pages/ContactInfoDetailPage'
+import { ContactInfoEditPage } from './dashboard/pages/ContactInfoEditPage'
+import { ContactInfoListPage } from './dashboard/pages/ContactInfoListPage'
 import { HeroVideoPage } from './dashboard/pages/HeroVideoPage'
 import { InquiryDetailPage } from './dashboard/pages/InquiryDetailPage'
 import { InquiryListPage } from './dashboard/pages/InquiryListPage'
@@ -142,6 +150,25 @@ export default function App() {
               <Route path="users/create" element={<UserCreatePage />} />
               <Route path="users/:id" element={<UserDetailPage />} />
               <Route path="users/:id/edit" element={<UserEditPage />} />
+
+              <Route path="about" element={<AboutListPage />} />
+              <Route path="about/create" element={<AboutCreatePage />} />
+              <Route path="about/:id" element={<AboutDetailPage />} />
+              <Route path="about/:id/edit" element={<AboutEditPage />} />
+
+              <Route path="contact-info" element={<ContactInfoListPage />} />
+              <Route
+                path="contact-info/create"
+                element={<ContactInfoCreatePage />}
+              />
+              <Route
+                path="contact-info/:id"
+                element={<ContactInfoDetailPage />}
+              />
+              <Route
+                path="contact-info/:id/edit"
+                element={<ContactInfoEditPage />}
+              />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

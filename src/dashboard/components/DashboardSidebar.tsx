@@ -22,10 +22,34 @@ const topLinks: NavChild[] = [
     label: 'Gələn müraciətlər',
     permission: 'Inquiries.List',
   },
-  { to: '/dashboard/users', label: 'İstifadəçilər', permission: 'Users.List' },
 ]
 
 const navGroups: NavGroup[] = [
+  {
+    id: 'users',
+    label: 'İstifadəçilər',
+    children: [
+      {
+        to: '/dashboard/users',
+        label: 'Siyahı',
+        permission: 'Users.List',
+        end: true,
+      },
+      {
+        to: '/dashboard/about',
+        label: 'Haqqımızda',
+        permission: 'About.List',
+        end: true,
+      },
+      {
+        to: '/dashboard/contact-info',
+        label: 'Əlaqə məlumatları',
+        permission: 'ContactInfo.List',
+        end: true,
+      },
+    ],
+  },
+
   {
     id: 'products',
     label: 'Məhsullar',
