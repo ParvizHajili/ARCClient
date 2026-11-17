@@ -6,6 +6,7 @@ import {
   type ColorDetail,
 } from '../../api/colors'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -62,7 +63,10 @@ export function ColorDetailPage() {
     setDeleting(true)
     try {
       await deleteColor(item.id)
-      navigate('/dashboard/colors', { replace: true })
+      navigate('/dashboard/colors', {
+        replace: true,
+        state: { toast: toastDeleted(nameOf(item, 'az')) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

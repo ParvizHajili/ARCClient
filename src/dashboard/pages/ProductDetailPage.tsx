@@ -9,6 +9,7 @@ import {
 import { ApiError } from '../../api/types'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
+import { toastDeleted } from '../toast'
 
 export function ProductDetailPage() {
   const { id } = useParams()
@@ -109,7 +110,15 @@ export function ProductDetailPage() {
     setDeleting(true)
     try {
       await deleteProduct(item.id)
-      navigate('/dashboard/products', { replace: true })
+      navigate('/dashboard/products', {
+        replace: true,
+        state: {
+          toast: toastDeleted(
+            item.translations.find((t) => t.languageCode === 'az')?.name ??
+              'Məhsul',
+          ),
+        },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

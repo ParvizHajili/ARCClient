@@ -1,3 +1,6 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .pagination {
   display: flex;
   flex-wrap: wrap;
@@ -6,7 +9,7 @@
   gap: 12px;
   margin-top: 40px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     justify-content: flex-start;
     margin-top: 48px;
   }
@@ -30,17 +33,17 @@
   min-width: 40px;
   min-height: 40px;
   padding: 0 12px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: $color-black;
+  color: variables.$color-black;
   background: transparent;
-  border: 1px solid rgba($color-black, 0.16);
+  border: 1px solid rgba(variables.$color-black, 0.16);
   cursor: pointer;
-  transition: background-color $transition-base, border-color $transition-base,
-    color $transition-base;
+  transition: background-color variables.$transition-base, border-color variables.$transition-base,
+    color variables.$transition-base;
 
   &:hover:not(:disabled),
   &:focus-visible {
@@ -55,14 +58,14 @@
 }
 
 .pagination__page.is-active {
-  color: $color-black;
-  background: $color-badge-bg;
-  border-color: $color-badge-bg;
+  color: variables.$color-black;
+  background: variables.$color-badge-bg;
+  border-color: variables.$color-badge-bg;
 }
 
 .pagination__ellipsis {
   min-width: 24px;
   text-align: center;
-  color: $color-text-muted;
-  font-family: $font-family-base;
+  color: variables.$color-text-muted;
+  font-family: variables.$font-family-base;
 }

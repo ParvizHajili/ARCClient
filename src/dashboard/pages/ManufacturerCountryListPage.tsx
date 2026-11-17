@@ -10,6 +10,11 @@ import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
+import {
+  readToastFromLocationState,
+  toastDeleted,
+  type DashToastPayload,
+} from '../toast'
 
 type SortBy = 'az' | 'en' | 'ru' | 'id'
 type SortDirection = 'asc' | 'desc'
@@ -33,7 +38,7 @@ export function ManufacturerCountryListPage() {
   const [items, setItems] = useState<ManufacturerCountryDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
   const [pendingDelete, setPendingDelete] =
     useState<ManufacturerCountryDetail | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -48,9 +53,9 @@ export function ManufacturerCountryListPage() {
   const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
-    const state = location.state as { success?: string } | null
-    if (state?.success) {
-      setSuccess(state.success)
+    const incoming = readToastFromLocationState(location.state)
+    if (incoming) {
+      setToast(incoming)
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
@@ -116,6 +121,7 @@ export function ManufacturerCountryListPage() {
     setError(null)
     try {
       await deleteManufacturerCountry(pendingDelete.id)
+      setToast(toastDeleted(nameOf(pendingDelete, 'az')))
       setPendingDelete(null)
       await load()
     } catch (err) {
@@ -333,8 +339,8 @@ export function ManufacturerCountryListPage() {
       />
 
       <SuccessToast
-        message={success}
-        onDismiss={() => setSuccess(null)}
+        toast={toast}
+        onDismiss={() => setToast(null)}
       />
     </div>
   )

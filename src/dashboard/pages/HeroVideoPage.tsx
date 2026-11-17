@@ -2,6 +2,8 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { getHeroVideo, saveHeroVideo } from '../../api/heroVideo'
 import { ApiError } from '../../api/types'
 import { useAuth } from '../../auth/AuthContext'
+import { SuccessToast } from '../components/SuccessToast'
+import { toastUpdated, type DashToastPayload } from '../toast'
 
 export function HeroVideoPage() {
   const { can } = useAuth()
@@ -12,7 +14,7 @@ export function HeroVideoPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [saved, setSaved] = useState(false)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
 
   useEffect(() => {
     let active = true
@@ -52,12 +54,12 @@ export function HeroVideoPage() {
     if (!file || !canUpdate) return
     setSaving(true)
     setError(null)
-    setSaved(false)
+    setToast(null)
     try {
       const data = await saveHeroVideo(file)
       setVideoUrl(data.videoUrl)
       setFile(null)
-      setSaved(true)
+      setToast(toastUpdated('Ana video'))
     } catch (err) {
       setError(
         err instanceof ApiError ? err.message : 'Video saxlanarkən xəta baş verdi.',
@@ -113,7 +115,7 @@ export function HeroVideoPage() {
                     hidden
                     onChange={(event) => {
                       setFile(event.target.files?.[0] ?? null)
-                      setSaved(false)
+                      setToast(null)
                       event.target.value = ''
                     }}
                   />
@@ -125,12 +127,13 @@ export function HeroVideoPage() {
                 >
                   {saving ? 'Yüklənir…' : 'Saxla'}
                 </button>
-                {saved && <span className="dash-panel__hint">Saxlanıldı.</span>}
               </div>
             )}
           </section>
         </form>
       )}
+
+      <SuccessToast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   )
 }

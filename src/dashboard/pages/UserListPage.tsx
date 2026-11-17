@@ -6,6 +6,11 @@ import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
+import {
+  readToastFromLocationState,
+  toastDeleted,
+  type DashToastPayload,
+} from '../toast'
 
 type SortBy = 'firstName' | 'lastName' | 'userName' | 'email' | 'active' | 'created'
 type SortDirection = 'asc' | 'desc'
@@ -17,7 +22,7 @@ export function UserListPage() {
   const [items, setItems] = useState<UserListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
   const [pendingDelete, setPendingDelete] = useState<UserListItem | null>(null)
   const [deleting, setDeleting] = useState(false)
 
@@ -36,9 +41,9 @@ export function UserListPage() {
   const canDelete = can('Users.Delete')
 
   useEffect(() => {
-    const state = location.state as { success?: string } | null
-    if (state?.success) {
-      setSuccess(state.success)
+    const incoming = readToastFromLocationState(location.state)
+    if (incoming) {
+      setToast(incoming)
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
@@ -104,6 +109,7 @@ export function UserListPage() {
     setError(null)
     try {
       await deleteUser(pendingDelete.id)
+      setToast(toastDeleted(pendingDelete.displayName))
       setPendingDelete(null)
       await load()
     } catch (err) {
@@ -348,7 +354,7 @@ export function UserListPage() {
         }}
       />
 
-      <SuccessToast message={success} onDismiss={() => setSuccess(null)} />
+      <SuccessToast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   )
 }

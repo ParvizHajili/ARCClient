@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getBrandById, updateBrand } from '../../api/brands'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -89,7 +90,10 @@ export function BrandEditPage() {
       await updateBrand(brandId, {
         translations: namesToTranslations(names),
       })
-      navigate('/dashboard/brands', { replace: true })
+      navigate('/dashboard/brands', {
+        replace: true,
+        state: { toast: toastUpdated(names.az.trim()) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

@@ -1,3 +1,6 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 $custom-select-duration: 0.5s;
 $custom-select-panel-max-height: 280px;
 
@@ -19,19 +22,19 @@ $custom-select-panel-max-height: 280px;
 }
 
 .custom-select__trigger {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: $spacing-sm;
+  gap: variables.$spacing-sm;
   width: 100%;
   min-height: 44px;
   padding: 8px 0 10px;
   border: none;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid variables.$color-border;
   border-radius: 0;
   background-color: transparent;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   text-align: left;
   cursor: pointer;
   transition: border-color $custom-select-duration ease;
@@ -41,7 +44,7 @@ $custom-select-panel-max-height: 280px;
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }
@@ -49,13 +52,13 @@ $custom-select-panel-max-height: 280px;
 .custom-select__value {
   flex: 1;
   min-width: 0;
-  font-size: $font-size-base;
-  font-weight: $font-weight-regular;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.4;
-  color: $color-black;
+  color: variables.$color-black;
 
   &.is-placeholder {
-    color: $color-black;
+    color: variables.$color-black;
   }
 }
 
@@ -63,13 +66,13 @@ $custom-select-panel-max-height: 280px;
   flex-shrink: 0;
   width: 12px;
   height: 12px;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
   transition: transform $custom-select-duration ease;
 }
 
 .custom-select.is-open {
   .custom-select__trigger {
-    border-bottom-color: $color-black;
+    border-bottom-color: variables.$color-black;
   }
 
   .custom-select__icon {
@@ -81,13 +84,13 @@ $custom-select-panel-max-height: 280px;
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  z-index: $z-index-dropdown;
+  z-index: variables.$z-index-dropdown;
   width: 100%;
   max-height: 0;
   overflow: hidden;
   border: 1px solid transparent;
   border-radius: 8px;
-  background-color: $color-white;
+  background-color: variables.$color-white;
   box-shadow: none;
   opacity: 0;
   visibility: hidden;
@@ -103,7 +106,7 @@ $custom-select-panel-max-height: 280px;
 
   &.is-open {
     max-height: $custom-select-panel-max-height;
-    border-color: $color-border;
+    border-color: variables.$color-border;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     opacity: 1;
     visibility: visible;
@@ -121,23 +124,23 @@ $custom-select-panel-max-height: 280px;
 }
 
 .custom-select__option {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   display: flex;
   align-items: center;
   width: 100%;
   min-height: 44px;
   padding: 10px 14px;
   border-radius: 6px;
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-light;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-sm;
+  font-weight: variables.$font-weight-light;
   line-height: 1.4;
-  color: $color-text;
+  color: variables.$color-text;
   text-align: left;
   transition:
-    background-color $transition-base,
-    color $transition-base,
-    font-weight $transition-base;
+    background-color variables.$transition-base,
+    color variables.$transition-base,
+    font-weight variables.$transition-base;
 
   &:hover {
     background-color: #f4f4f4;
@@ -145,12 +148,12 @@ $custom-select-panel-max-height: 280px;
 
   &.is-selected {
     background-color: #efefef;
-    font-weight: $font-weight-medium;
-    color: $color-black;
+    font-weight: variables.$font-weight-medium;
+    color: variables.$color-black;
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: -2px;
   }
 }

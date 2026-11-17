@@ -6,6 +6,7 @@ import {
   type PowerDetail,
 } from '../../api/powers'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -56,7 +57,10 @@ export function PowerDetailPage() {
     setDeleting(true)
     try {
       await deletePower(item.id)
-      navigate('/dashboard/powers', { replace: true })
+      navigate('/dashboard/powers', {
+        replace: true,
+        state: { toast: toastDeleted(String(item.value)) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

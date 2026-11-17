@@ -6,6 +6,7 @@ import {
   type SizeDetail,
 } from '../../api/sizes'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -56,7 +57,10 @@ export function SizeDetailPage() {
     setDeleting(true)
     try {
       await deleteSize(item.id)
-      navigate('/dashboard/sizes', { replace: true })
+      navigate('/dashboard/sizes', {
+        replace: true,
+        state: { toast: toastDeleted(String(item.value)) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

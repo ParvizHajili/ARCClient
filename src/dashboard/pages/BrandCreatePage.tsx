@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createBrand } from '../../api/brands'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastCreated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -49,7 +50,7 @@ export function BrandCreatePage() {
         'Marka'
       navigate('/dashboard/brands', {
         replace: true,
-        state: { success: `“${title}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(title) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

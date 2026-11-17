@@ -10,6 +10,11 @@ import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
+import {
+  readToastFromLocationState,
+  toastDeleted,
+  type DashToastPayload,
+} from '../toast'
 
 type SortBy = 'value' | 'id'
 type SortDirection = 'asc' | 'desc'
@@ -29,7 +34,7 @@ export function SizeListPage() {
   const [items, setItems] = useState<SizeDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
   const [pendingDelete, setPendingDelete] = useState<SizeDetail | null>(null)
   const [deleting, setDeleting] = useState(false)
 
@@ -43,9 +48,9 @@ export function SizeListPage() {
   const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
-    const state = location.state as { success?: string } | null
-    if (state?.success) {
-      setSuccess(state.success)
+    const incoming = readToastFromLocationState(location.state)
+    if (incoming) {
+      setToast(incoming)
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
@@ -111,6 +116,7 @@ export function SizeListPage() {
     setError(null)
     try {
       await deleteSize(pendingDelete.id)
+      setToast(toastDeleted(formatValue(pendingDelete.value)))
       setPendingDelete(null)
       await load()
     } catch (err) {
@@ -303,8 +309,8 @@ export function SizeListPage() {
       />
 
       <SuccessToast
-        message={success}
-        onDismiss={() => setSuccess(null)}
+        toast={toast}
+        onDismiss={() => setToast(null)}
       />
     </div>
   )

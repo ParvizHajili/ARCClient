@@ -20,6 +20,7 @@ import { ApiError, type CategoryDetail, type LanguageCode } from '../../api/type
 import type { ManufacturerCountryDetail } from '../../api/manufacturerCountries'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
+import { toastCreated, toastUpdated } from '../toast'
 import { LookupActions, LookupSection } from '../components/LookupActions'
 import {
   ProductCatalogEditors,
@@ -598,11 +599,16 @@ export function ProductFormPage({ mode, productId }: ProductFormPageProps) {
           'Məhsul'
         navigate('/dashboard/products', {
           replace: true,
-          state: { success: `“${title}” uğurla yaradıldı.` },
+          state: { toast: toastCreated(title) },
         })
       } else if (productId) {
         await updateProduct(productId, payload)
-        navigate('/dashboard/products', { replace: true })
+        navigate('/dashboard/products', {
+          replace: true,
+          state: {
+            toast: toastUpdated(langs.az.name.trim() || 'Məhsul'),
+          },
+        })
       }
     } catch (err) {
       if (err instanceof ApiError) {

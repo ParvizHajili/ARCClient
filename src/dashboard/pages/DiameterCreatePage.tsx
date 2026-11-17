@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createDiameter } from '../../api/diameters'
 import { ApiError } from '../../api/types'
+import { toastCreated } from '../toast'
 
 export function DiameterCreatePage() {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export function DiameterCreatePage() {
       const created = await createDiameter({ value: number })
       navigate('/dashboard/diameters', {
         replace: true,
-        state: { success: `“${created.value}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(String(created.value)) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { deleteCategory, getCategoryById } from '../../api/categories'
 import { ApiError, type CategoryDetail } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -62,7 +63,10 @@ export function CategoryDetailPage() {
     setError(null)
     try {
       await deleteCategory(category.id)
-      navigate('/dashboard/categories', { replace: true })
+      navigate('/dashboard/categories', {
+        replace: true,
+        state: { toast: toastDeleted(nameOf(category, 'az')) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

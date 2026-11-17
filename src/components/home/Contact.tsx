@@ -282,8 +282,11 @@ export function Contact() {
             </div>
           </div>
 
-          <p className="contact-form__hint">{t('contact.eitherHint')}</p>
-          <span className="contact-form__error">{errors.contact ?? ''}</span>
+          {errors.contact ? (
+            <span className="contact-form__error">{errors.contact}</span>
+          ) : (
+            <p className="contact-form__hint">{t('contact.eitherHint')}</p>
+          )}
 
           <div className="contact-form__group contact-form__group--full">
             <label className="contact-form__label" htmlFor="contactMessage">

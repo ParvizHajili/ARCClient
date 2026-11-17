@@ -1,31 +1,34 @@
-.product-detail-page {
-  padding-top: calc(#{$header-height-mobile} + 28px);
-  padding-bottom: 64px;
-  background-color: $color-white;
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
 
-  @include respond-to(md) {
-    padding-top: calc(#{$header-height-mobile} + 36px);
+.product-detail-page {
+  padding-top: calc(#{variables.$header-height-mobile} + 28px);
+  padding-bottom: 64px;
+  background-color: variables.$color-white;
+
+  @include mixins.respond-to(md) {
+    padding-top: calc(#{variables.$header-height-mobile} + 36px);
     padding-bottom: 72px;
   }
 
-  @include respond-to(lg) {
-    padding-top: calc(#{$header-height-desktop} + 48px);
+  @include mixins.respond-to(lg) {
+    padding-top: calc(#{variables.$header-height-desktop} + 48px);
     padding-bottom: 80px;
   }
 }
 
 .product-detail-page__shell {
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding-inline: $container-padding-mobile;
+  padding-inline: variables.$container-padding-mobile;
 
-  @include respond-to(md) {
-    padding-inline: $container-padding-tablet;
+  @include mixins.respond-to(md) {
+    padding-inline: variables.$container-padding-tablet;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
   }
 }
 
@@ -35,44 +38,44 @@
   align-items: center;
   gap: 8px;
   margin: 0 0 28px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 13px;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 
   a {
     color: inherit;
     text-decoration: none;
-    transition: color $transition-base;
+    transition: color variables.$transition-base;
 
     &:hover {
-      color: $color-black;
+      color: variables.$color-black;
     }
   }
 
   span:last-child {
-    color: $color-black;
+    color: variables.$color-black;
   }
 }
 
 .product-detail-page__status {
   margin: 48px 0 16px;
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  color: $color-text-muted;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  color: variables.$color-text-muted;
 }
 
 .product-detail-page__back-link {
   display: inline-flex;
   margin-bottom: 48px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 14px;
-  color: $color-black;
+  color: variables.$color-black;
   text-decoration: none;
-  border-bottom: 1px solid rgba($color-black, 0.25);
-  transition: border-color $transition-base;
+  border-bottom: 1px solid rgba(variables.$color-black, 0.25);
+  transition: border-color variables.$transition-base;
 
   &:hover {
-    border-color: $color-black;
+    border-color: variables.$color-black;
   }
 }
 
@@ -82,11 +85,11 @@
   gap: 36px;
   align-items: start;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     gap: 44px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
     gap: 56px;
   }
@@ -100,41 +103,41 @@
 
 .product-detail-page__collection {
   margin: 0 0 10px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 1.6px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .product-detail-page__title {
   margin: 0 0 12px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 32px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.15;
-  color: $color-black;
+  color: variables.$color-black;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     font-size: 40px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     font-size: 44px;
   }
 }
 
 .product-detail-page__code {
   margin: 0 0 20px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 
   span {
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
   }
 }
 
@@ -150,28 +153,193 @@
   align-items: center;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba($color-black, 0.06);
-  font-family: $font-family-base;
+  background: rgba(variables.$color-black, 0.06);
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.3px;
-  color: $color-black;
+  color: variables.$color-black;
 
   &--muted {
     background: transparent;
-    border: 1px solid rgba($color-black, 0.12);
-    color: $color-text-muted;
+    border: 1px solid rgba(variables.$color-black, 0.12);
+    color: variables.$color-text-muted;
   }
 }
 
 .product-detail-page__description {
   margin: 0 0 28px;
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-light;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-light;
   line-height: 1.7;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
   max-width: 42rem;
+}
+
+.product-order {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 28px;
+  max-width: 36rem;
+}
+
+.product-order__strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+  border: 1px solid rgba(variables.$color-black, 0.1);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(variables.$color-badge-bg, 0.28) 0%,
+      rgba(variables.$color-white, 0.95) 42%,
+      variables.$color-white 100%
+    );
+  overflow: hidden;
+}
+
+.product-order__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  font-family: variables.$font-family-base;
+  font-size: 11px;
+  font-weight: variables.$font-weight-semibold;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: variables.$color-black;
+  background: variables.$color-badge-bg;
+  white-space: nowrap;
+}
+
+.product-order__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: variables.$color-black;
+  flex-shrink: 0;
+}
+
+.product-order__channels {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.product-order__channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 7.5rem;
+  padding: 14px 16px;
+  font-family: variables.$font-family-base;
+  font-size: 13px;
+  font-weight: variables.$font-weight-medium;
+  letter-spacing: 0.2px;
+  color: variables.$color-black;
+  text-decoration: none;
+  border-left: 1px solid rgba(variables.$color-black, 0.08);
+  transition:
+    background-color variables.$transition-base,
+    color variables.$transition-base;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(variables.$color-black, 0.04);
+    outline: none;
+  }
+
+  &--whatsapp:hover,
+  &--whatsapp:focus-visible {
+    color: #128c7e;
+  }
+}
+
+.product-order__icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.product-order__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-self: flex-start;
+  min-height: 48px;
+  padding: 14px 22px;
+  font-family: variables.$font-family-base;
+  font-size: 12px;
+  font-weight: variables.$font-weight-medium;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: variables.$color-white;
+  background: variables.$color-black;
+  border: 1px solid variables.$color-black;
+  transition:
+    background-color variables.$transition-base,
+    border-color variables.$transition-base,
+    transform variables.$transition-base;
+
+  &:hover {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$color-black;
+    outline-offset: 3px;
+  }
+}
+
+.product-order__cta-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.product-order__cta-arrow {
+  font-size: 14px;
+  line-height: 1;
+}
+
+@include mixins.respond-below(sm) {
+  .product-order__strip {
+    flex-direction: column;
+  }
+
+  .product-order__label {
+    width: 100%;
+  }
+
+  .product-order__channel {
+    border-left: none;
+    border-top: 1px solid rgba(variables.$color-black, 0.08);
+  }
+
+  .product-order__cta {
+    width: 100%;
+  }
 }
 
 .product-detail-page__colors {
@@ -181,16 +349,16 @@
 .product-detail-page__colors-label,
 .product-detail-page__color-name {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .product-detail-page__colors-label {
   margin-bottom: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
 }
 
 .product-detail-page__swatches {
@@ -206,22 +374,22 @@
   padding: 0;
   border: 2px solid transparent;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba($color-black, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(variables.$color-black, 0.12);
   cursor: pointer;
   transition:
-    transform $transition-base,
-    border-color $transition-base;
+    transform variables.$transition-base,
+    border-color variables.$transition-base;
 
   &:hover {
     transform: scale(1.06);
   }
 
   &.is-active {
-    border-color: $color-black;
+    border-color: variables.$color-black;
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }
@@ -238,18 +406,18 @@
   padding: 8px 12px;
   border-radius: 12px;
   background: #f4f4f4;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 13px;
-  color: $color-black;
+  color: variables.$color-black;
 }
 
 .product-detail-page .technical-specs {
   max-width: none;
   margin: 48px 0 0;
   padding: 40px 0 0;
-  border-top: 1px solid rgba($color-black, 0.08);
+  border-top: 1px solid rgba(variables.$color-black, 0.08);
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 56px;
     padding-top: 48px;
   }

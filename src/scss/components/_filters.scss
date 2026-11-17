@@ -1,3 +1,6 @@
+@use "../abstracts/variables";
+@use "buttons";
+
 .product-filters {
   display: flex;
   flex-direction: column;
@@ -11,34 +14,34 @@
   gap: 12px;
   margin-bottom: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba($color-black, 0.08);
+  border-bottom: 1px solid rgba(variables.$color-black, 0.08);
 }
 
 .product-filters__title {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: $color-black;
+  color: variables.$color-black;
 }
 
 .product-filters__clear {
   border: none;
   background: transparent;
   padding: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
   cursor: pointer;
 
   &:hover,
   &:focus-visible {
-    color: $color-black;
+    color: variables.$color-black;
     outline: none;
   }
 }
@@ -51,7 +54,7 @@
 }
 
 .filter-block {
-  border-bottom: 1px solid rgba($color-black, 0.08);
+  border-bottom: 1px solid rgba(variables.$color-black, 0.08);
   padding: 10px 0 12px;
 
   &[open] .filter-block__summary::after {
@@ -66,12 +69,12 @@
   gap: 12px;
   list-style: none;
   cursor: pointer;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: $color-black;
+  color: variables.$color-black;
   user-select: none;
 
   &::-webkit-details-marker {
@@ -81,8 +84,8 @@
   &::after {
     content: '▾';
     font-size: 12px;
-    color: rgba($color-black, 0.45);
-    transition: transform $transition-base;
+    color: rgba(variables.$color-black, 0.45);
+    transition: transform variables.$transition-base;
   }
 }
 
@@ -98,12 +101,12 @@
 
 .filter-block__mini {
   margin: 8px 0 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .filter-check {
@@ -123,11 +126,11 @@
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
-  border: 1px solid rgba($color-black, 0.28);
+  border: 1px solid rgba(variables.$color-black, 0.28);
   border-radius: 4px;
-  background: $color-white;
-  transition: background-color $transition-base, border-color $transition-base,
-    box-shadow $transition-base;
+  background: variables.$color-white;
+  transition: background-color variables.$transition-base, border-color variables.$transition-base,
+    box-shadow variables.$transition-base;
 
   &--radio {
     border-radius: 50%;
@@ -137,17 +140,17 @@
 .filter-check__input:checked + .filter-check__box {
   background: #141414;
   border-color: #141414;
-  box-shadow: inset 0 0 0 3px $color-white;
+  box-shadow: inset 0 0 0 3px variables.$color-white;
 }
 
 .filter-check__input:checked + .filter-check__box--radio {
-  background: $color-badge-bg;
+  background: variables.$color-badge-bg;
   border-color: #141414;
   box-shadow: inset 0 0 0 4px #141414;
 }
 
 .filter-check__input:focus-visible + .filter-check__box {
-  outline: 2px solid rgba($color-badge-bg, 0.8);
+  outline: 2px solid rgba(variables.$color-badge-bg, 0.8);
   outline-offset: 2px;
 }
 
@@ -156,17 +159,17 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1px solid rgba($color-black, 0.15);
+  border: 1px solid rgba(variables.$color-black, 0.15);
 }
 
 .filter-check__label {
   flex: 1;
   min-width: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 13px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.35;
-  color: $color-text;
+  color: variables.$color-text;
 }
 
 .filter-category {
@@ -181,7 +184,7 @@
   gap: 8px;
   margin-left: 28px;
   padding-left: 12px;
-  border-left: 1px solid rgba($color-black, 0.1);
+  border-left: 1px solid rgba(variables.$color-black, 0.1);
 }
 
 .filter-category__reset {
@@ -190,14 +193,14 @@
   border: none;
   background: transparent;
   padding: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
   cursor: pointer;
 
   &:hover {
-    color: $color-black;
+    color: variables.$color-black;
   }
 }

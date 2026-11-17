@@ -1,3 +1,6 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .hero-arc {
   position: relative;
   display: flex;
@@ -5,15 +8,15 @@
   min-height: 78svh;
   overflow: hidden;
   isolation: isolate;
-  background: $color-black;
+  background: variables.$color-black;
   scroll-margin-top: 72px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     min-height: 72svh;
     align-items: center;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     min-height: min(86vh, 820px);
   }
 }
@@ -49,16 +52,16 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding: 36px $container-padding-mobile 48px;
+  padding: 36px variables.$container-padding-mobile 48px;
 
-  @include respond-to(md) {
-    padding: 64px $container-padding-tablet 72px;
+  @include mixins.respond-to(md) {
+    padding: 64px variables.$container-padding-tablet 72px;
   }
 
-  @include respond-to(xl) {
-    padding: 80px $container-padding-desktop 96px;
+  @include mixins.respond-to(xl) {
+    padding: 80px variables.$container-padding-desktop 96px;
   }
 }
 
@@ -72,10 +75,10 @@
 .hero-arc__eyebrow {
   display: block;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: $color-badge-bg;
+  color: variables.$color-badge-bg;
 }
 
 .hero-arc__rule {
@@ -86,26 +89,26 @@
   border-radius: 2px;
   background: linear-gradient(
     90deg,
-    $color-badge-bg 0%,
-    rgba($color-badge-bg, 0.15) 100%
+    variables.$color-badge-bg 0%,
+    rgba(variables.$color-badge-bg, 0.15) 100%
   );
 }
 
 .hero-arc__title {
   margin: 22px 0 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: clamp(36px, 8vw, 48px);
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   line-height: 1.05;
   letter-spacing: -0.045em;
-  color: $color-white;
+  color: variables.$color-white;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 28px;
     font-size: clamp(48px, 6vw, 64px);
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     font-size: clamp(56px, 5vw, 76px);
   }
 }
@@ -114,11 +117,11 @@
   margin: 18px 0 0;
   max-width: 34rem;
   font-size: 15px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.65;
-  color: rgba($color-white, 0.82);
+  color: rgba(variables.$color-white, 0.82);
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 22px;
     font-size: 17px;
   }
@@ -131,13 +134,13 @@
   margin-top: 28px;
   width: 100%;
 
-  @include respond-to(sm) {
+  @include mixins.respond-to(sm) {
     flex-direction: row;
     flex-wrap: wrap;
     width: auto;
   }
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 36px;
     gap: 14px;
   }
@@ -155,7 +158,7 @@
     color 0.25s ease,
     border-color 0.25s ease;
 
-  @include respond-below(sm) {
+  @include mixins.respond-below(sm) {
     width: 100%;
   }
 
@@ -166,9 +169,9 @@
 }
 
 .hero-arc .btn-arc--primary {
-  background: $color-badge-bg;
-  border-color: $color-badge-bg;
-  color: $color-black;
+  background: variables.$color-badge-bg;
+  border-color: variables.$color-badge-bg;
+  color: variables.$color-black;
 
   &:hover {
     background: #f3e6c4;
@@ -177,13 +180,13 @@
 }
 
 .hero-arc .btn-arc--outline {
-  background: rgba($color-white, 0.06);
-  border-color: rgba($color-white, 0.55);
-  color: $color-white;
+  background: rgba(variables.$color-white, 0.06);
+  border-color: rgba(variables.$color-white, 0.55);
+  color: variables.$color-white;
   backdrop-filter: blur(8px);
 
   &:hover {
-    background: rgba($color-white, 0.16);
-    border-color: $color-white;
+    background: rgba(variables.$color-white, 0.16);
+    border-color: variables.$color-white;
   }
 }

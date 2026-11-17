@@ -1,8 +1,11 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .btn-icon {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   width: 40px;
   height: 40px;
-  transition: opacity $transition-base;
+  transition: opacity variables.$transition-base;
 
   &:hover {
     opacity: 0.6;
@@ -18,18 +21,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: $hero-btn-padding-y $hero-btn-padding-x;
-  font-family: $font-family-base;
-  font-size: $hero-btn-font-size;
-  font-weight: $font-weight-medium;
-  letter-spacing: $hero-btn-letter-spacing;
+  padding: variables.$hero-btn-padding-y variables.$hero-btn-padding-x;
+  font-family: variables.$font-family-base;
+  font-size: variables.$hero-btn-font-size;
+  font-weight: variables.$font-weight-medium;
+  letter-spacing: variables.$hero-btn-letter-spacing;
   text-transform: uppercase;
   line-height: 1;
   border: 1px solid transparent;
   border-radius: 0;
   cursor: pointer;
-  transition: background-color $transition-base, color $transition-base,
-    border-color $transition-base, opacity $transition-base;
+  transition: background-color variables.$transition-base, color variables.$transition-base,
+    border-color variables.$transition-base, opacity variables.$transition-base;
   white-space: nowrap;
 
   &:hover {
@@ -37,15 +40,15 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-white;
+    outline: 2px solid variables.$color-white;
     outline-offset: 2px;
   }
 }
 
 .btn-arc--primary {
-  background-color: $color-black;
-  color: $color-white;
-  border-color: $color-black;
+  background-color: variables.$color-black;
+  color: variables.$color-white;
+  border-color: variables.$color-black;
 
   &:hover {
     background-color: #1a1a1a;
@@ -56,11 +59,11 @@
 
 .btn-arc--outline {
   background-color: transparent;
-  color: $color-white;
-  border-color: $color-white;
+  color: variables.$color-white;
+  border-color: variables.$color-white;
 
   &:hover {
-    background-color: rgba($color-white, 0.12);
+    background-color: rgba(variables.$color-white, 0.12);
     opacity: 1;
   }
 }

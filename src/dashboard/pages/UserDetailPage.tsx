@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { deleteUser, getUserById, type UserDetail } from '../../api/users'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
@@ -51,7 +52,7 @@ export function UserDetailPage() {
       await deleteUser(user.id)
       navigate('/dashboard/users', {
         replace: true,
-        state: { success: `“${user.displayName}” silindi.` },
+        state: { toast: toastDeleted(user.displayName) },
       })
     } catch (err) {
       setError(

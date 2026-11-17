@@ -154,6 +154,10 @@ export const apiClient = {
     return request<T>('PUT', path, { ...options, body })
   },
 
+  patch<T>(path: string, body?: ApiRequestOptions['body'], options?: ApiRequestOptions) {
+    return request<T>('PATCH', path, { ...options, body })
+  },
+
   delete(path: string, options?: ApiRequestOptions) {
     return request<void>('DELETE', path, { ...options, emptyResponse: true })
   },

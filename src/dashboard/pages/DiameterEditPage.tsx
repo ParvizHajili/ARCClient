@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getDiameterById, updateDiameter } from '../../api/diameters'
 import { ApiError } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 export function DiameterEditPage() {
   const { id } = useParams()
@@ -58,7 +59,10 @@ export function DiameterEditPage() {
     setSubmitting(true)
     try {
       await updateDiameter(diameterId, { value: number })
-      navigate('/dashboard/diameters', { replace: true })
+      navigate('/dashboard/diameters', {
+        replace: true,
+        state: { toast: toastUpdated(String(number)) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

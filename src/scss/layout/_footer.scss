@@ -1,7 +1,10 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .site-footer {
   position: relative;
   background: #fafaf8;
-  border-top: 1px solid rgba($color-black, 0.06);
+  border-top: 1px solid rgba(variables.$color-black, 0.06);
 
   &::before {
     content: '';
@@ -15,9 +18,9 @@
     background: linear-gradient(
       90deg,
       transparent,
-      $color-badge-bg 18%,
+      variables.$color-badge-bg 18%,
       #c4a574 50%,
-      $color-badge-bg 82%,
+      variables.$color-badge-bg 82%,
       transparent
     );
   }
@@ -28,11 +31,11 @@
   grid-template-columns: 1fr;
   gap: 18px;
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding: 28px $container-padding-mobile 22px;
+  padding: 28px variables.$container-padding-mobile 22px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
       'brand nav social'
@@ -40,11 +43,11 @@
     align-items: center;
     column-gap: 28px;
     row-gap: 14px;
-    padding: 28px $container-padding-tablet 20px;
+    padding: 28px variables.$container-padding-tablet 20px;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
   }
 }
 
@@ -55,18 +58,18 @@
   gap: 6px;
   min-width: 0;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-area: brand;
   }
 }
 
 .site-footer__logo {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 16px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: $color-black;
+  color: variables.$color-black;
   transition: color 0.3s ease;
 
   &:hover {
@@ -82,13 +85,13 @@
   margin: 0;
   font-size: 13px;
   line-height: 1.4;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .site-footer__navigation {
   min-width: 0;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-area: nav;
     justify-self: center;
   }
@@ -102,17 +105,17 @@
   padding: 0;
   list-style: none;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     justify-content: center;
     gap: 8px 22px;
   }
 }
 
 .site-footer__link {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 13px;
-  font-weight: $font-weight-medium;
-  color: $color-text-muted;
+  font-weight: variables.$font-weight-medium;
+  color: variables.$color-text-muted;
   transition: color 0.25s ease;
 
   &:hover {
@@ -125,19 +128,19 @@
   align-items: center;
   gap: 8px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-area: social;
   }
 }
 
 .site-footer__social-link {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  border: 1px solid rgba($color-black, 0.08);
-  background: rgba($color-white, 0.7);
-  color: $color-black;
+  border: 1px solid rgba(variables.$color-black, 0.08);
+  background: rgba(variables.$color-white, 0.7);
+  color: variables.$color-black;
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease,
@@ -149,8 +152,8 @@
   }
 
   &:hover {
-    background: rgba($color-badge-bg, 0.45);
-    border-color: rgba($color-badge-bg, 0.9);
+    background: rgba(variables.$color-badge-bg, 0.45);
+    border-color: rgba(variables.$color-badge-bg, 0.9);
     transform: translateY(-1px);
   }
 }
@@ -158,12 +161,12 @@
 .site-footer__copyright {
   margin: 0;
   padding-top: 14px;
-  border-top: 1px solid rgba($color-black, 0.06);
+  border-top: 1px solid rgba(variables.$color-black, 0.06);
   font-size: 12px;
   line-height: 1.4;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-area: copy;
   }
 }

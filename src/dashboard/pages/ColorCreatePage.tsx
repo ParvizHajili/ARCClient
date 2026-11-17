@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createColor } from '../../api/colors'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastCreated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -65,7 +66,7 @@ export function ColorCreatePage() {
         'Rəng'
       navigate('/dashboard/colors', {
         replace: true,
-        state: { success: `“${title}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(title) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

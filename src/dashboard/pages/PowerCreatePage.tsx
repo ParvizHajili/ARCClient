@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createPower } from '../../api/powers'
 import { ApiError } from '../../api/types'
+import { toastCreated } from '../toast'
 
 export function PowerCreatePage() {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export function PowerCreatePage() {
       const created = await createPower({ value: number })
       navigate('/dashboard/powers', {
         replace: true,
-        state: { success: `“${created.value}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(String(created.value)) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

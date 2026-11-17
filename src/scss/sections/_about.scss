@@ -1,3 +1,6 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .about-section {
   position: relative;
   background-color: #fafaf8;
@@ -5,7 +8,7 @@
   overflow: hidden;
   scroll-margin-top: 72px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     padding-block: 96px 104px;
   }
 }
@@ -15,8 +18,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 55% 40% at 0% 20%, rgba($color-badge-bg, 0.2), transparent 62%),
-    radial-gradient(ellipse 40% 35% at 100% 90%, rgba($color-badge-bg, 0.1), transparent 70%);
+    radial-gradient(ellipse 55% 40% at 0% 20%, rgba(variables.$color-badge-bg, 0.2), transparent 62%),
+    radial-gradient(ellipse 40% 35% at 100% 90%, rgba(variables.$color-badge-bg, 0.1), transparent 70%);
 }
 
 .about-section__container {
@@ -26,9 +29,9 @@
   grid-template-columns: 1fr;
   gap: 28px;
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding-inline: $container-padding-mobile;
+  padding-inline: variables.$container-padding-mobile;
   align-items: center;
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -38,18 +41,18 @@
   }
 
 
-  @include respond-to(md) {
-    padding-inline: $container-padding-tablet;
+  @include mixins.respond-to(md) {
+    padding-inline: variables.$container-padding-tablet;
     gap: 36px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     gap: 56px;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
     gap: 72px;
   }
 }
@@ -71,16 +74,16 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    border: 1px solid rgba($color-black, 0.06);
+    border: 1px solid rgba(variables.$color-black, 0.06);
     pointer-events: none;
   }
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     aspect-ratio: 16 / 11;
     border-radius: 24px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     aspect-ratio: 5 / 4;
     border-radius: 28px;
   }
@@ -105,9 +108,9 @@
 .about-section__eyebrow {
   display: block;
   margin-bottom: 14px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #8a6d3f;
@@ -115,18 +118,18 @@
 
 .about-section__title {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: clamp(30px, 7vw, 36px);
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   line-height: 1.08;
   letter-spacing: -0.04em;
-  color: $color-black;
+  color: variables.$color-black;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     font-size: clamp(36px, 4.5vw, 44px);
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     font-size: clamp(40px, 3.4vw, 52px);
   }
 }
@@ -143,21 +146,21 @@
   border-radius: 2px;
   background: linear-gradient(
     90deg,
-    $color-badge-bg 0%,
-    rgba($color-badge-bg, 0.15) 100%
+    variables.$color-badge-bg 0%,
+    rgba(variables.$color-badge-bg, 0.15) 100%
   );
 }
 
 .about-section__description {
   max-width: 38rem;
   margin: 20px 0 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 15px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.7;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 24px;
     font-size: 16px;
   }
@@ -169,12 +172,12 @@
   gap: 12px;
   margin-top: 28px;
 
-  @include respond-to(sm) {
+  @include mixins.respond-to(sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-top: 36px;
     max-width: 460px;
   }
@@ -186,33 +189,33 @@
   gap: 6px;
   padding: 18px 16px;
   border-radius: 18px;
-  background: rgba($color-white, 0.72);
-  border: 1px solid rgba($color-black, 0.06);
+  background: rgba(variables.$color-white, 0.72);
+  border: 1px solid rgba(variables.$color-black, 0.06);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     padding: 20px 18px;
     border-radius: 20px;
   }
 }
 
 .about-section__stat-value {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 32px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: $color-black;
+  color: variables.$color-black;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     font-size: 40px;
   }
 }
 
 .about-section__stat-label {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.04em;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }

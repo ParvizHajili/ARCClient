@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getAboutById, updateAbout } from '../../api/about'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -124,7 +125,7 @@ export function AboutEditPage() {
       })
       navigate('/dashboard/about', {
         replace: true,
-        state: { success: 'Haqqımızda uğurla yeniləndi.' },
+        state: { toast: toastUpdated('Haqqımızda') },
       })
     } catch (err) {
       if (err instanceof ApiError) {

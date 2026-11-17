@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError } from '../../api/types'
+import { toastCreated } from '../toast'
 import {
   createUser,
   getPermissionModules,
@@ -75,7 +76,7 @@ export function UserCreatePage() {
       })
       navigate('/dashboard/users', {
         replace: true,
-        state: { success: `“${created.displayName}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(created.displayName) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

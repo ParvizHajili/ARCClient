@@ -1,15 +1,18 @@
-.products-page {
-  padding-top: calc(#{$header-height-mobile} + 28px);
-  padding-bottom: 64px;
-  background-color: $color-white;
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
 
-  @include respond-to(md) {
-    padding-top: calc(#{$header-height-mobile} + 36px);
+.products-page {
+  padding-top: calc(#{variables.$header-height-mobile} + 28px);
+  padding-bottom: 64px;
+  background-color: variables.$color-white;
+
+  @include mixins.respond-to(md) {
+    padding-top: calc(#{variables.$header-height-mobile} + 36px);
     padding-bottom: 72px;
   }
 
-  @include respond-to(lg) {
-    padding-top: calc(#{$header-height-desktop} + 48px);
+  @include mixins.respond-to(lg) {
+    padding-top: calc(#{variables.$header-height-desktop} + 48px);
     padding-bottom: 80px;
   }
 }
@@ -19,23 +22,23 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 28px;
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding-inline: $container-padding-mobile;
+  padding-inline: variables.$container-padding-mobile;
 
-  @include respond-to(md) {
-    padding-inline: $container-padding-tablet;
+  @include mixins.respond-to(md) {
+    padding-inline: variables.$container-padding-tablet;
     gap: 36px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     grid-template-columns: 280px minmax(0, 1fr);
     gap: 40px;
     align-items: start;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
     gap: 56px;
   }
 }
@@ -44,15 +47,15 @@
   min-width: 0;
   padding: 20px;
   background: #f7f7f7;
-  border: 1px solid rgba($color-black, 0.06);
+  border: 1px solid rgba(variables.$color-black, 0.06);
   border-radius: 18px;
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     position: sticky;
-    top: calc(#{$header-height-desktop} + 20px);
+    top: calc(#{variables.$header-height-desktop} + 20px);
     width: 280px;
     max-width: 280px;
-    max-height: calc(100vh - #{$header-height-desktop} - 40px);
+    max-height: calc(100vh - #{variables.$header-height-desktop} - 40px);
     overflow: auto;
     padding: 22px 20px;
   }
@@ -65,14 +68,14 @@
 .products-page__header {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
-  margin-bottom: $spacing-xl;
+  gap: variables.$spacing-md;
+  margin-bottom: variables.$spacing-xl;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    gap: $spacing-lg;
+    gap: variables.$spacing-lg;
     margin-bottom: 36px;
   }
 }
@@ -86,30 +89,30 @@
 
 .products-page__title {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 28px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: $color-black;
+  color: variables.$color-black;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     font-size: 34px;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     font-size: 36px;
   }
 }
 
 .products-page__count {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .products-page__filter-toggle {
@@ -120,16 +123,16 @@
   align-self: flex-start;
   min-height: 44px;
   padding: 12px 18px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: $color-white;
+  color: variables.$color-white;
   background: #141414;
   border: 1px solid #141414;
   cursor: pointer;
-  transition: background-color $transition-base, color $transition-base;
+  transition: background-color variables.$transition-base, color variables.$transition-base;
 
   &:hover,
   &:focus-visible {
@@ -138,7 +141,7 @@
     outline: none;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     display: none;
   }
 }
@@ -154,20 +157,20 @@
   font-size: 11px;
   letter-spacing: 0;
   color: #141414;
-  background: $color-badge-bg;
+  background: variables.$color-badge-bg;
 }
 
 .products-page__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: $spacing-xl $spacing-lg;
+  gap: variables.$spacing-xl variables.$spacing-lg;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px $spacing-lg;
+    gap: 36px variables.$spacing-lg;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -175,11 +178,11 @@
 .products-page__empty {
   margin: 0;
   padding: 48px 0;
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-light;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-light;
   line-height: 1.6;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .products-page__infinite {
@@ -191,29 +194,29 @@
 .products-page__infinite-status {
   margin: 0;
   text-align: center;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .products-page__drawer-backdrop {
   position: fixed;
   inset: 0;
-  z-index: $z-index-overlay;
+  z-index: variables.$z-index-overlay;
   background: rgba(0, 0, 0, 0.45);
   opacity: 0;
   visibility: hidden;
-  transition: opacity $transition-menu, visibility $transition-menu;
+  transition: opacity variables.$transition-menu, visibility variables.$transition-menu;
 
   &.is-open {
     opacity: 1;
     visibility: visible;
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     display: none;
   }
 }
@@ -222,21 +225,21 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: $z-index-menu;
+  z-index: variables.$z-index-menu;
   display: flex;
   flex-direction: column;
   width: min(100vw - 40px, 360px);
   height: 100%;
   background: #fff;
   transform: translateX(-104%);
-  transition: transform $transition-menu;
+  transition: transform variables.$transition-menu;
   box-shadow: 16px 0 40px rgba(0, 0, 0, 0.18);
 
   &.is-open {
     transform: translateX(0);
   }
 
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     display: none;
   }
 }
@@ -247,25 +250,25 @@
   justify-content: space-between;
   gap: 12px;
   padding: 18px 18px 14px;
-  border-bottom: 1px solid rgba($color-black, 0.08);
+  border-bottom: 1px solid rgba(variables.$color-black, 0.08);
 }
 
 .products-page__drawer-title {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 14px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .products-page__drawer-close {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   width: 36px;
   height: 36px;
   font-size: 28px;
   line-height: 1;
-  color: $color-black;
+  color: variables.$color-black;
 }
 
 .products-page__drawer-body {

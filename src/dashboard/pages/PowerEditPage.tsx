@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getPowerById, updatePower } from '../../api/powers'
 import { ApiError } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 export function PowerEditPage() {
   const { id } = useParams()
@@ -58,7 +59,10 @@ export function PowerEditPage() {
     setSubmitting(true)
     try {
       await updatePower(powerId, { value: number })
-      navigate('/dashboard/powers', { replace: true })
+      navigate('/dashboard/powers', {
+        replace: true,
+        state: { toast: toastUpdated(String(number)) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

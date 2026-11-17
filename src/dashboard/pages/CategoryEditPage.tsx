@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getCategoryById, updateCategory } from '../../api/categories'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -161,7 +162,10 @@ export function CategoryEditPage() {
           translations: namesToTranslations(s.names),
         })),
       })
-      navigate('/dashboard/categories', { replace: true })
+      navigate('/dashboard/categories', {
+        replace: true,
+        state: { toast: toastUpdated(names.az.trim()) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

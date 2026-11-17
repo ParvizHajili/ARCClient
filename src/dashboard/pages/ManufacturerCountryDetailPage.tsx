@@ -6,6 +6,7 @@ import {
   type ManufacturerCountryDetail,
 } from '../../api/manufacturerCountries'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -62,7 +63,10 @@ export function ManufacturerCountryDetailPage() {
     setDeleting(true)
     try {
       await deleteManufacturerCountry(item.id)
-      navigate('/dashboard/manufacturer-countries', { replace: true })
+      navigate('/dashboard/manufacturer-countries', {
+        replace: true,
+        state: { toast: toastDeleted(nameOf(item, 'az')) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

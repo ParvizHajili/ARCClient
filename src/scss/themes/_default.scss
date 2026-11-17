@@ -1,5 +1,7 @@
+@use "../abstracts/variables";
+
 :root {
-  --color-white: #{$color-white};
-  --color-black: #{$color-black};
-  --color-text: #{$color-text};
+  --color-white: #{variables.$color-white};
+  --color-black: #{variables.$color-black};
+  --color-text: #{variables.$color-text};
 }

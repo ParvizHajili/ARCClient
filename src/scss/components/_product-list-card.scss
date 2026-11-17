@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 .product-list-card {
   display: flex;
   flex-direction: column;
@@ -9,7 +11,7 @@
   overflow: hidden;
   aspect-ratio: 1 / 1;
   background-color: #f4f4f4;
-  transition: opacity $transition-base;
+  transition: opacity variables.$transition-base;
 
   &:hover {
     opacity: 0.92;
@@ -27,22 +29,22 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-top: $spacing-md;
+  padding-top: variables.$spacing-md;
 }
 
 .product-list-card__title {
   margin: 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 18px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   line-height: 1.3;
-  color: $color-black;
+  color: variables.$color-black;
 }
 
 .product-list-card__title-link {
   color: inherit;
   text-decoration: none;
-  transition: opacity $transition-base;
+  transition: opacity variables.$transition-base;
 
   &:hover {
     opacity: 0.75;
@@ -51,19 +53,19 @@
 
 .product-list-card__description {
   margin: 0;
-  font-family: $font-family-base;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-light;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-sm;
+  font-weight: variables.$font-weight-light;
   line-height: 1.6;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .product-list-card__code {
-  margin-top: $spacing-xs;
-  font-family: $font-family-base;
+  margin-top: variables.$spacing-xs;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }

@@ -5,6 +5,7 @@ import { ApiError } from '../../api/types'
 import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { SuccessToast } from '../components/SuccessToast'
+import { readToastFromLocationState, type DashToastPayload } from '../toast'
 
 function titleOf(item: AboutDetail, code: string) {
   return (
@@ -24,12 +25,12 @@ export function AboutListPage() {
   const [items, setItems] = useState<AboutDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
 
   useEffect(() => {
-    const state = location.state as { success?: string } | null
-    if (state?.success) {
-      setSuccess(state.success)
+    const incoming = readToastFromLocationState(location.state)
+    if (incoming) {
+      setToast(incoming)
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
@@ -158,7 +159,7 @@ export function AboutListPage() {
         )}
       </section>
 
-      <SuccessToast message={success} onDismiss={() => setSuccess(null)} />
+      <SuccessToast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   )
 }

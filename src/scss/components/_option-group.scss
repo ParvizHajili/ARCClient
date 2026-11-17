@@ -1,59 +1,62 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .option-group {
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
+  gap: variables.$spacing-sm;
 }
 
 .option-group + .option-group {
-  margin-top: $spacing-lg;
+  margin-top: variables.$spacing-lg;
 }
 
 .option-group__label {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .option-group__buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-sm;
+  gap: variables.$spacing-sm;
 }
 
 .option-group__button {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   min-height: 44px;
   padding: 10px 18px;
-  border: 1px solid $color-border;
-  background-color: $color-white;
-  font-family: $font-family-base;
+  border: 1px solid variables.$color-border;
+  background-color: variables.$color-white;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 1px;
   text-transform: uppercase;
   line-height: 1.2;
-  color: $color-black;
+  color: variables.$color-black;
   white-space: nowrap;
   transition:
-    background-color $transition-base,
-    border-color $transition-base,
-    color $transition-base;
+    background-color variables.$transition-base,
+    border-color variables.$transition-base,
+    color variables.$transition-base;
 
   &:hover {
-    border-color: $color-black;
+    border-color: variables.$color-black;
   }
 
   &.is-active {
-    border-color: $color-black;
-    background-color: $color-black;
-    color: $color-white;
+    border-color: variables.$color-black;
+    background-color: variables.$color-black;
+    color: variables.$color-white;
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }

@@ -5,6 +5,7 @@ import {
   updateManufacturerCountry,
 } from '../../api/manufacturerCountries'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -92,7 +93,10 @@ export function ManufacturerCountryEditPage() {
       await updateManufacturerCountry(countryId, {
         translations: namesToTranslations(names),
       })
-      navigate('/dashboard/manufacturer-countries', { replace: true })
+      navigate('/dashboard/manufacturer-countries', {
+        replace: true,
+        state: { toast: toastUpdated(names.az.trim()) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

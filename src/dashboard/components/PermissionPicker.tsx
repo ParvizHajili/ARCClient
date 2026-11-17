@@ -10,6 +10,8 @@ const MODULE_LABELS: Record<string, string> = {
   HeroVideo: 'Ana video',
   About: 'Haqqımızda',
   ContactInfo: 'Əlaqə məlumatları',
+  OrderContact: 'Sifariş əlaqə məlumatları',
+  Inquiries: 'Gələn müraciətlər',
 }
 
 const ACTION_LABELS: Record<string, string> = {

@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getContactInquiries, type ContactInquiry } from '../../api/contact'
+import {
+  getContactInquiries,
+  type ContactInquiry,
+  type InquiryStatusFilter,
+} from '../../api/contact'
 import { ApiError } from '../../api/types'
 
 type SortBy = 'date' | 'name'
 type SortDirection = 'asc' | 'desc'
+
+const STATUS_FILTERS: { id: InquiryStatusFilter; label: string }[] = [
+  { id: 'all', label: 'Hamısı' },
+  { id: 'unread', label: 'Oxunmamış' },
+  { id: 'uncontacted', label: 'Əlaqə gözləyir' },
+  { id: 'contacted', label: 'Əlaqə saxlanıldı' },
+]
 
 function previewMessage(message: string) {
   const chars = Array.from(message)
@@ -24,12 +35,19 @@ function formatDate(value: string) {
   })
 }
 
+function statusLabel(item: ContactInquiry) {
+  if (item.isContacted) return 'Əlaqə saxlanıldı'
+  if (!item.isRead) return 'Oxunmayıb'
+  return 'Oxunub'
+}
+
 export function InquiryListPage() {
   const [items, setItems] = useState<ContactInquiry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
+  const [status, setStatus] = useState<InquiryStatusFilter>('all')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [sortBy, setSortBy] = useState<SortBy>('date')
@@ -55,6 +73,7 @@ export function InquiryListPage() {
         search: search || undefined,
         sortBy,
         sortDirection,
+        status,
       })
       setItems(result.items)
       setTotalCount(result.totalCount)
@@ -71,7 +90,7 @@ export function InquiryListPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, pageSize, search, sortBy, sortDirection])
+  }, [page, pageSize, search, sortBy, sortDirection, status])
 
   useEffect(() => {
     void load()
@@ -100,7 +119,8 @@ export function InquiryListPage() {
       <header className="dash-page__header">
         <h1 className="dash-page__title">Gələn müraciətlər</h1>
         <p className="dash-page__lead">
-          Ana səhifədəki əlaqə formasından göndərilən müraciətlər.
+          Ana səhifədəki əlaqə formasından göndərilən müraciətlər. Yeni
+          müraciətlər oxunmamış kimi göstərilir.
         </p>
       </header>
 
@@ -109,6 +129,24 @@ export function InquiryListPage() {
           {error}
         </div>
       )}
+
+      <div className="dash-filter-chips" role="tablist" aria-label="Status filtri">
+        {STATUS_FILTERS.map((filter) => (
+          <button
+            key={filter.id}
+            type="button"
+            role="tab"
+            aria-selected={status === filter.id}
+            className={`dash-filter-chip${status === filter.id ? ' is-active' : ''}`}
+            onClick={() => {
+              setStatus(filter.id)
+              setPage(1)
+            }}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
 
       <div className="dash-toolbar">
         <label className="dash-toolbar__search">
@@ -145,13 +183,16 @@ export function InquiryListPage() {
           <p className="dash-empty">Yüklənir…</p>
         ) : items.length === 0 ? (
           <p className="dash-empty">
-            {search ? 'Axtarışa uyğun müraciət tapılmadı.' : 'Hələ müraciət yoxdur.'}
+            {search || status !== 'all'
+              ? 'Axtarışa uyğun müraciət tapılmadı.'
+              : 'Hələ müraciət yoxdur.'}
           </p>
         ) : (
           <div className="dash-table-wrap">
             <table className="dash-table">
               <thead>
                 <tr>
+                  <th>Status</th>
                   <th>
                     <button
                       type="button"
@@ -177,30 +218,56 @@ export function InquiryListPage() {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item) => (
-                  <tr key={item.id}>
-                    <td>{formatDate(item.createDate)}</td>
-                    <td>{item.name}</td>
-                    <td>{item.phone || '—'}</td>
-                    <td>{item.email || '—'}</td>
-                    <td className="dash-table__message">
-                      <Link
-                        to={`/dashboard/inquiries/${item.id}`}
-                        className="dash-table__message-link"
-                      >
-                        {previewMessage(item.message)}
-                      </Link>
-                    </td>
-                    <td className="dash-table__actions-col">
-                      <Link
-                        to={`/dashboard/inquiries/${item.id}`}
-                        className="dash-table__view"
-                      >
-                        Bax
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                {items.map((item) => {
+                  const unread = !item.isRead
+                  const rowClass = [
+                    unread ? 'is-unread' : '',
+                    item.isContacted ? 'is-contacted' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
+
+                  return (
+                    <tr key={item.id} className={rowClass || undefined}>
+                      <td>
+                        <span
+                          className={[
+                            'dash-inquiry-badge',
+                            item.isContacted
+                              ? 'dash-inquiry-badge--contacted'
+                              : unread
+                                ? 'dash-inquiry-badge--unread'
+                                : 'dash-inquiry-badge--read',
+                          ].join(' ')}
+                        >
+                          {statusLabel(item)}
+                        </span>
+                      </td>
+                      <td>{formatDate(item.createDate)}</td>
+                      <td>
+                        {unread ? <strong>{item.name}</strong> : item.name}
+                      </td>
+                      <td>{item.phone || '—'}</td>
+                      <td>{item.email || '—'}</td>
+                      <td className="dash-table__message">
+                        <Link
+                          to={`/dashboard/inquiries/${item.id}`}
+                          className="dash-table__message-link"
+                        >
+                          {previewMessage(item.message)}
+                        </Link>
+                      </td>
+                      <td className="dash-table__actions-col">
+                        <Link
+                          to={`/dashboard/inquiries/${item.id}`}
+                          className="dash-table__view"
+                        >
+                          Bax
+                        </Link>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

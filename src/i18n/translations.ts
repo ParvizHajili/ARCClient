@@ -124,6 +124,15 @@ export const translations = {
         madeToOrder: "Sifarişlə",
         inStock: "Stokda",
       },
+      order: {
+        forOrder: "Sifariş üçün",
+        whatsapp: "WhatsApp",
+        call: "Zəng",
+        email: "E-mail",
+        orderNow: "Sifariş et",
+        whatsappMessage:
+          "Salam! \"{title}\" (kod: {code}) məhsulunu sifariş etmək istəyirəm.",
+      },
       specs: {
         title: "Texniki parametrlər",
         category: "Kateqoriya",
@@ -350,6 +359,15 @@ export const translations = {
         madeToOrder: "Made to order",
         inStock: "In stock",
       },
+      order: {
+        forOrder: "For order",
+        whatsapp: "WhatsApp",
+        call: "Call",
+        email: "E-mail",
+        orderNow: "Order now",
+        whatsappMessage:
+          "Hello! I would like to order \"{title}\" (code: {code}).",
+      },
       specs: {
         title: "Technical details",
         category: "Category",
@@ -575,6 +593,15 @@ export const translations = {
         warranty: "С гарантией",
         madeToOrder: "Под заказ",
         inStock: "В наличии",
+      },
+      order: {
+        forOrder: "Для заказа",
+        whatsapp: "WhatsApp",
+        call: "Звонок",
+        email: "E-mail",
+        orderNow: "Заказать",
+        whatsappMessage:
+          "Здравствуйте! Хочу заказать \"{title}\" (код: {code}).",
       },
       specs: {
         title: "Технические параметры",

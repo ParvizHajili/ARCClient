@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { recordProductView } from '../api/dashboardOverview'
 import {
+  getPublicOrderContact,
+  type PublicOrderContact,
+} from '../api/orderContact'
+import {
   getPublicProduct,
   type PublicProductDetail,
 } from '../api/publicCatalog'
@@ -9,6 +13,7 @@ import {
   ProductGallery,
   type GalleryImage,
 } from '../components/product-detail/ProductGallery'
+import { ProductOrderContacts } from '../components/product-detail/ProductOrderContacts'
 import { TechnicalSpecs } from '../components/product-detail/TechnicalSpecs'
 import { useI18n } from '../i18n/I18nContext'
 import { resolveTranslation } from '../utils/translations'
@@ -37,9 +42,26 @@ export function ProductDetailPage() {
   const productId = Number(id)
 
   const [product, setProduct] = useState<PublicProductDetail | null>(null)
+  const [orderContact, setOrderContact] = useState<PublicOrderContact | null>(
+    null,
+  )
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
   const [selectedColorId, setSelectedColorId] = useState<number | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    void getPublicOrderContact()
+      .then((data) => {
+        if (!cancelled) setOrderContact(data)
+      })
+      .catch(() => {
+        if (!cancelled) setOrderContact(null)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     if (!Number.isFinite(productId) || productId <= 0) {
@@ -262,6 +284,14 @@ export function ProductDetailPage() {
 
             {description ? (
               <p className="product-detail-page__description">{description}</p>
+            ) : null}
+
+            {orderContact ? (
+              <ProductOrderContacts
+                contact={orderContact}
+                productTitle={title}
+                productCode={product.code}
+              />
             ) : null}
 
             {product.colors.length > 0 ? (

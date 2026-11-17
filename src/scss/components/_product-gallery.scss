@@ -1,7 +1,10 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .product-gallery {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
+  gap: variables.$spacing-md;
   min-width: 0;
 }
 
@@ -24,7 +27,7 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }
@@ -55,11 +58,11 @@
   width: 1px;
   height: 48px;
   margin-inline: 4px;
-  background: rgba($color-black, 0.16);
+  background: rgba(variables.$color-black, 0.16);
 }
 
 .product-gallery__thumb {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   flex: 0 0 72px;
   width: 72px;
   height: 72px;
@@ -68,7 +71,7 @@
   border-radius: 10px;
   background-color: #f4f4f4;
   cursor: pointer;
-  transition: border-color $transition-base;
+  transition: border-color variables.$transition-base;
 
   img {
     width: 100%;
@@ -79,21 +82,21 @@
   }
 
   &:hover {
-    border-color: rgba($color-black, 0.35);
+    border-color: rgba(variables.$color-black, 0.35);
   }
 
   &.is-active {
-    border-color: $color-black;
+    border-color: variables.$color-black;
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }
 
 .product-gallery__spin {
-  @include icon-button-reset;
+  @include mixins.icon-button-reset;
   position: absolute;
   right: 16px;
   bottom: 16px;
@@ -102,10 +105,10 @@
   place-items: center;
   width: 56px;
   height: 56px;
-  border: 1px solid rgba($color-black, 0.12);
+  border: 1px solid rgba(variables.$color-black, 0.12);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.92);
-  color: $color-black;
+  color: variables.$color-black;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -117,7 +120,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-black;
+    outline: 2px solid variables.$color-black;
     outline-offset: 2px;
   }
 }

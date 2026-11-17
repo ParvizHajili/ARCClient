@@ -1,29 +1,32 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .technical-specs {
   width: 100%;
-  max-width: $selected-max-width;
+  max-width: variables.$selected-max-width;
   margin-inline: auto;
-  padding: 64px $container-padding-mobile 80px;
-  border-top: 1px solid $color-border;
+  padding: 64px variables.$container-padding-mobile 80px;
+  border-top: 1px solid variables.$color-border;
 
-  @include respond-to(md) {
-    padding-inline: $container-padding-tablet;
+  @include mixins.respond-to(md) {
+    padding-inline: variables.$container-padding-tablet;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
     padding-bottom: 96px;
   }
 }
 
 .technical-specs__title {
-  margin: 0 0 $spacing-xl;
-  font-family: $font-family-base;
+  margin: 0 0 variables.$spacing-xl;
+  font-family: variables.$font-family-base;
   font-size: 28px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.2;
-  color: $color-black;
+  color: variables.$color-black;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     margin-bottom: 40px;
     font-size: 32px;
   }
@@ -33,19 +36,19 @@
     display: block;
     width: 48px;
     height: 2px;
-    margin-top: $spacing-md;
-    background-color: $color-black;
+    margin-top: variables.$spacing-md;
+    background-color: variables.$color-black;
   }
 }
 
 .technical-specs__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: $spacing-lg;
+  gap: variables.$spacing-lg;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: $spacing-xl 64px;
+    gap: variables.$spacing-xl 64px;
   }
 }
 
@@ -57,18 +60,18 @@
 }
 
 .technical-specs__label {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .technical-specs__value {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  font-weight: $font-weight-regular;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.5;
-  color: $color-black;
+  color: variables.$color-black;
 }

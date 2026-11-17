@@ -1,14 +1,17 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .container-fluid {
   width: 100%;
-  max-width: $container-max-width;
+  max-width: variables.$container-max-width;
   margin-inline: auto;
-  padding-inline: $container-padding-mobile;
+  padding-inline: variables.$container-padding-mobile;
 
-  @include respond-to(md) {
-    padding-inline: $container-padding-tablet;
+  @include mixins.respond-to(md) {
+    padding-inline: variables.$container-padding-tablet;
   }
 
-  @include respond-to(xl) {
-    padding-inline: $container-padding-desktop;
+  @include mixins.respond-to(xl) {
+    padding-inline: variables.$container-padding-desktop;
   }
 }

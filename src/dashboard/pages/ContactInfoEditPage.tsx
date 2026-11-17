@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getContactInfoById, updateContactInfo } from '../../api/contactInfo'
 import { ApiError } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 export function ContactInfoEditPage() {
   const { id } = useParams()
@@ -75,7 +76,7 @@ export function ContactInfoEditPage() {
       })
       navigate('/dashboard/contact-info', {
         replace: true,
-        state: { success: 'Əlaqə məlumatı uğurla yeniləndi.' },
+        state: { toast: toastUpdated('Əlaqə məlumatı') },
       })
     } catch (err) {
       if (err instanceof ApiError) {

@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '../../api/types'
+import { toastUpdated } from '../toast'
 import {
   getPermissionModules,
   getUserById,
@@ -93,7 +94,7 @@ export function UserEditPage() {
       })
       navigate('/dashboard/users', {
         replace: true,
-        state: { success: `“${updated.displayName}” yeniləndi.` },
+        state: { toast: toastUpdated(updated.displayName) },
       })
     } catch (err) {
       if (err instanceof ApiError) {

@@ -1,16 +1,19 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
 .contact-form {
   width: 100%;
   max-width: 960px;
   margin-inline: auto;
   padding: 20px 16px 18px;
   border-radius: 22px;
-  background: rgba($color-white, 0.78);
-  border: 1px solid rgba($color-black, 0.06);
+  background: rgba(variables.$color-white, 0.78);
+  border: 1px solid rgba(variables.$color-black, 0.06);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 18px 40px rgba(0, 0, 0, 0.05);
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     padding: 28px 28px 24px;
     border-radius: 28px;
   }
@@ -21,24 +24,24 @@
   grid-template-columns: 1fr;
   gap: 8px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px 18px;
   }
 }
 
 .contact-form__row--3 {
-  @include respond-to(lg) {
+  @include mixins.respond-to(lg) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 .contact-form__hint {
   margin: 2px 0 0;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 13px;
   line-height: 1.4;
-  color: $color-text-muted;
+  color: variables.$color-text-muted;
 }
 
 .contact-toast {
@@ -54,7 +57,7 @@
   background: #ecfdf3;
   color: #067647;
   box-shadow: 0 12px 36px rgba(20, 20, 20, 0.16);
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 14px;
   line-height: 1.45;
   animation: contact-toast-in 0.25s ease both;
@@ -87,9 +90,9 @@
 }
 
 .contact-form__label {
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #8a6d3f;
@@ -100,32 +103,32 @@
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
-  border: 1px solid rgba($color-black, 0.08);
+  border: 1px solid rgba(variables.$color-black, 0.08);
   border-radius: 14px;
   background: #fafaf8;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 15px;
-  font-weight: $font-weight-regular;
-  color: $color-black;
+  font-weight: variables.$font-weight-regular;
+  color: variables.$color-black;
   transition:
     border-color 0.25s ease,
     background-color 0.25s ease,
     box-shadow 0.25s ease;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     font-size: 16px;
     border-radius: 16px;
   }
 
   &::placeholder {
-    color: rgba($color-text-muted, 0.7);
+    color: rgba(variables.$color-text-muted, 0.7);
   }
 
   &:focus {
     outline: none;
-    border-color: rgba($color-badge-bg, 0.95);
-    background: $color-white;
-    box-shadow: 0 0 0 4px rgba($color-badge-bg, 0.28);
+    border-color: rgba(variables.$color-badge-bg, 0.95);
+    background: variables.$color-white;
+    box-shadow: 0 0 0 4px rgba(variables.$color-badge-bg, 0.28);
   }
 
   &.is-invalid {
@@ -142,9 +145,9 @@
 
 .contact-form__error {
   min-height: 18px;
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   font-size: 12px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
   line-height: 1.4;
   color: #c0392b;
 }
@@ -159,18 +162,18 @@
   padding: 0 22px;
   border: 0;
   border-radius: 999px;
-  background: $color-black;
-  color: $color-white;
-  font-family: $font-family-base;
+  background: variables.$color-black;
+  color: variables.$color-white;
+  font-family: variables.$font-family-base;
   font-size: 13px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.06em;
   cursor: pointer;
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     background-color 0.25s ease;
 
-  @include respond-below(sm) {
+  @include mixins.respond-below(sm) {
     width: 100%;
   }
 
@@ -180,7 +183,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-badge-bg;
+    outline: 2px solid variables.$color-badge-bg;
     outline-offset: 3px;
   }
 }
@@ -195,7 +198,7 @@
   justify-content: center;
   margin-top: 8px;
 
-  @include respond-to(md) {
+  @include mixins.respond-to(md) {
     justify-content: flex-start;
     margin-top: 12px;
   }

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createContactInfo } from '../../api/contactInfo'
 import { ApiError } from '../../api/types'
+import { toastCreated } from '../toast'
 
 export function ContactInfoCreatePage() {
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ export function ContactInfoCreatePage() {
       })
       navigate('/dashboard/contact-info', {
         replace: true,
-        state: { success: 'Əlaqə məlumatı uğurla yaradıldı.' },
+        state: { toast: toastCreated('Əlaqə məlumatı') },
       })
     } catch (err) {
       if (err instanceof ApiError) {

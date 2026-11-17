@@ -10,6 +10,11 @@ import { useAuth } from '../../auth/AuthContext'
 import { CategoryActionsMenu } from '../components/CategoryActionsMenu'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SuccessToast } from '../components/SuccessToast'
+import {
+  readToastFromLocationState,
+  toastDeleted,
+  type DashToastPayload,
+} from '../toast'
 
 type SortBy = 'az' | 'code' | 'id'
 type SortDirection = 'asc' | 'desc'
@@ -25,7 +30,7 @@ export function ProductListPage() {
   const [items, setItems] = useState<ProductListItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [toast, setToast] = useState<DashToastPayload | null>(null)
   const [pendingDelete, setPendingDelete] = useState<ProductListItem | null>(
     null,
   )
@@ -41,9 +46,9 @@ export function ProductListPage() {
   const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
-    const state = location.state as { success?: string } | null
-    if (state?.success) {
-      setSuccess(state.success)
+    const incoming = readToastFromLocationState(location.state)
+    if (incoming) {
+      setToast(incoming)
       navigate(location.pathname, { replace: true, state: null })
     }
   }, [location.pathname, location.state, navigate])
@@ -109,6 +114,7 @@ export function ProductListPage() {
     setError(null)
     try {
       await deleteProduct(pendingDelete.id)
+      setToast(toastDeleted(pendingDelete.name))
       setPendingDelete(null)
       await load()
     } catch (err) {
@@ -313,7 +319,7 @@ export function ProductListPage() {
         }}
       />
 
-      <SuccessToast message={success} onDismiss={() => setSuccess(null)} />
+      <SuccessToast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   )
 }

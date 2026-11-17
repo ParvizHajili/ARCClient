@@ -1,5 +1,7 @@
+@use "variables";
+
 @use "sass:map";
 
 @function breakpoint($name) {
-  @return map.get($breakpoints, $name);
+  @return map.get(variables.$breakpoints, $name);
 }

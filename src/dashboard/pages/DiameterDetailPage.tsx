@@ -6,6 +6,7 @@ import {
   type DiameterDetail,
 } from '../../api/diameters'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -56,7 +57,10 @@ export function DiameterDetailPage() {
     setDeleting(true)
     try {
       await deleteDiameter(item.id)
-      navigate('/dashboard/diameters', { replace: true })
+      navigate('/dashboard/diameters', {
+        replace: true,
+        state: { toast: toastDeleted(String(item.value)) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

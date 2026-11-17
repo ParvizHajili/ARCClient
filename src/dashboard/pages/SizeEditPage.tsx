@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSizeById, updateSize } from '../../api/sizes'
 import { ApiError } from '../../api/types'
+import { toastUpdated } from '../toast'
 
 export function SizeEditPage() {
   const { id } = useParams()
@@ -58,7 +59,10 @@ export function SizeEditPage() {
     setSubmitting(true)
     try {
       await updateSize(sizeId, { value: number })
-      navigate('/dashboard/sizes', { replace: true })
+      navigate('/dashboard/sizes', {
+        replace: true,
+        state: { toast: toastUpdated(String(number)) },
+      })
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message)

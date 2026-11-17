@@ -6,6 +6,7 @@ import {
   type BrandDetail,
 } from '../../api/brands'
 import { ApiError } from '../../api/types'
+import { toastDeleted } from '../toast'
 import { useAuth } from '../../auth/AuthContext'
 import { ConfirmModal } from '../components/ConfirmModal'
 
@@ -62,7 +63,10 @@ export function BrandDetailPage() {
     setDeleting(true)
     try {
       await deleteBrand(item.id)
-      navigate('/dashboard/brands', { replace: true })
+      navigate('/dashboard/brands', {
+        replace: true,
+        state: { toast: toastDeleted(nameOf(item, 'az')) },
+      })
     } catch (err) {
       setError(
         err instanceof ApiError

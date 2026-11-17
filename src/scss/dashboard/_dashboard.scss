@@ -1,3 +1,5 @@
+@use "../abstracts/variables";
+
 :root {
   --dash-sidebar: #121212;
   --dash-sidebar-muted: rgba(255, 255, 255, 0.48);
@@ -10,6 +12,7 @@
   --dash-border: #e6e6e8;
   --dash-danger: #b42318;
   --dash-success: #067647;
+  --dash-warning: #b54708;
   --dash-radius: 14px;
   --dash-sidebar-width: 268px;
 }
@@ -20,7 +23,7 @@
   min-height: 100vh;
   background: var(--dash-bg);
   color: var(--dash-text);
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
 
   @media (max-width: 991px) {
     grid-template-columns: 1fr;
@@ -54,7 +57,7 @@
 
 .dash__logo {
   font-size: 22px;
-  font-weight: $font-weight-bold;
+  font-weight: variables.$font-weight-bold;
   letter-spacing: 0.28em;
   color: #fff;
   text-decoration: none;
@@ -67,7 +70,7 @@
 
 .dash__brand-label {
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--dash-sidebar-muted);
@@ -132,7 +135,7 @@
   color: rgba(255, 255, 255, 0.88);
   font: inherit;
   font-size: 14px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   cursor: pointer;
   transition:
     background 0.25s ease,
@@ -188,7 +191,7 @@
   color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
   font-size: 14px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   transition:
     background 0.25s ease,
     color 0.25s ease,
@@ -254,7 +257,7 @@
 .dash-page__eyebrow {
   margin: 0 0 8px;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--dash-muted);
@@ -263,7 +266,7 @@
 .dash-page__title {
   margin: 0 0 10px;
   font-size: clamp(28px, 3vw, 36px);
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: -0.03em;
   line-height: 1.15;
 }
@@ -304,7 +307,7 @@
 .dash-panel__title {
   margin: 0 0 4px;
   font-size: 17px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: -0.02em;
 }
 
@@ -359,7 +362,7 @@
 
 .dash-field__label {
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--dash-muted);
@@ -440,7 +443,7 @@
     margin: 0;
     color: var(--dash-text);
     font-size: 14px;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
   }
 
   span:last-child {
@@ -507,7 +510,7 @@
     background: rgba(255, 255, 255, 0.94);
     color: #141414;
     font-size: 13px;
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
   }
 }
 
@@ -593,7 +596,7 @@
 
 .dash-sub__index {
   font-size: 12px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 0.08em;
   color: var(--dash-muted);
 }
@@ -614,7 +617,7 @@
   border: 1px solid transparent;
   font: inherit;
   font-size: 14px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: 0.01em;
   cursor: pointer;
   text-decoration: none;
@@ -697,7 +700,7 @@
   padding-left: 18px;
 
   span {
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
   }
 }
 
@@ -727,7 +730,7 @@
 
   th {
     font-size: 11px;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--dash-muted);
@@ -780,7 +783,7 @@
     padding: 0 8px;
     border-radius: 8px;
     background: #f3f3f4;
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
     font-variant-numeric: tabular-nums;
   }
 
@@ -792,7 +795,7 @@
   }
 
   &__name {
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
     color: var(--dash-text);
   }
 }
@@ -941,7 +944,7 @@
 
   strong {
     font-size: 20px;
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
   }
 }
 
@@ -971,7 +974,7 @@
 
   strong {
     font-size: 15px;
-    font-weight: $font-weight-semibold;
+    font-weight: variables.$font-weight-semibold;
   }
 }
 
@@ -1009,7 +1012,7 @@
 
 .dash-detail__sub-id {
   font-size: 12px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   color: var(--dash-muted);
 }
 
@@ -1068,7 +1071,7 @@
   color: inherit;
   font: inherit;
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
@@ -1097,7 +1100,7 @@
 
 .dash-table__view {
   font-size: 13px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
 }
 
 .dash-inquiry__message-field {
@@ -1109,7 +1112,128 @@
   white-space: pre-wrap;
   line-height: 1.6;
   font-size: 15px;
-  font-weight: $font-weight-regular;
+  font-weight: variables.$font-weight-regular;
+}
+
+.dash-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.dash-filter-chip {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--dash-border);
+  border-radius: 999px;
+  background: var(--dash-surface);
+  color: var(--dash-muted);
+  font-size: 13px;
+  font-weight: variables.$font-weight-medium;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    color: var(--dash-text);
+    border-color: #cfcfd3;
+  }
+
+  &.is-active {
+    color: #1a1a1a;
+    background: var(--dash-accent);
+    border-color: var(--dash-accent);
+  }
+}
+
+.dash-table tbody tr.is-unread {
+  background: rgba(196, 165, 116, 0.12);
+
+  td:first-child {
+    box-shadow: inset 3px 0 0 var(--dash-accent);
+  }
+}
+
+.dash-table tbody tr.is-contacted {
+  background: rgba(6, 118, 71, 0.05);
+}
+
+.dash-inquiry-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: variables.$font-weight-semibold;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.dash-inquiry-badge--unread {
+  color: #7a4e00;
+  background: #fffaeb;
+  border: 1px solid #fedf89;
+}
+
+.dash-inquiry-badge--read {
+  color: var(--dash-muted);
+  background: #f4f4f5;
+  border: 1px solid var(--dash-border);
+}
+
+.dash-inquiry-badge--contacted {
+  color: var(--dash-success);
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+}
+
+.dash-inquiry-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-inquiry-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 4px 0 8px;
+  cursor: pointer;
+
+  input {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--dash-success);
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  strong {
+    font-size: 15px;
+    font-weight: variables.$font-weight-semibold;
+    color: var(--dash-text);
+  }
+}
+
+.dash-inquiry-check__hint {
+  font-size: 13px;
+  color: var(--dash-muted);
+  line-height: 1.45;
 }
 
 .dash-pagination {
@@ -1141,7 +1265,7 @@
   min-width: 64px;
   text-align: center;
   font-size: 13px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1212,7 +1336,7 @@
 .dash-modal__title {
   margin: 0 0 10px;
   font-size: 20px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   letter-spacing: -0.02em;
   line-height: 1.3;
 }
@@ -1254,6 +1378,18 @@
     background: #ecfdf3;
     color: var(--dash-success);
     border: 1px solid #abefc6;
+  }
+
+  &--warning {
+    background: #fffaeb;
+    color: var(--dash-warning);
+    border: 1px solid #fedf89;
+  }
+
+  &--danger {
+    background: #fef3f2;
+    color: var(--dash-danger);
+    border: 1px solid #fecdca;
   }
 }
 
@@ -1929,7 +2065,7 @@
 .dash-lang-block__title {
   margin: 0;
   font-size: 14px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
 }
 
 .dash-detail-grid {
@@ -1947,7 +2083,7 @@
   dd {
     margin: 0;
     font-size: 15px;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
   }
 }
 
@@ -1963,7 +2099,7 @@
 .dash__user-name {
   margin: 0;
   font-size: 14px;
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
   color: #fff;
 }
 
@@ -1995,7 +2131,7 @@
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   background: #eee;
   color: var(--dash-muted);
 }
@@ -2035,7 +2171,7 @@
   dd {
     margin: 0;
     font-size: 15px;
-    font-weight: $font-weight-medium;
+    font-weight: variables.$font-weight-medium;
   }
 }
 
@@ -2070,13 +2206,13 @@
 }
 
 .perm-picker__module-label {
-  font-weight: $font-weight-semibold;
+  font-weight: variables.$font-weight-semibold;
 }
 
 .perm-picker__count {
   margin-left: 8px;
   font-size: 12px;
-  font-weight: $font-weight-medium;
+  font-weight: variables.$font-weight-medium;
   color: var(--dash-muted);
 }
 
@@ -2117,7 +2253,7 @@
   place-items: center;
   padding: 32px 16px;
   background: var(--dash-bg);
-  font-family: $font-family-base;
+  font-family: variables.$font-family-base;
   color: var(--dash-text);
   overflow: hidden;
 }
@@ -2154,7 +2290,7 @@
 .login__logo {
   margin: 0;
   font-size: 28px;
-  font-weight: $font-weight-bold;
+  font-weight: variables.$font-weight-bold;
   letter-spacing: 0.28em;
 }
 
@@ -2173,7 +2309,7 @@
 .login__title {
   margin: 0 0 8px;
   font-size: 28px;
-  font-weight: $font-weight-bold;
+  font-weight: variables.$font-weight-bold;
   letter-spacing: -0.02em;
 }
 

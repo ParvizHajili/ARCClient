@@ -2,6 +2,7 @@ import { useId, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createAbout } from '../../api/about'
 import { ApiError, type LanguageCode } from '../../api/types'
+import { toastCreated } from '../toast'
 
 const LANGUAGES: { code: LanguageCode; label: string }[] = [
   { code: 'az', label: 'Azərbaycan' },
@@ -73,7 +74,7 @@ export function AboutCreatePage() {
         'Haqqımızda'
       navigate('/dashboard/about', {
         replace: true,
-        state: { success: `“${title}” uğurla yaradıldı.` },
+        state: { toast: toastCreated(title) },
       })
     } catch (err) {
       if (err instanceof ApiError) {
